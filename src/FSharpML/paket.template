@@ -1,0 +1,29 @@
+type file
+id FSharpML
+title
+    FSharpML
+owners
+    Timo Mühlhaus
+authors 
+    Timo Mühlhaus
+projectUrl
+    https://github.com/CSBiology/FSharpML
+iconUrl
+    https://raw.githubusercontent.com/CSBiology/FSharpML/master/docs/files/img/logo.png
+licenseUrl
+    https://github.com/CSBiology/FSharpML/blob/master/LICENSE.txt
+requireLicenseAcceptance
+    false
+language
+    F#
+copyright
+    Copyright 2017
+tags
+    ML ML.NET FSharp F# machine lerning AI
+summary
+    Library for the FSharp friendly usage of the ML.NET project
+description
+    Library for the FSharp friendly usage of the ML.NET project
+
+files
+	../../bin/FSharpML ==> lib

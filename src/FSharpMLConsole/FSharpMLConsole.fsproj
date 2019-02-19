@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net47;netcoreapp2.1</TargetFrameworks>
+    <RootNamespace>FSharpMLConsole</RootNamespace>
+    <AssemblyName>FSharpMLConsole</AssemblyName>
+    <Name>FSharpMLConsole</Name>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="CommandLine.fsi" />
+    <Compile Include="CommandLine.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FSharpML\FSharpML.fsproj"></ProjectReference>
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>
