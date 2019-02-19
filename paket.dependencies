@@ -9,6 +9,7 @@ nuget Expecto
 nuget Expecto.BenchmarkDotNet
 nuget Expecto.FsCheck
 nuget Expecto.VisualStudio.TestAdapter version_in_path: true
+nuget Microsoft.ML 0.10.0
 
 clitool dotnet-fake
 
