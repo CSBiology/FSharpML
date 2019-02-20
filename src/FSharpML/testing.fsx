@@ -1,5 +1,5 @@
-#load "FSharpML.fsx"
-
+#load "../../FSharpML.fsx"
+//#load @"C:\Users\david\OneDrive - tukl\Dokumente\BioInfo\101_percolator\.env\CsbScaffold.fsx" 
 open System;
 open Microsoft.ML
 open Microsoft.ML.Data;
@@ -20,6 +20,8 @@ open System.IO.Compression
 open Microsoft.ML.Core.Data
 open Microsoft.ML.Transforms.Conversions
 open System.Numerics
+
+
 [<CLIMutable>]
 type SpamInput = 
     {
@@ -46,7 +48,7 @@ let classify (p : PredictionEngine<_,_>) x =
 
 
 
-let trainDataPath  = (__SOURCE_DIRECTORY__ + @"\..\..\docsrc\content\data\SMSSpamCollection.txt")
+let trainDataPath  = (@"C:\Users\david\Source\Repos\netCoreRepos\FSharpML\docsrc\content\data\SMSSpamCollection.txt"(*__SOURCE_DIRECTORY__ + @"\..\..\docsrc\content\data\SMSSpamCollection.txt"*))
 
 // Set up the MLContext, which is a catalog of components in ML.NET.
 let mlContext = MLContext(seed = Nullable 1)
@@ -68,7 +70,7 @@ let estimator =
         .Append(mlContext.Transforms.Conversion.ValueMap(["ham"; "spam"], [false; true],[| struct ("Label", "LabelText") |]))
         .Append(mlContext.Transforms.Text.FeaturizeText("Features", "Message"))
         .AppendCacheCheckpoint(mlContext)
-        .Append(mlContext.BinaryClassification.Trainers.LinearSupportVectorMachines("Label", "Features"))
+        .Append(mlContext.BinaryClassification.Trainers.LogisticRegression("Label", "Features"))
         
 // Evaluate the model using cross-validation.
 // Cross-validation splits our dataset into 'folds', trains a model on some folds and 
@@ -76,10 +78,24 @@ let estimator =
 // Let's compute the average AUC, which should be between 0.5 and 1 (higher is better).
 let cvResults = mlContext.BinaryClassification.CrossValidate(data, downcastPipeline estimator, numFolds = 5);
 let avgAuc = cvResults |> Seq.map (fun struct (metrics,_,_) -> metrics.Auc) |> Seq.average
-printfn "The AUC is %f" avgAuc
-    
+//printfn "The AUC is %f" avgAuc
+
+
 // Now let's train a model on the full dataset to help us get better results
 let model = estimator.Fit(data)
+let out = model.Transform(data)
+/// run till here, then continue, breaks 
+let x = out.Preview().ColumnView
+/// run till here, works
+//x |> Seq.map (fun x -> x.Column.Name)
+
+//let downcastOtherPipeline (pipeline : ITransformer) =
+//    match pipeline with
+//    | :? IPredictionTransformer<IPredictor> as p -> p
+//    | _ -> failwith "The pipeline has to be an instance of IEstimator<ITransformer>."
+
+//let permutationMetrics = 
+//    mlContext.BinaryClassification.PermutationFeatureImportance(model.LastTransformer |> downcastOtherPipeline,out,"Label","Features",false,permutationCount=1)
 
 // The dataset we have is skewed, as there are many more non-spam messages than spam messages.
 // While our model is relatively good at detecting the difference, this skewness leads it to always
