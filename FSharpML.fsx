@@ -61,7 +61,7 @@ dependencies
 #r "./packages/Microsoft.ML/lib/netstandard2.0/Microsoft.ML.Transforms.dll"
 #r "./packages/System.Runtime.CompilerServices.Unsafe/lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll"
 
-
+#r "./src/FSharpML/bin/Release/netstandard2.0/FSharpML.dll"
 
 //#I @"Microsoft.ML/runtimes/win-x64/native/"
 
