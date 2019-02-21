@@ -29,6 +29,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "content", "content", "{8E6D5255-776D-4B61-85F9-73C37AA1FB9A}"
 	ProjectSection(SolutionItems) = preProject
 		docsrc\content\index.fsx = docsrc\content\index.fsx
+		docsrc\content\IrisClassification.fsx = docsrc\content\IrisClassification.fsx
+		docsrc\content\Sentiment analysis.fsx = docsrc\content\Sentiment analysis.fsx
+		docsrc\content\SpamDetection.fsx = docsrc\content\SpamDetection.fsx
 		docsrc\content\tutorial.fsx = docsrc\content\tutorial.fsx
 	EndProjectSection
 EndProject
@@ -58,8 +61,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{7C6D08
 		build.sh = build.sh
 	EndProjectSection
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSharpMLConsole", "src\FSharpMLConsole\FSharpMLConsole.fsproj", "{B7339FEC-0891-4DF8-8BB5-0B806A64F32F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,10 +75,6 @@ Global
 		{553D17F0-2A37-4B87-B2B5-05F78D52EABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{553D17F0-2A37-4B87-B2B5-05F78D52EABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{553D17F0-2A37-4B87-B2B5-05F78D52EABB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7339FEC-0891-4DF8-8BB5-0B806A64F32F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7339FEC-0891-4DF8-8BB5-0B806A64F32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7339FEC-0891-4DF8-8BB5-0B806A64F32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7339FEC-0891-4DF8-8BB5-0B806A64F32F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

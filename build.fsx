@@ -283,7 +283,7 @@ let githubLink = sprintf "https://github.com/%s/%s" github_release_user gitName
 // Specify more information about your project
 let info =
   [ "project-name", "FSharpGephiStreamer"
-    "project-author", "Timo M�hlhaus"
+    "project-author", "Timo Mühlhaus"
     "project-summary", "FSharp functions for streaming graph data to gephi a graph visualization tool"
     "project-github", githubLink
     "project-nuget", "http://nuget.org/packages/FSharpGephiStreamer" ]

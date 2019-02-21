@@ -1,4 +1,17 @@
-#load "../../FSharpML.fsx"
+(*** hide ***)
+// This block of code is omitted in the generated HTML documentation. Use 
+// it to define helpers that you do not want to show in the documentation.
+#r "../../packages/formatting/FSharp.Plotly/lib/netstandard2.0/Fsharp.Plotly.dll"
+#r "netstandard"
+open FSharp.Plotly
+(**
+Sample: Iris classification
+==========================
+
+**)
+
+#load "../../bin/FSharpML/netstandard2.0/FSharpML.fsx"
+
 
 open System;
 open Microsoft.ML

@@ -14,15 +14,16 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="FSharpML.fsx" />
+    <EmbeddedResource Remove="Scripts\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Data.fs" />
     <Compile Include="Transformer.fs" />
     <Compile Include="TransformerModel.fs" />
     <Compile Include="EstimatorModel.fs" />
-    <None Include="Sentiment analysis.fsx" />
-    <None Include="SpamDetection.fsx" />
-    <None Include="IrisClassification.fsx" />
-    <None Include="Scripts\Script.fsx" />
+    <None Include="FSharpML.fsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="paket.references" />
     <None Include="paket.template" />
   </ItemGroup>

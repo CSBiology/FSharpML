@@ -1,27 +1,25 @@
-#load "../../FSharpML.fsx"
+(*** hide ***)
+// This block of code is omitted in the generated HTML documentation. Use 
+// it to define helpers that you do not want to show in the documentation.
+#r "../../packages/formatting/FSharp.Plotly/lib/netstandard2.0/Fsharp.Plotly.dll"
+#r "netstandard"
+open FSharp.Plotly
+(**
+Sample Spam detection
+=========================
+
+**)
+
+#load "../../bin/FSharpML/netstandard2.0/FSharpML.fsx"
 
 open System;
 open Microsoft.ML
 open Microsoft.ML.Data;
-open Microsoft.Data.DataView
-open Microsoft.ML.Transforms
-open Microsoft.ML.Transforms.Normalizers
-open Microsoft.ML.Core
-open Microsoft.ML.Core.Data
-open Microsoft.ML.Internal
-open Microsoft.ML.Model
-
-open System
-open System.IO
-open Microsoft.ML
-open Microsoft.ML.Data
-open System.Net
-open System.IO.Compression
-open Microsoft.ML.Core.Data
-open Microsoft.ML.Transforms.Conversions
-open System.Numerics
 open FSharpML
 open FSharpML.EstimatorModel
+
+
+
 
 [<CLIMutable>]
 type SpamInput = 
@@ -46,7 +44,7 @@ let classify (p : PredictionEngine<_,_>) x =
 let conversionValueMap  k v c  = 
     fun (mlContext:MLContext) -> mlContext.Transforms.Conversion.ValueMap(k,v,c) 
 
-let trainDataPath  = (@"C:\Users\david\Source\Repos\netCoreRepos\FSharpML\docsrc\content\data\SMSSpamCollection.txt"(*__SOURCE_DIRECTORY__ + @"\..\..\docsrc\content\data\SMSSpamCollection.txt"*))
+let trainDataPath  = "./data/SMSSpamCollection.txt"
 
 let mlContext = MLContext(seed = Nullable 1)
 
