@@ -23,9 +23,52 @@ module Evaluation =
                 let predictedLabel = defaultArg PredictedLabelCol DefaultColumnNames.PredictedLabel
                 
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
-                    let prediciton = transformerModel |> TransformerModel.transform data
-                    transformerModel.Context.BinaryClassification.Evaluate(prediciton,label,score,probability,predictedLabel)
+                    let prediction = transformerModel |> TransformerModel.transform data
+                    transformerModel.Context.BinaryClassification.Evaluate(prediction,label,score,probability,predictedLabel)
+
+        static member InitEvaluateUncalibrated
+            (
+                ?LabelCol : string,
+                ?ScoreCol : string,
+                ?PredictedLabelCol : string
+            ) =
+                let label          = defaultArg LabelCol DefaultColumnNames.Label
+                let score          = defaultArg ScoreCol DefaultColumnNames.Score
+                let predictedLabel = defaultArg PredictedLabelCol DefaultColumnNames.PredictedLabel
                 
+                fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
+                    let prediction = transformerModel |> TransformerModel.transform data
+                    transformerModel.Context.BinaryClassification.EvaluateNonCalibrated(prediction,label,score,predictedLabel)
+    
+    type Regression =
+        
+        static member InitEvaluate
+            (
+                ?LabelCol : string,
+                ?ScoreCol : string
+            ) =
+                let label          = defaultArg LabelCol DefaultColumnNames.Label
+                let score          = defaultArg ScoreCol DefaultColumnNames.Score
+                
+                fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
+                    let prediction = transformerModel |> TransformerModel.transform data
+                    transformerModel.Context.Regression.Evaluate(prediction,label,score)
+
+        static member InitEvaluateUncalibrated
+            (
+                ?LabelCol : string,
+                ?ScoreCol : string,
+                ?PredictedLabelCol : string
+            ) =
+                let label          = defaultArg LabelCol DefaultColumnNames.Label
+                let score          = defaultArg ScoreCol DefaultColumnNames.Score
+                let predictedLabel = defaultArg PredictedLabelCol DefaultColumnNames.PredictedLabel
+                
+                fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
+                    let prediction = transformerModel |> TransformerModel.transform data
+                    transformerModel.Context.BinaryClassification.EvaluateNonCalibrated(prediction,label,score,predictedLabel)
+                       
+                       
     type Clustering =
         
         static member InitEvaluate
@@ -39,8 +82,8 @@ module Evaluation =
                 let features       = defaultArg FeaturesCol DefaultColumnNames.Features                
                 
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
-                    let prediciton = transformerModel |> TransformerModel.transform data
-                    transformerModel.Context.Clustering.Evaluate(prediciton, label, score, features)
+                    let prediction = transformerModel |> TransformerModel.transform data
+                    transformerModel.Context.Clustering.Evaluate(prediction, label, score, features)
             
 
 
