@@ -80,16 +80,6 @@
 <span class="l">41: </span>
 <span class="l">42: </span>
 <span class="l">43: </span>
-<span class="l">44: </span>
-<span class="l">45: </span>
-<span class="l">46: </span>
-<span class="l">47: </span>
-<span class="l">48: </span>
-<span class="l">49: </span>
-<span class="l">50: </span>
-<span class="l">51: </span>
-<span class="l">52: </span>
-<span class="l">53: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="pp">#load</span> <span class="s">&quot;../../bin/FSharpML/netstandard2.0/FSharpML.fsx&quot;</span>
 
@@ -134,8 +124,20 @@
 
 
 <span class="c">// (Optional) Peek data </span>
-
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs27', 56)" onmouseover="showTip(event, 'fs27', 56)" class="id">clusterPlot1</span> <span class="o">=</span> 
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+<span class="l">9: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs27', 56)" onmouseover="showTip(event, 'fs27', 56)" class="id">clusters</span> <span class="o">=</span> 
     <span onmouseout="hideTip(event, 'fs17', 57)" onmouseover="showTip(event, 'fs17', 57)" class="fn">mlContext</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs28', 58)" onmouseover="showTip(event, 'fs28', 58)" class="id">CreateEnumerable</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs10', 59)" onmouseover="showTip(event, 'fs10', 59)" class="rt">IrisData</span><span class="pn">&gt;</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs20', 60)" onmouseover="showTip(event, 'fs20', 60)" class="id">fullData</span><span class="pn">,</span><span class="k">false</span><span class="pn">)</span>
     <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs29', 61)" onmouseover="showTip(event, 'fs29', 61)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs30', 62)" onmouseover="showTip(event, 'fs30', 62)" class="id">groupBy</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs31', 63)" onmouseover="showTip(event, 'fs31', 63)" class="id">items</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs31', 64)" onmouseover="showTip(event, 'fs31', 64)" class="id">items</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs11', 65)" onmouseover="showTip(event, 'fs11', 65)" class="id">Label</span><span class="pn">)</span>
     <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs29', 66)" onmouseover="showTip(event, 'fs29', 66)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs32', 67)" onmouseover="showTip(event, 'fs32', 67)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs33', 68)" onmouseover="showTip(event, 'fs33', 68)" class="id">k</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs34', 69)" onmouseover="showTip(event, 'fs34', 69)" class="id">values</span><span class="pn">)</span> <span class="k">-&gt;</span> 
@@ -147,9 +149,7 @@
 </code></pre></td>
 </tr>
 </table>
-<table class="pre"><tr><td><pre><code>MultiChart
-  ([FSharp.Plotly.Trace; FSharp.Plotly.Trace; FSharp.Plotly.Trace],
-   FSharp.Plotly.Layout)</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>No value has been returned</code></pre></td></tr></table>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -231,7 +231,7 @@
 <div class="tip" id="fs24">type Column =<br />&#160;&#160;new : unit -&gt; Column + 3 overloads<br />&#160;&#160;val Name : string<br />&#160;&#160;val Type : Nullable&lt;DataKind&gt;<br />&#160;&#160;val Source : Range[]<br />&#160;&#160;val KeyCount : KeyCount<br />&#160;&#160;static member TryParseSourceEx : str:string * ranges:Range[] -&gt; bool</div>
 <div class="tip" id="fs25">type DataKind =<br />&#160;&#160;| I1 = 1uy<br />&#160;&#160;| U1 = 2uy<br />&#160;&#160;| I2 = 3uy<br />&#160;&#160;| U2 = 4uy<br />&#160;&#160;| I4 = 5uy<br />&#160;&#160;| U4 = 6uy<br />&#160;&#160;| I8 = 7uy<br />&#160;&#160;| U8 = 8uy<br />&#160;&#160;| R4 = 9uy<br />&#160;&#160;| R8 = 10uy<br />&#160;&#160;...</div>
 <div class="tip" id="fs26">field DataKind.R4: DataKind = 9uy</div>
-<div class="tip" id="fs27">val clusterPlot1 : GenericChart.GenericChart</div>
+<div class="tip" id="fs27">val clusters : GenericChart.GenericChart</div>
 <div class="tip" id="fs28">(extension) MLContext.CreateEnumerable&lt;&#39;TRow (requires default constructor and reference type)&gt;(data: Data.DataView.IDataView, reuseRowObject: bool,?ignoreMissingColumns: bool,?schemaDefinition: SchemaDefinition) : Collections.Generic.IEnumerable&lt;&#39;TRow&gt;</div>
 <div class="tip" id="fs29">Multiple items<br />module Seq<br /><br />from FSharp.Plotly<br /><br />--------------------<br />module Seq<br /><br />from Microsoft.FSharp.Collections</div>
 <div class="tip" id="fs30">val groupBy : projection:(&#39;T -&gt; &#39;Key) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;Key * seq&lt;&#39;T&gt;&gt; (requires equality)</div>
