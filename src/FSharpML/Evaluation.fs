@@ -12,15 +12,15 @@ module Evaluation =
         
         static member InitEvaluate
             (
-                ?LabelCol : string,
-                ?ScoreCol : string,
-                ?ProbabilityCol : string,
-                ?PredictedLabelCol : string
+                ?Label : string,
+                ?Score : string,
+                ?Probability : string,
+                ?PredictedLabel : string
             ) =
-                let label          = defaultArg LabelCol DefaultColumnNames.Label
-                let score          = defaultArg ScoreCol DefaultColumnNames.Score
-                let probability    = defaultArg ProbabilityCol DefaultColumnNames.Probability
-                let predictedLabel = defaultArg PredictedLabelCol DefaultColumnNames.PredictedLabel
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let score          = defaultArg Score DefaultColumnNames.Score
+                let probability    = defaultArg Probability DefaultColumnNames.Probability
+                let predictedLabel = defaultArg PredictedLabel DefaultColumnNames.PredictedLabel
                 
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
                     let prediction = transformerModel |> TransformerModel.transform data
@@ -28,66 +28,83 @@ module Evaluation =
 
         static member InitEvaluateUncalibrated
             (
-                ?LabelCol : string,
-                ?ScoreCol : string,
-                ?PredictedLabelCol : string
+                ?Label : string,
+                ?Score : string,
+                ?PredictedLabel : string
             ) =
-                let label          = defaultArg LabelCol DefaultColumnNames.Label
-                let score          = defaultArg ScoreCol DefaultColumnNames.Score
-                let predictedLabel = defaultArg PredictedLabelCol DefaultColumnNames.PredictedLabel
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let score          = defaultArg Score DefaultColumnNames.Score
+                let predictedLabel = defaultArg PredictedLabel DefaultColumnNames.PredictedLabel
                 
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.BinaryClassification.EvaluateNonCalibrated(prediction,label,score,predictedLabel)
-    
+
+
+    type MulticlassClassification =
+        
+        static member InitEvaluate
+            (
+                ?Label : string,
+                ?Score : string,
+                ?PredictedLabel : string,
+                ?TopK : int
+            ) =
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let score          = defaultArg Score DefaultColumnNames.Score
+                let predictedLabel = defaultArg PredictedLabel DefaultColumnNames.PredictedLabel
+                let topK           = defaultArg TopK 1
+                
+                fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
+                    let prediction = transformerModel |> TransformerModel.transform data
+                    transformerModel.Context.MulticlassClassification.Evaluate(prediction,label,score,predictedLabel,topK)
+
     type Regression =
         
         static member InitEvaluate
             (
-                ?LabelCol : string,
-                ?ScoreCol : string
+                ?Label : string,
+                ?Score : string
             ) =
-                let label          = defaultArg LabelCol DefaultColumnNames.Label
-                let score          = defaultArg ScoreCol DefaultColumnNames.Score
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let score          = defaultArg Score DefaultColumnNames.Score
                 
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.Regression.Evaluate(prediction,label,score)
 
-        static member InitEvaluateUncalibrated
-            (
-                ?LabelCol : string,
-                ?ScoreCol : string,
-                ?PredictedLabelCol : string
-            ) =
-                let label          = defaultArg LabelCol DefaultColumnNames.Label
-                let score          = defaultArg ScoreCol DefaultColumnNames.Score
-                let predictedLabel = defaultArg PredictedLabelCol DefaultColumnNames.PredictedLabel
-                
-                fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
-                    let prediction = transformerModel |> TransformerModel.transform data
-                    transformerModel.Context.BinaryClassification.EvaluateNonCalibrated(prediction,label,score,predictedLabel)
-                       
                        
     type Clustering =
         
         static member InitEvaluate
             (
-                ?LabelCol : string,
-                ?ScoreCol : string,
-                ?FeaturesCol : string
+                ?Label : string,
+                ?Score : string,
+                ?Features : string
             ) =
-                let label          = defaultArg LabelCol DefaultColumnNames.Label
-                let score          = defaultArg ScoreCol DefaultColumnNames.Score
-                let features       = defaultArg FeaturesCol DefaultColumnNames.Features                
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let score          = defaultArg Score DefaultColumnNames.Score
+                let features       = defaultArg Features DefaultColumnNames.Features                
                 
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.Clustering.Evaluate(prediction, label, score, features)
-            
 
-
-
+    type Ranking =
+        
+        static member InitEvaluate
+            (
+                ?Label : string,
+                ?groupID : string,
+                ?score : string
+            ) =
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let groupID        = defaultArg groupID DefaultColumnNames.Score
+                let score          = defaultArg score DefaultColumnNames.Probability
+                
+                fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
+                    let prediction = transformerModel |> TransformerModel.transform data
+                    transformerModel.Context.Ranking.Evaluate(prediction,label,groupID,score)
 // module TransformerModel =
 //     open Microsoft.Data.DataView
 //     open Microsoft.ML.Data
