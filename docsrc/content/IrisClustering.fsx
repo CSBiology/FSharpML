@@ -10,8 +10,8 @@ Sample: Clustering iris data set
 
 **)
 
-//#load "../../bin/FSharpML/netstandard2.0/FSharpML.fsx"
-#load "../../FSharpML.fsx"
+#load "../../bin/FSharpML/netstandard2.0/FSharpML.fsx"
+
 
 open System;
 open Microsoft.ML
@@ -74,9 +74,9 @@ let struct(trainingDataView, testingDataView) = mlContext.Clustering.TrainTestSp
 let model = 
     EstimatorModel.create mlContext
     // Process data transformations in pipeline
-    |> EstimatorModel.map (fun mlc -> mlc.Transforms.Concatenate(DefaultColumnNames.Features , "SepalLength", "SepalWidth", "PetalLength", "PetalWidth") )
+    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Concatenate(DefaultColumnNames.Features , "SepalLength", "SepalWidth", "PetalLength", "PetalWidth") )
     // Create the model
-    |> EstimatorModel.map (fun mlc -> mlc.Clustering.Trainers.KMeans(featureColumn = DefaultColumnNames.Features, clustersCount = 3) )
+    |> EstimatorModel.appendBy (fun mlc -> mlc.Clustering.Trainers.KMeans(featureColumn = DefaultColumnNames.Features, clustersCount = 3) )
     // Train the model
     |> EstimatorModel.fit trainingDataView
 

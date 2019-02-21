@@ -12,11 +12,6 @@ module TransformerModel =
         Context: MLContext
         }
 
-    let downcastTransformer (transformer : ITransformer) =
-        match transformer with
-        | :? IPredictionTransformer<IPredictor> as p -> p
-        | _ -> failwith "The transformer has to be an instance of IPredictionTransformer<IPredictor>."
-
     ///
     let getContext (transformerModel:TransformerModel<_>) = transformerModel.Context
 

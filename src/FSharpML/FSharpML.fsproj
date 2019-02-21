@@ -15,6 +15,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Data.fs" />
+    <Compile Include="Transformer.fs" />
+    <Compile Include="Estimator.fs" />
     <Compile Include="TransformerModel.fs" />
     <Compile Include="EstimatorModel.fs" />
     <Compile Include="Evaluation.fs" />

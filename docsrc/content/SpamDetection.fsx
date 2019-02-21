@@ -68,10 +68,10 @@ let data = reader.Read(trainDataPath)
 // Create the estimator which converts the text label to a bool then featurizes the text, and add a linear trainer.
 let estimatorModel = 
     EstimatorModel.create mlContext
-    |> EstimatorModel.map (conversionValueMap ["ham"; "spam"] [false; true] [| struct ("Label", "LabelText") |])
-    |> EstimatorModel.map (fun mlc -> mlc.Transforms.Text.FeaturizeText("Features", "Message"))
+    |> EstimatorModel.appendBy (conversionValueMap ["ham"; "spam"] [false; true] [| struct ("Label", "LabelText") |])
+    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Text.FeaturizeText("Features", "Message"))
     |> EstimatorModel.appendCacheCheckpoint
-    |> EstimatorModel.map (fun mlc -> mlc.BinaryClassification.Trainers.LogisticRegression("Label", "Features"))
+    |> EstimatorModel.appendBy (fun mlc -> mlc.BinaryClassification.Trainers.LogisticRegression("Label", "Features"))
 
 
 
