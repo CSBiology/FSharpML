@@ -20,6 +20,7 @@
     <Compile Include="TransformerModel.fs" />
     <Compile Include="EstimatorModel.fs" />
     <Compile Include="Evaluation.fs" />
+    <Compile Include="FeatureImportance.fs" />
     <Compile Include="Extensions.fs" />
     <None Include="FSharpML.fsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
