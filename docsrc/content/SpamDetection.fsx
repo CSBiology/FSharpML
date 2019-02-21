@@ -80,7 +80,7 @@ let estimatorModel =
 // Cross-validation splits our dataset into 'folds', trains a model on some folds and 
 // evaluates it on the remaining fold. We are using 5 folds so we get back 5 sets of scores.
 // Let's compute the average AUC, which should be between 0.5 and 1 (higher is better).
-let cvResults = mlContext.BinaryClassification.CrossValidate(data, estimatorModel.EstimatorChain |> downcastEstimator, numFolds = 5)
+let cvResults = mlContext.BinaryClassification.CrossValidate(data, estimatorModel.EstimatorChain |> Estimator.downcastEstimator, numFolds = 5,stratificationColumn = null)
 let avgAuc = cvResults |> Seq.map (fun struct (metrics,_,_) -> metrics.Auc) |> Seq.average
 //printfn "The AUC is %f" avgAuc
 

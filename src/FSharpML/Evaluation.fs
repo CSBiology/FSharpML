@@ -4,7 +4,7 @@ open Microsoft.ML
 open Microsoft.ML.Core.Data
 open Microsoft.Data.DataView
 open Microsoft.ML.Data
-
+open System.Runtime.InteropServices
 
 module Evaluation =
     
@@ -40,6 +40,37 @@ module Evaluation =
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.BinaryClassification.EvaluateNonCalibrated(prediction,label,score,predictedLabel)
 
+        static member InitCrossValidation
+            (
+                ?NumFolds : int,
+                ?Label : string,
+                ?Stratification : string,
+                ?Seed : uint32 
+            ) =
+                let numFolds       = defaultArg NumFolds 5
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let stratification = defaultArg Stratification null
+                let seed           = Option.toNullable Seed
+                
+                fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+                    let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
+                    estimatorModel.Context.BinaryClassification.CrossValidate(data,estimator,numFolds,label,stratification,seed)
+
+        static member InitCrossValidationCalibrated
+            (
+                ?NumFolds : int,
+                ?Label : string,
+                ?Stratification : string,
+                ?Seed : uint32 
+            ) =
+                let numFolds       = defaultArg NumFolds 5
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let stratification = defaultArg Stratification null
+                let seed           = Option.toNullable Seed
+                
+                fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+                    let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
+                    estimatorModel.Context.BinaryClassification.CrossValidateNonCalibrated(data,estimator,numFolds,label,stratification,seed)
 
     type MulticlassClassification =
         
@@ -59,6 +90,22 @@ module Evaluation =
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.MulticlassClassification.Evaluate(prediction,label,score,predictedLabel,topK)
 
+        static member InitCrossValidation
+            (
+                ?NumFolds : int,
+                ?Label : string,
+                ?Stratification : string,
+                ?Seed : uint32 
+            ) =
+                let numFolds       = defaultArg NumFolds 5
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let stratification = defaultArg Stratification null
+                let seed           = Option.toNullable Seed
+                
+                fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+                    let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
+                    estimatorModel.Context.MulticlassClassification.CrossValidate(data,estimator,numFolds,label,stratification,seed)
+
     type Regression =
         
         static member InitEvaluate
@@ -73,6 +120,22 @@ module Evaluation =
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.Regression.Evaluate(prediction,label,score)
 
+        static member InitCrossValidation
+            (
+                ?NumFolds : int,
+                ?Label : string,
+                ?Stratification : string,
+                ?Seed : uint32 
+            ) =
+                let numFolds       = defaultArg NumFolds 5
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let stratification = defaultArg Stratification null
+                let seed           = Option.toNullable Seed                                
+                fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+                    let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
+                    estimatorModel.Context.Regression.CrossValidate(data,estimator,numFolds,label,stratification,seed)
+
+                       
                        
     type Clustering =
         
@@ -90,6 +153,24 @@ module Evaluation =
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.Clustering.Evaluate(prediction, label, score, features)
 
+        static member InitCrossValidation
+            (
+                ?NumFolds : int,
+                ?Label : string,
+                ?Features:string,
+                ?Stratification : string,
+                ?Seed : uint32 
+            ) =
+                let numFolds       = defaultArg NumFolds 5
+                let label          = defaultArg Label DefaultColumnNames.Label
+                let features       = defaultArg Label DefaultColumnNames.Features
+                let stratification = defaultArg Stratification null
+                let seed           = Option.toNullable Seed                                
+                fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+                    let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
+                    estimatorModel.Context.Clustering.CrossValidate(data,estimator,numFolds,features,label,stratification,seed)
+
+                       
     type Ranking =
         
         static member InitEvaluate
@@ -105,12 +186,21 @@ module Evaluation =
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.Ranking.Evaluate(prediction,label,groupID,score)
-// module TransformerModel =
-//     open Microsoft.Data.DataView
-//     open Microsoft.ML.Data
-
-//     ///
-//     let trainFrom (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) = 
-//         let transformer = estimatorModel.EstimatorChain.Fit data
-//         {TransformerModel.TransformerChain=transformer;TransformerModel.Context=estimatorModel.Context}    
-
+        
+        //Not implemented in ML.net
+        //static member InitCrossValidation
+        //    (
+        //        ?NumFolds : int,
+        //        ?Label : string,
+        //        ?Features:string,
+        //        ?Stratification : string,
+        //        ?Seed : uint32 
+        //    ) =
+        //        let numFolds       = defaultArg NumFolds 5
+        //        let label          = defaultArg Label DefaultColumnNames.Label
+        //        let features       = defaultArg Label DefaultColumnNames.Features
+        //        let stratification = defaultArg Stratification null
+        //        let seed           = Option.toNullable Seed                                
+        //        fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+        //            let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
+        //            estimatorModel.Context.Ranking.CrossValidate(data,estimator,numFolds,features,label,stratification,seed)
