@@ -11,16 +11,16 @@ Environment.SetEnvironmentVariable("Path",
   
 let dependencies = 
     [
-    "../../../packages/System.Memory/lib/netstandard2.0/"
-    "../../../packages/System.Collections.Immutable/lib/netstandard2.0"
-    "../../../packages/System.Numerics.Vectors/lib/netstandard2.0/"
-    "../../../packages/Microsoft.Data.DataView/lib/netstandard2.0/"
-    "../../../packages/Microsoft.ML/lib/netstandard2.0/"
-    "../../../packages/Microsoft.ML.CpuMath/lib/netstandard2.0/"
-    "../../../packages/system.runtime.compilerservices.unsafe/lib/netstandard2.0/"
-    "../../../packages/Microsoft.ML.CpuMath/runtimes/win-x64/native"
-    "../../../packages/Microsoft.ML/runtimes/win-x64/native"
-    "../../../packages/System.Runtime.CompilerServices.Unsafe/lib/netstandard2.0/"
+    "./packages/System.Memory/lib/netstandard2.0/"
+    "./packages/System.Collections.Immutable/lib/netstandard2.0"
+    "./packages/System.Numerics.Vectors/lib/netstandard2.0/"
+    "./packages/Microsoft.Data.DataView/lib/netstandard2.0/"
+    "./packages/Microsoft.ML/lib/netstandard2.0/"
+    "./packages/Microsoft.ML.CpuMath/lib/netstandard2.0/"
+    "./packages/system.runtime.compilerservices.unsafe/lib/netstandard2.0/"
+    "./packages/Microsoft.ML.CpuMath/runtimes/win-x64/native"
+    "./packages/Microsoft.ML/runtimes/win-x64/native"
+    "./packages/System.Runtime.CompilerServices.Unsafe/lib/netstandard2.0/"
     ]
 
 dependencies 

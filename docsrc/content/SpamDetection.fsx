@@ -1,9 +1,9 @@
 (*** hide ***)
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
-#r "../../packages/formatting/FSharp.Plotly/lib/netstandard2.0/Fsharp.Plotly.dll"
-#r "netstandard"
-open FSharp.Plotly
+//#r "../../packages/formatting/FSharp.Plotly/lib/netstandard2.0/Fsharp.Plotly.dll"
+//#r "netstandard"
+//open FSharp.Plotly
 (**
 Sample Spam detection
 =========================
@@ -11,6 +11,7 @@ Sample Spam detection
 **)
 
 #load "../../bin/FSharpML/netstandard2.0/FSharpML.fsx"
+//#load "../../FSharpML.fsx"
 
 open System;
 open Microsoft.ML
@@ -44,7 +45,7 @@ let classify (p : PredictionEngine<_,_>) x =
 let conversionValueMap  k v c  = 
     fun (mlContext:MLContext) -> mlContext.Transforms.Conversion.ValueMap(k,v,c) 
 
-let trainDataPath  = "./data/SMSSpamCollection.txt"
+let trainDataPath  = (__SOURCE_DIRECTORY__  + "./data/SMSSpamCollection.txt")
 
 let mlContext = MLContext(seed = Nullable 1)
 
@@ -73,11 +74,13 @@ let estimatorModel =
     |> EstimatorModel.map (fun mlc -> mlc.BinaryClassification.Trainers.LogisticRegression("Label", "Features"))
 
 
+
+
 // Evaluate the model using cross-validation.
 // Cross-validation splits our dataset into 'folds', trains a model on some folds and 
 // evaluates it on the remaining fold. We are using 5 folds so we get back 5 sets of scores.
 // Let's compute the average AUC, which should be between 0.5 and 1 (higher is better).
-let cvResults = mlContext.BinaryClassification.CrossValidate(data, estimatorModel.EstimatorChain |> downcastEstimator, numFolds = 5);
+let cvResults = mlContext.BinaryClassification.CrossValidate(data, estimatorModel.EstimatorChain |> downcastEstimator, numFolds = 5)
 let avgAuc = cvResults |> Seq.map (fun struct (metrics,_,_) -> metrics.Auc) |> Seq.average
 //printfn "The AUC is %f" avgAuc
 
@@ -85,6 +88,10 @@ let avgAuc = cvResults |> Seq.map (fun struct (metrics,_,_) -> metrics.Auc) |> S
 // Now let's train a model on the full dataset to help us get better results
 let model = EstimatorModel.fit data estimatorModel
 let out = TransformerModel.transform data model
+
+
+model
+|> Evaluation.BinaryClassificationEvalute() data
 
 /// run till here, then continue, breaks 
 let x = out.Preview().ColumnView

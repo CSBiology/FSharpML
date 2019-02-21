@@ -30,6 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "content", "content", "{8E6D
 	ProjectSection(SolutionItems) = preProject
 		docsrc\content\index.fsx = docsrc\content\index.fsx
 		docsrc\content\IrisClassification.fsx = docsrc\content\IrisClassification.fsx
+		docsrc\content\IrisClustering.fsx = docsrc\content\IrisClustering.fsx
 		docsrc\content\Sentiment analysis.fsx = docsrc\content\Sentiment analysis.fsx
 		docsrc\content\SpamDetection.fsx = docsrc\content\SpamDetection.fsx
 		docsrc\content\tutorial.fsx = docsrc\content\tutorial.fsx
