@@ -29,8 +29,8 @@ open Microsoft.ML
 open Microsoft.ML.Data;
 open FSharpML
 open Microsoft.ML.Core.Data
-
-
+open TransformerModel
+open System.Data
 (**
 To get a feel how this library handles ML.Net operations we rebuild the Spam Detection tutorial (https://github.com/dotnet/machinelearning-samples/tree/master/samples/fsharp/getting-started/BinaryClassification_SpamDetection)
 given by ML.Net. 
@@ -63,10 +63,10 @@ We will now create an EstimatorChain which converts the text label to a bool the
 
 let estimatorChain = 
     EstimatorChain()
-    |> Estimator.append (mlContext.Transforms.Conversion.ValueMap(["ham"; "spam"],[false; true],[| struct ("Label", "LabelText") |]))
-    |> Estimator.append (mlContext.Transforms.Text.FeaturizeText("Features", "Message"))
+    |> Estimator.append (mlContext.Transforms.Conversion.ValueMap(["ham"; "spam"],[false; true],[| struct (DefaultColumnNames.Label, "LabelText") |]))
+    |> Estimator.append (mlContext.Transforms.Text.FeaturizeText(DefaultColumnNames.Features, "Message"))
     |> (Estimator.appendCacheCheckpoint mlContext)
-    |> Estimator.append (mlContext.BinaryClassification.Trainers.StochasticDualCoordinateAscent("Label", "Features"))
+    |> Estimator.append (mlContext.BinaryClassification.Trainers.StochasticDualCoordinateAscent(DefaultColumnNames.Label, DefaultColumnNames.Features))
 
 (**
 This is already pretty fsharp-friendly but we thought we could even closer by releaving us from carring around our instance of the MLContext
@@ -76,10 +76,10 @@ lambda expression were we can define which method we want of our context.
 
 let estimatorModel = 
     EstimatorModel.create mlContext
-    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Conversion.ValueMap(["ham"; "spam"],[false; true],[| struct ("Label", "LabelText") |]))
-    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Text.FeaturizeText("Features", "Message"))
+    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Conversion.ValueMap(["ham"; "spam"],[false; true],[| struct (DefaultColumnNames.Label, "LabelText") |]))
+    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Text.FeaturizeText(DefaultColumnNames.Features, "Message"))
     |> EstimatorModel.appendCacheCheckpoint
-    |> EstimatorModel.appendBy (fun mlc -> mlc.BinaryClassification.Trainers.StochasticDualCoordinateAscent("Label", "Features"))
+    |> EstimatorModel.appendBy (fun mlc -> mlc.BinaryClassification.Trainers.StochasticDualCoordinateAscent(DefaultColumnNames.Label, DefaultColumnNames.Features))
 
 (**
 Way better. Now we can concentrate on machine learning. So lets start by fitting our EstimatorModel to the complete data set.
@@ -100,84 +100,121 @@ let evaluationMetrics =
     trainedModel
     |> Evaluation.BinaryClassification.InitEvaluate() trainTestSplit.TestData
 
+let scoredData = 
+    trainedModel
+    |> TransformerModel.transform data 
+
 evaluationMetrics.Accuracy
 
 (**
 Now that we can examine the metrics of our model evaluation, see that we have a accuracy of 0.99 
 and be tempted to use it in production so lets test it first with some examples.
 *)
-[<CLIMutable>]
+
 type SpamInput = 
     {
         LabelText : string
         Message : string
     }
 
-let results = 
+let exampleData = 
     [
         "That's a great idea. It should work."
         "free medicine winner! congratulations"
         "Yes we should meet over the weekend!"
         "you win pills and free entry vouchers"
     ] 
-    |> List.map (fun message ->{LabelText = "unknown"; Message = message})
-    |> (Prediction.BinaryClassification.predict trainedModel)
-    |> Array.ofSeq
+    |> List.map (fun message ->{LabelText = ""; Message = message})
+
+exampleData 
+|> (Prediction.BinaryClassification.predictDefaultCols trainedModel)
+|> Array.ofSeq
 
 (**
 As we see, even so our accuracy when evaluating the model on the test data set was very high, it does not set the correct lable true, to the
 second and the fourth message which look a lot like spam. Lets examine our training data set:
 *)
+
 let labels,counts =
-    mlContext.CreateEnumerable<SpamInput>(data,false)
-    |> Seq.countBy (fun (message) -> 
-                    message.LabelText
-                  )
+    scoredData.GetColumn<bool>(mlContext,DefaultColumnNames.Label)
+    |> Seq.countBy id
     |> Seq.unzip
+    
+let LabelDist = 
+    Chart.Doughnut(counts,labels)
+    |> Chart.Show
+    
+let probabilityHist =
+    scoredData.GetColumn<bool>(mlContext,DefaultColumnNames.Label) 
+    |> Seq.zip (scoredData.GetColumn<float32>(mlContext,DefaultColumnNames.Probability))
+    |> Seq.groupBy snd 
+    |> Seq.map (fun (label,x) ->
+                    x
+                    |> Seq.map fst
+                    |> Chart.Histogram
+                )
+    |> Chart.Combine
 
-Chart.Doughnut(counts,labels)
-|> Chart.Show
 
+let ScoreHist =
+    scoredData.GetColumn<bool>(mlContext,DefaultColumnNames.Label) 
+    |> Seq.zip (scoredData.GetColumn<float32>(mlContext,DefaultColumnNames.Score))
+    |> Seq.groupBy snd 
+    |> Seq.map (fun (label,x) ->
+                    x
+                    |> Seq.map fst
+                    |> Chart.Histogram
+                )
+    |> Chart.Combine
+
+
+let stackedChart = 
+    [probabilityHist;ScoreHist]
+    |> Chart.Stack(2)
+    |> Chart.withSize(900.,600.)
+    |> Chart.Show
+    
 (**
 The chart clearly shows that the data we learned uppon is highly inhomogenous. We have a lot more ham than spam, which is generally preferable but 
-but our models labeling threshold is clearly to high. Lets have a look at the precision recall curves of our model.
+but our models labeling threshold is clearly to high. Lets have a look at the precision recall curves of our model. For this we will evaluate the model
+with different thresholds and plot both
 *)
+let idea = 
+    trainedModel
+    |> TransformerModel.transform data
 
-//(trainedModel.TransformerChain.LastTransformer |> Transformer.downcastTransformer).CreatePredictionEngine<SpamInput,SpamPrediction>(mlContext)
-let newModel = 
-    let lastTransformer = 
-        BinaryPredictionTransformer<IPredictorProducing<float32>>(
-            mlContext, 
-            trainedModel.TransformerChain.LastTransformer.Model, 
-            trainedModel.TransformerChain.GetOutputSchema(data.Schema), 
-            trainedModel.TransformerChain.LastTransformer.FeatureColumn, 
-            threshold = 0.15f, 
-            thresholdColumn = DefaultColumnNames.Probability);
-    let parts = trainedModel.TransformerChain |> Seq.toArray
-    parts.[parts.Length - 1] <- lastTransformer :> _
-    TransformerChain<ITransformer>(parts)
+let thresholdVSPrecicionAndRecall = 
+    [-0.05 .. 0.05 .. 0.95]
+    |> List.map (fun threshold ->
+                    let newModel = 
+                        let lastTransformer = 
+                            BinaryPredictionTransformer<IPredictorProducing<float32>>(
+                                trainedModel.Context, 
+                                trainedModel.TransformerChain.LastTransformer.Model, 
+                                trainedModel.TransformerChain.GetOutputSchema(idea.Schema), 
+                                trainedModel.TransformerChain.LastTransformer.FeatureColumn, 
+                                threshold = float32 threshold, 
+                                thresholdColumn = DefaultColumnNames.Probability)
+                        let parts = 
+                            trainedModel.TransformerChain 
+                            |> Seq.toArray
+                            |> fun x ->x.[..x.Length-2] 
+                        
+                        printfn "%A, %A" lastTransformer.Threshold lastTransformer.ThresholdColumn
+                        TransformerChain<ITransformer>(parts).Append(lastTransformer)
+                    let newModel' = 
+                        {TransformerModel.TransformerChain = newModel;Context=trainedModel.Context}
+                        |> Evaluation.BinaryClassification.InitEvaluate() trainTestSplit.TestData
+                    
+                    threshold,newModel'.Accuracy
+                    //threshold,
+                    //exampleData 
+                    //|> (Prediction.BinaryClassification.predictDefaultCols newModel')
+                    //|> Array.ofSeq
+                )
 
 
-// Create a PredictionFunction from our model 
-let predictor = newModel.CreatePredictionEngine<SpamInput, SpamPrediction>(mlContext);
 
-
-
-(**
-TrainTestSplit, to get a more meaningful evaluation
-*)
-
-(**
-CrossValidation, look at variance of the performance
-*)
-
-(**
-back to train test split, look at precision recall curves, determine probability threshold
-*)
-
-(**
-classify examples
-*)
 
 ///
 // Evaluate the model using cross-validation.
@@ -223,53 +260,4 @@ classify examples
 //    let parts = model |> Seq.toArray
 //    parts.[parts.Length - 1] <- lastTransformer :> _
 //    TransformerChain<ITransformer>(parts)
-
-[<CLIMutable>]
-type SpamInput = 
-    {
-        LabelText : string
-        Message : string
-    }
-
-[<CLIMutable>]
-type SpamPrediction = 
-    {
-        PredictedLabel : bool
-        Score : float32
-        Probability : float32
-    }
-
-// Create a PredictionFunction from our model 
-let predictor = trainedModel.TransformerChain.CreatePredictionEngine<SpamInput, SpamPrediction>(estimatorModel.Context);
-
-
-//let classify (p : PredictionEngine<_,_>) x = 
-//    let prediction = p.Predict({LabelText = ""; Message = x})
-//    printfn "The message '%s' is %b" x prediction.PredictedLabel
-
-//// Test a few examples
-//[
-//    "That's a great idea. It should work."
-//    "free medicine winner! congratulations"
-//    "Yes we should meet over the weekend!"
-//    "you win pills and free entry vouchers"
-//] 
-//|> List.iter (classify predictor)
-
-
-
-//[<CLIMutable>]
-//type SpamInput = 
-//    {
-//        LabelText : string
-//        Message : string
-//    }
-
-//[<CLIMutable>]
-//type SpamPrediction = 
-//    {
-//        PredictedLabel : bool
-//        Score : float32
-//        Probability : float32
-//    }
 

@@ -3,7 +3,7 @@
 open System
 open System.IO
 
-// Path is relative to bin\FSharpML\netstandard2.0 (main bin folder)
+// Path is relative to bin/FSharpML/netstandard2.0 (main bin folder)
 let rootDir =  __SOURCE_DIRECTORY__ |> Directory.GetParent |> string |> Directory.GetParent |> string |> Directory.GetParent |> string 
 
 Environment.SetEnvironmentVariable("Path",
@@ -43,6 +43,7 @@ dependencies
 
 // Reference .dlls
 // Note: referencing by path is needed also when referencing the directory.
+#r "../../../packages/System.Threading.Tasks.Dataflow/lib/netstandard2.0/System.Threading.Tasks.Dataflow.dll"
 #r "../../../packages/Microsoft.Data.DataView/lib/netstandard2.0/Microsoft.Data.DataView.dll"
 #r "../../../packages/System.Collections.Immutable/lib/netstandard2.0/System.Collections.Immutable.dll"
 #r "../../../packages/System.Numerics.Vectors/lib/netstandard2.0/System.Numerics.Vectors.dll"
