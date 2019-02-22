@@ -15,10 +15,10 @@ module Estimator =
  
     /// 
     let append (source1 : IEstimator<'a>) (source2 : IEstimator<'b>)  = 
-        (source2 |> downcastEstimator).Append(source1) 
+        (source2|> downcastEstimator).Append(source1) 
      
     ///
-    let createEstimatorModelOf (estimators : IEstimator<'a> seq) =
+    let createEstimatorChainOf (estimators : IEstimator<'a> seq) =
         estimators
         |> Seq.fold (fun acc e -> append e acc) (EstimatorChain())
 

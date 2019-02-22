@@ -1,5 +1,6 @@
 namespace FSharpML
 
+open System
 open Microsoft.ML
 open Microsoft.ML.Core.Data
 open Microsoft.Data.DataView
@@ -73,18 +74,19 @@ module Evaluation =
                     let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
                     estimatorModel.Context.BinaryClassification.CrossValidateNonCalibrated(data,estimator,numFolds,label,stratification,seed)
         
-        static member initTrainTestSplit
-            (
-                ?Testfraction:float,
-                ?Stratification : string,
-                ?Seed : uint32 
-            ) =
-                let testFraction    = defaultArg Testfraction 0.
-                let stratification  = defaultArg Stratification null
-                let seed            = Option.toNullable Seed
+        //TODO: add direct training on test and evaluation on train
+        //static member initTrainTestSplit
+        //    (
+        //        ?Testfraction:float,
+        //        ?Stratification : string,
+        //        ?Seed : uint32 
+        //    ) =
+        //        let testFraction    = defaultArg Testfraction 0.
+        //        let stratification  = defaultArg Stratification null
+        //        let seed            = Option.toNullable Seed
                 
-                fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
-                    estimatorModel.Context.BinaryClassification.TrainTestSplit(data,testFraction,stratification,seed),estimatorModel
+        //        fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+        //            (estimatorModel.Context.BinaryClassification.TrainTestSplit(data,testFraction,stratification,seed)) 
                     
     type MulticlassClassification =
         
@@ -120,18 +122,18 @@ module Evaluation =
                     let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
                     estimatorModel.Context.MulticlassClassification.CrossValidate(data,estimator,numFolds,label,stratification,seed)
 
-        static member initTrainTestSplit
-            (
-                ?Testfraction:float,
-                ?Stratification : string,
-                ?Seed : uint32 
-            ) =
-                let testFraction    = defaultArg Testfraction 0.
-                let stratification  = defaultArg Stratification null
-                let seed            = Option.toNullable Seed
+        //static member initTrainTestSplit
+        //    (
+        //        ?Testfraction:float,
+        //        ?Stratification : string,
+        //        ?Seed : uint32 
+        //    ) =
+        //        let testFraction    = defaultArg Testfraction 0.
+        //        let stratification  = defaultArg Stratification null
+        //        let seed            = Option.toNullable Seed
                 
-                fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
-                    estimatorModel.Context.MulticlassClassification.TrainTestSplit(data,testFraction,stratification,seed),estimatorModel
+        //        fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+        //            estimatorModel.Context.MulticlassClassification.TrainTestSplit(data,testFraction,stratification,seed).ToTuple(),1
           
     type Regression =
         
@@ -162,18 +164,18 @@ module Evaluation =
                     let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
                     estimatorModel.Context.Regression.CrossValidate(data,estimator,numFolds,label,stratification,seed)
 
-        static member initTrainTestSplit
-            (
-                ?Testfraction:float,
-                ?Stratification : string,
-                ?Seed : uint32 
-            ) =
-                let testFraction    = defaultArg Testfraction 0.
-                let stratification  = defaultArg Stratification null
-                let seed            = Option.toNullable Seed
+        //static member initTrainTestSplit
+        //    (
+        //        ?Testfraction:float,
+        //        ?Stratification : string,
+        //        ?Seed : uint32 
+        //    ) =
+        //        let testFraction    = defaultArg Testfraction 0.
+        //        let stratification  = defaultArg Stratification null
+        //        let seed            = Option.toNullable Seed
                 
-                fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
-                    estimatorModel.Context.Regression.TrainTestSplit(data,testFraction,stratification,seed),estimatorModel
+        //        fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+        //            estimatorModel.Context.Regression.TrainTestSplit(data,testFraction,stratification,seed),estimatorModel
                            
     type Clustering =
         
@@ -208,18 +210,19 @@ module Evaluation =
                     let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
                     estimatorModel.Context.Clustering.CrossValidate(data,estimator,numFolds,features,label,stratification,seed)
 
-        static member initTrainTestSplit
-            (
-                ?Testfraction:float,
-                ?Stratification : string,
-                ?Seed : uint32 
-            ) =
-                let testFraction    = defaultArg Testfraction 0.
-                let stratification  = defaultArg Stratification null
-                let seed            = Option.toNullable Seed
+        //TODO: add direct training on test and evaluation on train
+        //static member initTrainTestSplit
+        //    (
+        //        ?Testfraction:float,
+        //        ?Stratification : string,
+        //        ?Seed : uint32 
+        //    ) =
+        //        let testFraction    = defaultArg Testfraction 0.
+        //        let stratification  = defaultArg Stratification null
+        //        let seed            = Option.toNullable Seed
                 
-                fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
-                    estimatorModel.Context.Clustering.TrainTestSplit(data,testFraction,stratification,seed),estimatorModel
+        //        fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+        //            estimatorModel.Context.Clustering.TrainTestSplit(data,testFraction,stratification,seed),estimatorModel
                     
                        
     type Ranking =
@@ -238,18 +241,19 @@ module Evaluation =
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.Ranking.Evaluate(prediction,label,groupID,score)
 
-        static member initTrainTestSplit
-            (
-                ?Testfraction:float,
-                ?Stratification : string,
-                ?Seed : uint32 
-            ) =
-                let testFraction    = defaultArg Testfraction 0.
-                let stratification  = defaultArg Stratification null
-                let seed            = Option.toNullable Seed
+        //TODO: add direct training on test and evaluation on train
+        //static member initTrainTestSplit
+        //    (
+        //        ?Testfraction:float,
+        //        ?Stratification : string,
+        //        ?Seed : uint32 
+        //    ) =
+        //        let testFraction    = defaultArg Testfraction 0.
+        //        let stratification  = defaultArg Stratification null
+        //        let seed            = Option.toNullable Seed
                 
-                fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
-                    estimatorModel.Context.Ranking.TrainTestSplit(data,testFraction,stratification,seed),estimatorModel
+        //        fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
+        //            estimatorModel.Context.Ranking.TrainTestSplit(data,testFraction,stratification,seed),estimatorModel
           
         //Not implemented in ML.net
         //static member InitCrossValidation
