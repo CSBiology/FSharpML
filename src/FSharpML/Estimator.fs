@@ -22,6 +22,9 @@ module Estimator =
         estimators
         |> Seq.fold (fun acc e -> append e acc) (EstimatorChain())
 
-
+    ///
+    let appendCacheCheckpoint (mlContext : MLContext) (pipeline: IEstimator<'a>) =
+        pipeline.AppendCacheCheckpoint mlContext
+        |> downcastEstimator
 
         

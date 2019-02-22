@@ -1,10 +1,8 @@
 namespace FSharpML
 
 open Microsoft.ML
-open Microsoft.ML.Core.Data
 open Microsoft.Data.DataView
 open Microsoft.ML.Data
-open System.Runtime.InteropServices
 
 module FeatureImportance =
 

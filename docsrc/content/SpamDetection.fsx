@@ -22,36 +22,9 @@ open FSharpML.EstimatorModel
 
 
 
-[<CLIMutable>]
-type SpamInput = 
-    {
-        LabelText : string
-        Message : string
-    }
-
-[<CLIMutable>]
-type SpamPrediction = 
-    {
-        PredictedLabel : bool
-        Score : float32
-        Probability : float32
-    }
-
-let classify (p : PredictionEngine<_,_>) x = 
-    let prediction = p.Predict({LabelText = ""; Message = x})
-    printfn "The message '%s' is %b" x prediction.PredictedLabel
-
-
-let conversionValueMap  k v c  = 
-    fun (mlContext:MLContext) -> mlContext.Transforms.Conversion.ValueMap(k,v,c) 
-
 let trainDataPath  = (__SOURCE_DIRECTORY__  + "./data/SMSSpamCollection.txt")
 
 let mlContext = MLContext(seed = Nullable 1)
-
-let read  path  = 
-    fun (mlContext:MLContext) -> mlContext.Data.ReadFromTextFile(path)
-
 
 let reader = 
     mlContext.Data.CreateTextLoader(

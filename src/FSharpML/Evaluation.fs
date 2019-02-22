@@ -270,4 +270,4 @@ module Evaluation =
         //            estimatorModel.Context.Ranking.CrossValidate(data,estimator,numFolds,features,label,stratification,seed)
     
         
-        /// not implemented: AnomalyDetection
+        //Not implemented in ML.net: AnomalyDetection
