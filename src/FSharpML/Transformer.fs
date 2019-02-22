@@ -20,7 +20,7 @@ module Transformer =
         (source2 |> downcastTransformer).Append(source1) 
      
     ///
-    let createEstimatorModelOf (estimators : ITransformer seq) =
+    let createTransformerChainOf (estimators : ITransformer seq) =
         estimators
         |> Seq.fold (fun acc e -> append e acc) (TransformerChain())
 
