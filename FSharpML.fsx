@@ -42,6 +42,7 @@ dependencies
 
 // Reference .dlls
 // Note: referencing by path is needed also when referencing the directory.
+#r "./packages/System.Threading.Tasks.Dataflow/lib/netstandard2.0/System.Threading.Tasks.Dataflow.dll"
 #r "./packages/Microsoft.Data.DataView/lib/netstandard2.0/Microsoft.Data.DataView.dll"
 #r "./packages/System.Collections.Immutable/lib/netstandard2.0/System.Collections.Immutable.dll"
 #r "./packages/System.Numerics.Vectors/lib/netstandard2.0/System.Numerics.Vectors.dll"

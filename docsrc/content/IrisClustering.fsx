@@ -1,8 +1,9 @@
 (*** hide ***)
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
-#r "../../packages/formatting/FSharp.Plotly/lib/netstandard2.0/Fsharp.Plotly.dll"
+//#r "../../packages/formatting/FSharp.Plotly/lib/netstandard2.0/Fsharp.Plotly.dll"
 #r "netstandard"
+#r @"../../lib/Formatting/FSharp.Plotly.dll"
 open FSharp.Plotly
 (**
 Sample: Clustering iris data set
@@ -52,8 +53,8 @@ let fullData =
     )
 
 
-
 // (Optional) Peek data 
+(*** define-output:plot1 ***)
 mlContext.CreateEnumerable<IrisData>(fullData,false)
 |> Seq.groupBy (fun items -> items.Label)
 |> Seq.map (fun (k,values) -> 
@@ -62,7 +63,8 @@ mlContext.CreateEnumerable<IrisData>(fullData,false)
     Chart.Point(x,y,Name=sprintf "Label: %.0f" k)
     )
 |> Chart.Combine
-|> Chart.Show
+(*** include-value:plot1 ***)
+
 
 
 //Split dataset in two parts: TrainingDataset (80%) and TestDataset (20%)
