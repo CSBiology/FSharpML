@@ -16,8 +16,7 @@ Sample Spam detection
 Introduction
 ============
 
-FSharpML is a functional-friendly lightweight wrapper of the powerful ML.Net library. It is designed to enable users to explore ML.Net in a scriptable
-manner, while maintaining the functional style of F#.
+FSharpML is a functional-friendly lightweight wrapper of the powerful [ML.Net](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet) library. It is designed to enable users to explore ML.Net in a scriptable manner, while maintaining the functional style of F#.
 
 After installing the package via Nuget we can load the delivered reference script and start using ML.Net in conjunction with FSharpML.
 *)
@@ -35,11 +34,9 @@ open Microsoft.ML.Core.Data
 open TransformerModel
 open System.Data
 (**
-To get a feel how this library handles ML.Net operations we rebuild the Spam Detection tutorial (https://github.com/dotnet/machinelearning-samples/tree/master/samples/fsharp/getting-started/BinaryClassification_SpamDetection)
-given by ML.Net. 
-We will start by instantiating a MLContext, the heart of the ML.Net API and intended to serve as a method catalog. We will 
-now use it to set a scope on data stored in a text file. The method name might be misleading, but ML.Net readers are lazy and
-the reading process will start when the data is processed. (https://github.com/dotnet/machinelearning/blob/master/docs/code/IDataViewTypeSystem.md#standard-column-types)
+To get a feel how this library handles ML.Net operations we rebuild the [Spam Detection tutorial](https://github.com/dotnet/machinelearning-samples/tree/master/samples/fsharp/getting-started/BinaryClassification_SpamDetection) given by ML.Net. 
+We will start by instantiating a MLContext, the heart of the ML.Net API and intended to serve as a method catalog. We will now use it to set a scope on data stored in a text file. The method name might be misleading, but ML.Net readers are lazy and
+the reading process will start when the data is processed [(see).](https://github.com/dotnet/machinelearning/blob/master/docs/code/IDataViewTypeSystem.md#standard-column-types)
 *)
 
 let mlContext = MLContext(seed = Nullable 1)
@@ -145,7 +142,6 @@ let labels,counts =
     
 let LabelDist = 
     Chart.Doughnut(counts,labels)
-    |> Chart.Show
     
 let probabilityHist =
     scoredData.GetColumn<bool>(mlContext,DefaultColumnNames.Label) 
@@ -175,7 +171,6 @@ let stackedChart =
     [probabilityHist;ScoreHist]
     |> Chart.Stack(2)
     |> Chart.withSize(900.,600.)
-    |> Chart.Show
     
 (**
 The chart clearly shows that the data we learned uppon is highly inhomogenous. We have a lot more ham than spam, which is generally preferable but 

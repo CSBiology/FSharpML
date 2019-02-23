@@ -35,7 +35,8 @@ type IrisData = {
 
 
 //Create the MLContext to share across components for deterministic results
-let mlContext = MLContext(seed = Nullable 1)    //Seed set to any number so you have a deterministic environment
+let mlContext = MLContext(seed = Nullable 1) // Seed set to any number so you
+                                             // have a deterministic environment
 
 // STEP 1: Common data loading configuration
 let fullData = 
@@ -54,7 +55,7 @@ let fullData =
 
 
 // (Optional) Peek data 
-(*** define-output:plot1 ***)
+(*** define-output: plot1 ***)
 mlContext.CreateEnumerable<IrisData>(fullData,false)
 |> Seq.groupBy (fun items -> items.Label)
 |> Seq.map (fun (k,values) -> 
@@ -63,7 +64,7 @@ mlContext.CreateEnumerable<IrisData>(fullData,false)
     Chart.Point(x,y,Name=sprintf "Label: %.0f" k)
     )
 |> Chart.Combine
-(*** include-value:plot1 ***)
+(*** include-it: plot1 ***)
 
 
 
@@ -91,5 +92,4 @@ let predictions =
 let metrics = 
     model
     |> Evaluation.Clustering.InitEvaluate(Score=DefaultColumnNames.Score, Features=DefaultColumnNames.Features) testingDataView
-    
 
