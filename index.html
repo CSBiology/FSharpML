@@ -36,8 +36,8 @@
         <div class="span9" id="main">
           
 <h1><a name="FSharpML-Explore-ML-Net-in-F" class="anchor" href="#FSharpML-Explore-ML-Net-in-F">FSharpML: Explore ML.Net in F#</a></h1>
-<p>FSharpML is a lightweight API on top of the powerful ML.Net library written in F#. It is designed to enable users to explore ML.Net in a scriptable
-manner and maintaining the functional style of F#.</p>
+<p>FSharpML is a lightweight API writen in F# on top of the powerful machine learning framework <a href="http://dot.net/ml">ML.Net</a> library. It is designed to enable users to explore ML.Net in a scriptable manner and maintaining the functional style of F#.
+The samples are ported from the official site <a href="https://github.com/dotnet/machinelearning-samples">Samples for ML.NET</a>.</p>
 <p>After installing the package via Nuget we can load the delivered reference script and start using ML.Net in conjunction with FSharpML.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
@@ -106,9 +106,7 @@ manner and maintaining the functional style of F#.</p>
 </code></pre></td>
 </tr>
 </table>
-<p>After initializing an model context (MLContext) we can start to build our model by appending transformer functions.
-The EstimatorModel (Model) holds the context and the chain of estimators (EstimatorChain) and is than fitted to the training data
-in a training step. The resulting TransformerModel serves as a predictor.</p>
+<p>After initializing an model context (MLContext) we can start to build our model by appending transformer functions. The EstimatorModel (Model) holds the context and the chain of estimators (EstimatorChain) and is than fitted to the training data in a training step. The resulting TransformerModel serves as a predictor.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -232,6 +230,7 @@ redistribution for both commercial and non-commercial purposes. For more informa
           <ul class="nav nav-list" id="menu" style="margin-top: 20px;">
             <li class="nav-header">FSharpML</li>
             <li><a href="/FSharpML/index.html">Home page</a></li>
+			<li><a href="/FSharpML/tutorial.html">Tuturial</a></li>
             <li class="divider"></li>
             <li><a href="http://nuget.org/packages/FSharpML">Get Library via NuGet</a></li>
             <li><a href="https://github.com/CSBiology/FSharpML">Source Code on GitHub</a></li>
