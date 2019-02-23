@@ -36,10 +36,9 @@
         <div class="span9" id="main">
           
 <h1><a name="Sample-Spam-detection" class="anchor" href="#Sample-Spam-detection">Sample Spam detection</a></h1>
-<p>*</p>
-<h1><a name="Introduction" class="anchor" href="#Introduction">Introduction</a></h1>
-<p>FSharpML is a functional-friendly lightweight wrapper of the powerful ML.Net library. It is designed to enable users to explore ML.Net in a scriptable
-manner, while maintaining the functional style of F#.</p>
+<h1><a name="FSharpML-Explore-ML-Net-in-F" class="anchor" href="#FSharpML-Explore-ML-Net-in-F">FSharpML: Explore ML.Net in F#</a></h1>
+<p>FSharpML is a lightweight API on top of the powerful ML.Net library written in F#. It is designed to enable users to explore ML.Net in a scriptable
+manner and maintaining the functional style of F#.</p>
 <p>After installing the package via Nuget we can load the delivered reference script and start using ML.Net in conjunction with FSharpML.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
@@ -52,102 +51,85 @@ manner, while maintaining the functional style of F#.</p>
 <span class="l"> 9: </span>
 <span class="l">10: </span>
 <span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+<span class="l">20: </span>
+<span class="l">21: </span>
+<span class="l">22: </span>
+<span class="l">23: </span>
+<span class="l">24: </span>
+<span class="l">25: </span>
+<span class="l">26: </span>
+<span class="l">27: </span>
+<span class="l">28: </span>
+<span class="l">29: </span>
+<span class="l">30: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="pp">#load</span> <span class="s">&quot;../../bin/FSharpML/netstandard2.0/FSharpML.fsx&quot;</span>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="pp">#I</span> <span class="s">&quot;./packages/FSharpML/lib/netstandard2.0/&quot;</span>
+<span class="pp">#load</span> <span class="s">&quot;FSharpML.fsx&quot;</span>
 
-
-
-<span class="k">open</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="id">System</span><span class="pn">;</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="id">System</span>
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="id">Microsoft</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="id">ML</span>
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs4', 6)" onmouseover="showTip(event, 'fs4', 6)" class="id">Microsoft</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 7)" onmouseover="showTip(event, 'fs5', 7)" class="id">ML</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs6', 8)" onmouseover="showTip(event, 'fs6', 8)" class="id">Data</span><span class="pn">;</span>
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs7', 9)" onmouseover="showTip(event, 'fs7', 9)" class="id">FSharpML</span>
-<span class="k">open</span> <span onmouseout="hideTip(event, 'fs4', 10)" onmouseover="showTip(event, 'fs4', 10)" class="id">Microsoft</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 11)" onmouseover="showTip(event, 'fs5', 11)" class="id">ML</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs8', 12)" onmouseover="showTip(event, 'fs8', 12)" class="id">Core</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs9', 13)" onmouseover="showTip(event, 'fs9', 13)" class="id">Data</span>
-<span class="k">open</span> <span onmouseout="hideTip(event, 'fs10', 14)" onmouseover="showTip(event, 'fs10', 14)" class="id">TransformerModel</span>
-<span class="k">open</span> <span onmouseout="hideTip(event, 'fs3', 15)" onmouseover="showTip(event, 'fs3', 15)" class="id">System</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs11', 16)" onmouseover="showTip(event, 'fs11', 16)" class="id">Data</span>
-</code></pre></td>
-</tr>
-</table>
-<p>To get a feel how this library handles ML.Net operations we rebuild the Spam Detection tutorial (<a href="https://github.com/dotnet/machinelearning-samples/tree/master/samples/fsharp/getting-started/BinaryClassification_SpamDetection)
-given">https://github.com/dotnet/machinelearning-samples/tree/master/samples/fsharp/getting-started/BinaryClassification_SpamDetection)
-given</a> by ML.Net.
-We will start by instantiating a MLContext, the heart of the ML.Net API and intended to serve as a method catalog. We will
-now use it to set a scope on data stored in a text file. The method name might be misleading, but ML.Net readers are lazy and
-the reading process will start when the data is processed. (<a href="https://github.com/dotnet/machinelearning/blob/master/docs/code/IDataViewTypeSystem.md#standard-column-types)">https://github.com/dotnet/machinelearning/blob/master/docs/code/IDataViewTypeSystem.md#standard-column-types)</a></p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
-<span class="l"> 2: </span>
-<span class="l"> 3: </span>
-<span class="l"> 4: </span>
-<span class="l"> 5: </span>
-<span class="l"> 6: </span>
-<span class="l"> 7: </span>
-<span class="l"> 8: </span>
-<span class="l"> 9: </span>
-<span class="l">10: </span>
-<span class="l">11: </span>
-<span class="l">12: </span>
-<span class="l">13: </span>
-<span class="l">14: </span>
-</pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 17)" onmouseover="showTip(event, 'fs12', 17)" class="id">mlContext</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs13', 18)" onmouseover="showTip(event, 'fs13', 18)" class="rt">MLContext</span><span class="pn">(</span><span class="id">seed</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs14', 19)" onmouseover="showTip(event, 'fs14', 19)" class="vt">Nullable</span> <span class="n">1</span><span class="pn">)</span>
 
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 20)" onmouseover="showTip(event, 'fs15', 20)" class="id">trainDataPath</span>  <span class="o">=</span> <span class="pn">(</span><span class="k">__SOURCE_DIRECTORY__</span>  <span class="o">+</span> <span class="s">&quot;./data/SMSSpamCollection.txt&quot;</span><span class="pn">)</span>
+
+<span class="c">//Create the MLContext to share across components for deterministic results</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 10)" onmouseover="showTip(event, 'fs8', 10)" class="id">mlContext</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 11)" onmouseover="showTip(event, 'fs9', 11)" class="rt">MLContext</span><span class="pn">(</span><span class="id">seed</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 12)" onmouseover="showTip(event, 'fs10', 12)" class="vt">Nullable</span> <span class="n">1</span><span class="pn">)</span>    <span class="c">//Seed set to any number so you have a deterministic environment</span>
+
+<span class="c">// STEP 1: Common data loading configuration</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 13)" onmouseover="showTip(event, 'fs11', 13)" class="id">fullData</span> <span class="o">=</span> 
+    <span onmouseout="hideTip(event, 'fs8', 14)" onmouseover="showTip(event, 'fs8', 14)" class="fn">mlContext</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs12', 15)" onmouseover="showTip(event, 'fs12', 15)" class="id">Data</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs13', 16)" onmouseover="showTip(event, 'fs13', 16)" class="id">ReadFromTextFile</span><span class="pn">(</span><span class="pn">(</span><span class="k">__SOURCE_DIRECTORY__</span>  <span class="o">+</span> <span class="s">&quot;./data/iris-full.txt&quot;</span><span class="pn">)</span> <span class="pn">,</span>
+        <span class="id">hasHeader</span> <span class="o">=</span> <span class="k">true</span><span class="pn">,</span>
+        <span class="id">separatorChar</span> <span class="o">=</span> <span class="s">&#39;\t&#39;</span><span class="pn">,</span>
+        <span class="id">columns</span> <span class="o">=</span>
+            <span class="pn">[|</span>
+                <span onmouseout="hideTip(event, 'fs14', 17)" onmouseover="showTip(event, 'fs14', 17)" class="rt">TextLoader</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs15', 18)" onmouseover="showTip(event, 'fs15', 18)" class="id">Column</span><span class="pn">(</span><span class="s">&quot;Label&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs10', 19)" onmouseover="showTip(event, 'fs10', 19)" class="vt">Nullable</span> <span onmouseout="hideTip(event, 'fs16', 20)" onmouseover="showTip(event, 'fs16', 20)" class="vt">DataKind</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs17', 21)" onmouseover="showTip(event, 'fs17', 21)" class="id">R4</span><span class="pn">,</span> <span class="n">0</span><span class="pn">)</span>
+                <span onmouseout="hideTip(event, 'fs14', 22)" onmouseover="showTip(event, 'fs14', 22)" class="rt">TextLoader</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs15', 23)" onmouseover="showTip(event, 'fs15', 23)" class="id">Column</span><span class="pn">(</span><span class="s">&quot;SepalLength&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs10', 24)" onmouseover="showTip(event, 'fs10', 24)" class="vt">Nullable</span> <span onmouseout="hideTip(event, 'fs16', 25)" onmouseover="showTip(event, 'fs16', 25)" class="vt">DataKind</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs17', 26)" onmouseover="showTip(event, 'fs17', 26)" class="id">R4</span><span class="pn">,</span> <span class="n">1</span><span class="pn">)</span>
+                <span onmouseout="hideTip(event, 'fs14', 27)" onmouseover="showTip(event, 'fs14', 27)" class="rt">TextLoader</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs15', 28)" onmouseover="showTip(event, 'fs15', 28)" class="id">Column</span><span class="pn">(</span><span class="s">&quot;SepalWidth&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs10', 29)" onmouseover="showTip(event, 'fs10', 29)" class="vt">Nullable</span> <span onmouseout="hideTip(event, 'fs16', 30)" onmouseover="showTip(event, 'fs16', 30)" class="vt">DataKind</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs17', 31)" onmouseover="showTip(event, 'fs17', 31)" class="id">R4</span><span class="pn">,</span> <span class="n">2</span><span class="pn">)</span>
+                <span onmouseout="hideTip(event, 'fs14', 32)" onmouseover="showTip(event, 'fs14', 32)" class="rt">TextLoader</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs15', 33)" onmouseover="showTip(event, 'fs15', 33)" class="id">Column</span><span class="pn">(</span><span class="s">&quot;PetalLength&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs10', 34)" onmouseover="showTip(event, 'fs10', 34)" class="vt">Nullable</span> <span onmouseout="hideTip(event, 'fs16', 35)" onmouseover="showTip(event, 'fs16', 35)" class="vt">DataKind</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs17', 36)" onmouseover="showTip(event, 'fs17', 36)" class="id">R4</span><span class="pn">,</span> <span class="n">3</span><span class="pn">)</span>
+                <span onmouseout="hideTip(event, 'fs14', 37)" onmouseover="showTip(event, 'fs14', 37)" class="rt">TextLoader</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs15', 38)" onmouseover="showTip(event, 'fs15', 38)" class="id">Column</span><span class="pn">(</span><span class="s">&quot;PetalWidth&quot;</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs10', 39)" onmouseover="showTip(event, 'fs10', 39)" class="vt">Nullable</span> <span onmouseout="hideTip(event, 'fs16', 40)" onmouseover="showTip(event, 'fs16', 40)" class="vt">DataKind</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs17', 41)" onmouseover="showTip(event, 'fs17', 41)" class="id">R4</span><span class="pn">,</span> <span class="n">4</span><span class="pn">)</span>
+            <span class="pn">|]</span>
+    <span class="pn">)</span>
+
     
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 21)" onmouseover="showTip(event, 'fs16', 21)" class="id">data</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs12', 22)" onmouseover="showTip(event, 'fs12', 22)" class="fn">mlContext</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs17', 23)" onmouseover="showTip(event, 'fs17', 23)" class="id">Data</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs18', 24)" onmouseover="showTip(event, 'fs18', 24)" class="id">ReadFromTextFile</span><span class="pn">(</span> 
-            <span class="id">path</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs15', 25)" onmouseover="showTip(event, 'fs15', 25)" class="id">trainDataPath</span><span class="pn">,</span>
-            <span class="id">columns</span> <span class="o">=</span> 
-                <span class="pn">[|</span>
-                    <span onmouseout="hideTip(event, 'fs19', 26)" onmouseover="showTip(event, 'fs19', 26)" class="rt">TextLoader</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs20', 27)" onmouseover="showTip(event, 'fs20', 27)" class="id">Column</span><span class="pn">(</span><span class="s">&quot;LabelText&quot;</span> <span class="pn">,</span> <span onmouseout="hideTip(event, 'fs14', 28)" onmouseover="showTip(event, 'fs14', 28)" class="vt">Nullable</span> <span onmouseout="hideTip(event, 'fs21', 29)" onmouseover="showTip(event, 'fs21', 29)" class="vt">DataKind</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs22', 30)" onmouseover="showTip(event, 'fs22', 30)" class="id">Text</span><span class="pn">,</span> <span class="n">0</span><span class="pn">)</span>
-                    <span onmouseout="hideTip(event, 'fs19', 31)" onmouseover="showTip(event, 'fs19', 31)" class="rt">TextLoader</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs20', 32)" onmouseover="showTip(event, 'fs20', 32)" class="id">Column</span><span class="pn">(</span><span class="s">&quot;Message&quot;</span> <span class="pn">,</span> <span onmouseout="hideTip(event, 'fs14', 33)" onmouseover="showTip(event, 'fs14', 33)" class="vt">Nullable</span> <span onmouseout="hideTip(event, 'fs21', 34)" onmouseover="showTip(event, 'fs21', 34)" class="vt">DataKind</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs22', 35)" onmouseover="showTip(event, 'fs22', 35)" class="id">Text</span><span class="pn">,</span> <span class="n">1</span><span class="pn">)</span>
-                <span class="pn">|]</span><span class="pn">,</span>
-            <span class="id">hasHeader</span> <span class="o">=</span> <span class="k">false</span><span class="pn">,</span>
-            <span class="id">separatorChar</span> <span class="o">=</span> <span class="s">&#39;\t&#39;</span><span class="pn">)</span>
+<span class="c">//Split dataset in two parts: TrainingDataset (80%) and TestDataset (20%)</span>
+<span class="k">let</span> <span class="k">struct</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs18', 42)" onmouseover="showTip(event, 'fs18', 42)" class="id">trainingDataView</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs19', 43)" onmouseover="showTip(event, 'fs19', 43)" class="id">testingDataView</span><span class="pn">)</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs8', 44)" onmouseover="showTip(event, 'fs8', 44)" class="fn">mlContext</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs20', 45)" onmouseover="showTip(event, 'fs20', 45)" class="id">Clustering</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs21', 46)" onmouseover="showTip(event, 'fs21', 46)" class="id">TrainTestSplit</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs11', 47)" onmouseover="showTip(event, 'fs11', 47)" class="id">fullData</span><span class="pn">,</span> <span class="id">testFraction</span> <span class="o">=</span> <span class="n">0.2</span><span class="pn">)</span>
 </code></pre></td>
 </tr>
 </table>
-<p>Now that we told our interactive environment about the data we can start thinking about a model (EstimatorChain in the ML.Net jargon)
-we want to build. As the MLContext serves as a catalog we will use it to draw transformations that can be appended to form a estimator chain.
-At this point we will see FSharpML comming into play enabling us to use the beloved pipelining style familiar to FSharp users.
-We will now create an EstimatorChain which converts the text label to a bool then featurizes the text, and add a linear trainer.</p>
+<p>After initializing an model context (MLContext) we can start to build our model by appending transformer functions.
+The EstimatorModel (Model) holds the context and the chain of estimators (EstimatorChain) and is than fitted to the training data
+in a training step. The resulting TransformerModel serves as a predictor.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
 <span class="l">4: </span>
 <span class="l">5: </span>
 <span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+<span class="l">9: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 36)" onmouseover="showTip(event, 'fs23', 36)" class="id">estimatorChain</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs24', 37)" onmouseover="showTip(event, 'fs24', 37)" class="rt">EstimatorChain</span><span class="pn">(</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs25', 38)" onmouseover="showTip(event, 'fs25', 38)" class="m">Estimator</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs26', 39)" onmouseover="showTip(event, 'fs26', 39)" class="id">append</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs12', 40)" onmouseover="showTip(event, 'fs12', 40)" class="id">mlContext</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs27', 41)" onmouseover="showTip(event, 'fs27', 41)" class="id">Transforms</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs28', 42)" onmouseover="showTip(event, 'fs28', 42)" class="id">Conversion</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs29', 43)" onmouseover="showTip(event, 'fs29', 43)" class="id">ValueMap</span><span class="pn">(</span><span class="pn">[</span><span class="s">&quot;ham&quot;</span><span class="pn">;</span> <span class="s">&quot;spam&quot;</span><span class="pn">]</span><span class="pn">,</span><span class="pn">[</span><span class="k">false</span><span class="pn">;</span> <span class="k">true</span><span class="pn">]</span><span class="pn">,</span><span class="pn">[|</span> <span class="k">struct</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs30', 44)" onmouseover="showTip(event, 'fs30', 44)" class="id">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 45)" onmouseover="showTip(event, 'fs31', 45)" class="id">Label</span><span class="pn">,</span> <span class="s">&quot;LabelText&quot;</span><span class="pn">)</span> <span class="pn">|]</span><span class="pn">)</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs25', 46)" onmouseover="showTip(event, 'fs25', 46)" class="m">Estimator</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs26', 47)" onmouseover="showTip(event, 'fs26', 47)" class="id">append</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs12', 48)" onmouseover="showTip(event, 'fs12', 48)" class="fn">mlContext</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs27', 49)" onmouseover="showTip(event, 'fs27', 49)" class="id">Transforms</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs32', 50)" onmouseover="showTip(event, 'fs32', 50)" class="id">Text</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs33', 51)" onmouseover="showTip(event, 'fs33', 51)" class="id">FeaturizeText</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs30', 52)" onmouseover="showTip(event, 'fs30', 52)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs34', 53)" onmouseover="showTip(event, 'fs34', 53)" class="id">Features</span><span class="pn">,</span> <span class="s">&quot;Message&quot;</span><span class="pn">)</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs25', 54)" onmouseover="showTip(event, 'fs25', 54)" class="m">Estimator</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs35', 55)" onmouseover="showTip(event, 'fs35', 55)" class="id">appendCacheCheckpoint</span> <span onmouseout="hideTip(event, 'fs12', 56)" onmouseover="showTip(event, 'fs12', 56)" class="id">mlContext</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs25', 57)" onmouseover="showTip(event, 'fs25', 57)" class="m">Estimator</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs26', 58)" onmouseover="showTip(event, 'fs26', 58)" class="id">append</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs12', 59)" onmouseover="showTip(event, 'fs12', 59)" class="fn">mlContext</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs36', 60)" onmouseover="showTip(event, 'fs36', 60)" class="id">BinaryClassification</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs37', 61)" onmouseover="showTip(event, 'fs37', 61)" class="id">Trainers</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs38', 62)" onmouseover="showTip(event, 'fs38', 62)" class="id">StochasticDualCoordinateAscent</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs30', 63)" onmouseover="showTip(event, 'fs30', 63)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 64)" onmouseover="showTip(event, 'fs31', 64)" class="id">Label</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs30', 65)" onmouseover="showTip(event, 'fs30', 65)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs34', 66)" onmouseover="showTip(event, 'fs34', 66)" class="id">Features</span><span class="pn">)</span><span class="pn">)</span>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="c">//STEP 2: Process data, create and train the model </span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs22', 48)" onmouseover="showTip(event, 'fs22', 48)" class="id">model</span> <span class="o">=</span> 
+    <span onmouseout="hideTip(event, 'fs23', 49)" onmouseover="showTip(event, 'fs23', 49)" class="m">EstimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs24', 50)" onmouseover="showTip(event, 'fs24', 50)" class="id">create</span> <span onmouseout="hideTip(event, 'fs8', 51)" onmouseover="showTip(event, 'fs8', 51)" class="id">mlContext</span>
+    <span class="c">// Process data transformations in pipeline</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs23', 52)" onmouseover="showTip(event, 'fs23', 52)" class="m">EstimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs25', 53)" onmouseover="showTip(event, 'fs25', 53)" class="id">appendBy</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs26', 54)" onmouseover="showTip(event, 'fs26', 54)" class="id">mlc</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 55)" onmouseover="showTip(event, 'fs26', 55)" class="fn">mlc</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs27', 56)" onmouseover="showTip(event, 'fs27', 56)" class="id">Transforms</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs28', 57)" onmouseover="showTip(event, 'fs28', 57)" class="id">Concatenate</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs29', 58)" onmouseover="showTip(event, 'fs29', 58)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs30', 59)" onmouseover="showTip(event, 'fs30', 59)" class="id">Features</span> <span class="pn">,</span> <span class="s">&quot;SepalLength&quot;</span><span class="pn">,</span> <span class="s">&quot;SepalWidth&quot;</span><span class="pn">,</span> <span class="s">&quot;PetalLength&quot;</span><span class="pn">,</span> <span class="s">&quot;PetalWidth&quot;</span><span class="pn">)</span> <span class="pn">)</span>
+    <span class="c">// Create the model</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs23', 60)" onmouseover="showTip(event, 'fs23', 60)" class="m">EstimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs25', 61)" onmouseover="showTip(event, 'fs25', 61)" class="id">appendBy</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs26', 62)" onmouseover="showTip(event, 'fs26', 62)" class="id">mlc</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 63)" onmouseover="showTip(event, 'fs26', 63)" class="fn">mlc</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs20', 64)" onmouseover="showTip(event, 'fs20', 64)" class="id">Clustering</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 65)" onmouseover="showTip(event, 'fs31', 65)" class="id">Trainers</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs32', 66)" onmouseover="showTip(event, 'fs32', 66)" class="id">KMeans</span><span class="pn">(</span><span class="id">featureColumn</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs29', 67)" onmouseover="showTip(event, 'fs29', 67)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs30', 68)" onmouseover="showTip(event, 'fs30', 68)" class="id">Features</span><span class="pn">,</span> <span class="id">clustersCount</span> <span class="o">=</span> <span class="n">3</span><span class="pn">)</span> <span class="pn">)</span>
+    <span class="c">// Train the model</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs23', 69)" onmouseover="showTip(event, 'fs23', 69)" class="m">EstimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs33', 70)" onmouseover="showTip(event, 'fs33', 70)" class="id">fit</span> <span onmouseout="hideTip(event, 'fs18', 71)" onmouseover="showTip(event, 'fs18', 71)" class="id">trainingDataView</span>
 </code></pre></td>
 </tr>
 </table>
-<p>This is already pretty fsharp-friendly but we thought we could even closer by releaving us from carring around our instance of the MLContext
-explicitly. For this we created the type EstimatorModel which contains our EstimatorChain and the context. By Calling append by we only have to provide a
-lambda expression were we can define which method we want of our context.</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
-<span class="l">2: </span>
-<span class="l">3: </span>
-<span class="l">4: </span>
-<span class="l">5: </span>
-<span class="l">6: </span>
-</pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs39', 67)" onmouseover="showTip(event, 'fs39', 67)" class="id">estimatorModel</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs40', 68)" onmouseover="showTip(event, 'fs40', 68)" class="m">EstimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs41', 69)" onmouseover="showTip(event, 'fs41', 69)" class="id">create</span> <span onmouseout="hideTip(event, 'fs12', 70)" onmouseover="showTip(event, 'fs12', 70)" class="id">mlContext</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs40', 71)" onmouseover="showTip(event, 'fs40', 71)" class="m">EstimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs42', 72)" onmouseover="showTip(event, 'fs42', 72)" class="id">appendBy</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs43', 73)" onmouseover="showTip(event, 'fs43', 73)" class="id">mlc</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs43', 74)" onmouseover="showTip(event, 'fs43', 74)" class="id">mlc</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs27', 75)" onmouseover="showTip(event, 'fs27', 75)" class="id">Transforms</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs28', 76)" onmouseover="showTip(event, 'fs28', 76)" class="id">Conversion</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs29', 77)" onmouseover="showTip(event, 'fs29', 77)" class="id">ValueMap</span><span class="pn">(</span><span class="pn">[</span><span class="s">&quot;ham&quot;</span><span class="pn">;</span> <span class="s">&quot;spam&quot;</span><span class="pn">]</span><span class="pn">,</span><span class="pn">[</span><span class="k">false</span><span class="pn">;</span> <span class="k">true</span><span class="pn">]</span><span class="pn">,</span><span class="pn">[|</span> <span class="k">struct</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs30', 78)" onmouseover="showTip(event, 'fs30', 78)" class="id">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 79)" onmouseover="showTip(event, 'fs31', 79)" class="id">Label</span><span class="pn">,</span> <span class="s">&quot;LabelText&quot;</span><span class="pn">)</span> <span class="pn">|]</span><span class="pn">)</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs40', 80)" onmouseover="showTip(event, 'fs40', 80)" class="m">EstimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs42', 81)" onmouseover="showTip(event, 'fs42', 81)" class="id">appendBy</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs43', 82)" onmouseover="showTip(event, 'fs43', 82)" class="id">mlc</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs43', 83)" onmouseover="showTip(event, 'fs43', 83)" class="fn">mlc</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs27', 84)" onmouseover="showTip(event, 'fs27', 84)" class="id">Transforms</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs32', 85)" onmouseover="showTip(event, 'fs32', 85)" class="id">Text</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs33', 86)" onmouseover="showTip(event, 'fs33', 86)" class="id">FeaturizeText</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs30', 87)" onmouseover="showTip(event, 'fs30', 87)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs34', 88)" onmouseover="showTip(event, 'fs34', 88)" class="id">Features</span><span class="pn">,</span> <span class="s">&quot;Message&quot;</span><span class="pn">)</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs40', 89)" onmouseover="showTip(event, 'fs40', 89)" class="m">EstimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs44', 90)" onmouseover="showTip(event, 'fs44', 90)" class="id">appendCacheCheckpoint</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs40', 91)" onmouseover="showTip(event, 'fs40', 91)" class="m">EstimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs42', 92)" onmouseover="showTip(event, 'fs42', 92)" class="id">appendBy</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs43', 93)" onmouseover="showTip(event, 'fs43', 93)" class="id">mlc</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs43', 94)" onmouseover="showTip(event, 'fs43', 94)" class="fn">mlc</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs36', 95)" onmouseover="showTip(event, 'fs36', 95)" class="id">BinaryClassification</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs37', 96)" onmouseover="showTip(event, 'fs37', 96)" class="id">Trainers</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs38', 97)" onmouseover="showTip(event, 'fs38', 97)" class="id">StochasticDualCoordinateAscent</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs30', 98)" onmouseover="showTip(event, 'fs30', 98)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 99)" onmouseover="showTip(event, 'fs31', 99)" class="id">Label</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs30', 100)" onmouseover="showTip(event, 'fs30', 100)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs34', 101)" onmouseover="showTip(event, 'fs34', 101)" class="id">Features</span><span class="pn">)</span><span class="pn">)</span>
-</code></pre></td>
-</tr>
-</table>
-<p>Way better. Now we can concentrate on machine learning. So lets start by fitting our EstimatorModel to the complete data set.
-The return value of this process is a so called TransformerModel, which contains a trained EstimatorChain
-and can be used to transform unseen data. For this we want to split the data we previously put in scope into
-two fractions. One to train the model and a remainder to evaluate the model.</p>
+<p>The resulting TransformerModel serves as a predictor and can be tested by predicting our test data and evaluating the accuracy of the model.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -158,337 +140,29 @@ two fractions. One to train the model and a remainder to evaluate the model.</p>
 <span class="l"> 8: </span>
 <span class="l"> 9: </span>
 <span class="l">10: </span>
-<span class="l">11: </span>
-<span class="l">12: </span>
-<span class="l">13: </span>
-<span class="l">14: </span>
-<span class="l">15: </span>
-<span class="l">16: </span>
-<span class="l">17: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs45', 102)" onmouseover="showTip(event, 'fs45', 102)" class="id">trainTestSplit</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs16', 103)" onmouseover="showTip(event, 'fs16', 103)" class="id">data</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs46', 104)" onmouseover="showTip(event, 'fs46', 104)" class="m">Data</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs47', 105)" onmouseover="showTip(event, 'fs47', 105)" class="rt">BinaryClassification</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs48', 106)" onmouseover="showTip(event, 'fs48', 106)" class="id">initTrainTestSplit</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs39', 107)" onmouseover="showTip(event, 'fs39', 107)" class="id">estimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs49', 108)" onmouseover="showTip(event, 'fs49', 108)" class="id">Context</span><span class="pn">,</span><span class="id">Testfraction</span><span class="o">=</span><span class="n">0.1</span><span class="pn">)</span> 
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// STEP3: Run the prediciton on the test data</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs34', 72)" onmouseover="showTip(event, 'fs34', 72)" class="id">predictions</span> <span class="o">=</span>
+    <span onmouseout="hideTip(event, 'fs22', 73)" onmouseover="showTip(event, 'fs22', 73)" class="id">model</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs35', 74)" onmouseover="showTip(event, 'fs35', 74)" class="m">TransformerModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs36', 75)" onmouseover="showTip(event, 'fs36', 75)" class="id">transform</span> <span onmouseout="hideTip(event, 'fs19', 76)" onmouseover="showTip(event, 'fs19', 76)" class="id">testingDataView</span>
 
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs50', 109)" onmouseover="showTip(event, 'fs50', 109)" class="id">trainedModel</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs39', 110)" onmouseover="showTip(event, 'fs39', 110)" class="id">estimatorModel</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs40', 111)" onmouseover="showTip(event, 'fs40', 111)" class="m">EstimatorModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs51', 112)" onmouseover="showTip(event, 'fs51', 112)" class="id">fit</span> <span onmouseout="hideTip(event, 'fs45', 113)" onmouseover="showTip(event, 'fs45', 113)" class="id">trainTestSplit</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs52', 114)" onmouseover="showTip(event, 'fs52', 114)" class="id">TrainingData</span>
-
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs53', 115)" onmouseover="showTip(event, 'fs53', 115)" class="id">evaluationMetrics</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs50', 116)" onmouseover="showTip(event, 'fs50', 116)" class="id">trainedModel</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs54', 117)" onmouseover="showTip(event, 'fs54', 117)" class="m">Evaluation</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs55', 118)" onmouseover="showTip(event, 'fs55', 118)" class="rt">BinaryClassification</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs56', 119)" onmouseover="showTip(event, 'fs56', 119)" class="id">InitEvaluate</span><span class="pn">(</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs45', 120)" onmouseover="showTip(event, 'fs45', 120)" class="id">trainTestSplit</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs57', 121)" onmouseover="showTip(event, 'fs57', 121)" class="id">TestData</span>
-
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs58', 122)" onmouseover="showTip(event, 'fs58', 122)" class="id">scoredData</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs50', 123)" onmouseover="showTip(event, 'fs50', 123)" class="id">trainedModel</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs59', 124)" onmouseover="showTip(event, 'fs59', 124)" class="m">TransformerModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs60', 125)" onmouseover="showTip(event, 'fs60', 125)" class="id">transform</span> <span onmouseout="hideTip(event, 'fs16', 126)" onmouseover="showTip(event, 'fs16', 126)" class="id">data</span> 
-
-<span onmouseout="hideTip(event, 'fs53', 127)" onmouseover="showTip(event, 'fs53', 127)" class="id">evaluationMetrics</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs61', 128)" onmouseover="showTip(event, 'fs61', 128)" class="id">Accuracy</span>
-</code></pre></td>
-</tr>
-</table>
-<p>Now that we can examine the metrics of our model evaluation, see that we have a accuracy of 0.99
-and be tempted to use it in production so lets test it first with some examples.</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
-<span class="l"> 2: </span>
-<span class="l"> 3: </span>
-<span class="l"> 4: </span>
-<span class="l"> 5: </span>
-<span class="l"> 6: </span>
-<span class="l"> 7: </span>
-<span class="l"> 8: </span>
-<span class="l"> 9: </span>
-<span class="l">10: </span>
-<span class="l">11: </span>
-<span class="l">12: </span>
-<span class="l">13: </span>
-<span class="l">14: </span>
-<span class="l">15: </span>
-<span class="l">16: </span>
-<span class="l">17: </span>
-<span class="l">18: </span>
-</pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs62', 129)" onmouseover="showTip(event, 'fs62', 129)" class="rt">SpamInput</span> <span class="o">=</span> 
-    <span class="pn">{</span>
-        <span onmouseout="hideTip(event, 'fs63', 130)" onmouseover="showTip(event, 'fs63', 130)" class="id">LabelText</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs64', 131)" onmouseover="showTip(event, 'fs64', 131)" class="rt">string</span>
-        <span onmouseout="hideTip(event, 'fs65', 132)" onmouseover="showTip(event, 'fs65', 132)" class="id">Message</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs64', 133)" onmouseover="showTip(event, 'fs64', 133)" class="rt">string</span>
-    <span class="pn">}</span>
-
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs66', 134)" onmouseover="showTip(event, 'fs66', 134)" class="id">exampleData</span> <span class="o">=</span> 
-    <span class="pn">[</span>
-        <span class="s">&quot;That&#39;s a great idea. It should work.&quot;</span>
-        <span class="s">&quot;free medicine winner! congratulations&quot;</span>
-        <span class="s">&quot;Yes we should meet over the weekend!&quot;</span>
-        <span class="s">&quot;you win pills and free entry vouchers&quot;</span>
-    <span class="pn">]</span> 
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs67', 135)" onmouseover="showTip(event, 'fs67', 135)" class="m">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs68', 136)" onmouseover="showTip(event, 'fs68', 136)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs69', 137)" onmouseover="showTip(event, 'fs69', 137)" class="id">message</span> <span class="k">-&gt;</span><span class="pn">{</span><span class="id">LabelText</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="pn">;</span> <span class="id">Message</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs69', 138)" onmouseover="showTip(event, 'fs69', 138)" class="id">message</span><span class="pn">}</span><span class="pn">)</span>
-
-<span onmouseout="hideTip(event, 'fs66', 139)" onmouseover="showTip(event, 'fs66', 139)" class="id">exampleData</span> 
-<span class="o">|&gt;</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs70', 140)" onmouseover="showTip(event, 'fs70', 140)" class="m">Prediction</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs71', 141)" onmouseover="showTip(event, 'fs71', 141)" class="m">BinaryClassification</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs72', 142)" onmouseover="showTip(event, 'fs72', 142)" class="id">predictDefaultCols</span> <span onmouseout="hideTip(event, 'fs50', 143)" onmouseover="showTip(event, 'fs50', 143)" class="id">trainedModel</span><span class="pn">)</span>
-<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs73', 144)" onmouseover="showTip(event, 'fs73', 144)" class="m">Array</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs74', 145)" onmouseover="showTip(event, 'fs74', 145)" class="id">ofSeq</span>
-</code></pre></td>
-</tr>
-</table>
-<p>As we see, even so our accuracy when evaluating the model on the test data set was very high, it does not set the correct lable true, to the
-second and the fourth message which look a lot like spam. Lets examine our training data set:</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
-<span class="l"> 2: </span>
-<span class="l"> 3: </span>
-<span class="l"> 4: </span>
-<span class="l"> 5: </span>
-<span class="l"> 6: </span>
-<span class="l"> 7: </span>
-<span class="l"> 8: </span>
-<span class="l"> 9: </span>
-<span class="l">10: </span>
-<span class="l">11: </span>
-<span class="l">12: </span>
-<span class="l">13: </span>
-<span class="l">14: </span>
-<span class="l">15: </span>
-<span class="l">16: </span>
-<span class="l">17: </span>
-<span class="l">18: </span>
-<span class="l">19: </span>
-<span class="l">20: </span>
-<span class="l">21: </span>
-<span class="l">22: </span>
-<span class="l">23: </span>
-<span class="l">24: </span>
-<span class="l">25: </span>
-<span class="l">26: </span>
-<span class="l">27: </span>
-<span class="l">28: </span>
-<span class="l">29: </span>
-<span class="l">30: </span>
-<span class="l">31: </span>
-<span class="l">32: </span>
-<span class="l">33: </span>
-<span class="l">34: </span>
-<span class="l">35: </span>
-<span class="l">36: </span>
-<span class="l">37: </span>
-<span class="l">38: </span>
-<span class="l">39: </span>
-</pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs75', 146)" onmouseover="showTip(event, 'fs75', 146)" class="id">labels</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs76', 147)" onmouseover="showTip(event, 'fs76', 147)" class="id">counts</span> <span class="o">=</span>
-    <span onmouseout="hideTip(event, 'fs58', 148)" onmouseover="showTip(event, 'fs58', 148)" class="fn">scoredData</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs77', 149)" onmouseover="showTip(event, 'fs77', 149)" class="id">GetColumn</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs78', 150)" onmouseover="showTip(event, 'fs78', 150)" class="vt">bool</span><span class="pn">&gt;</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs12', 151)" onmouseover="showTip(event, 'fs12', 151)" class="id">mlContext</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs30', 152)" onmouseover="showTip(event, 'fs30', 152)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 153)" onmouseover="showTip(event, 'fs31', 153)" class="id">Label</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 154)" onmouseover="showTip(event, 'fs79', 154)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs80', 155)" onmouseover="showTip(event, 'fs80', 155)" class="id">countBy</span> <span onmouseout="hideTip(event, 'fs81', 156)" onmouseover="showTip(event, 'fs81', 156)" class="fn">id</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 157)" onmouseover="showTip(event, 'fs79', 157)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs82', 158)" onmouseover="showTip(event, 'fs82', 158)" class="id">unzip</span>
-    
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs83', 159)" onmouseover="showTip(event, 'fs83', 159)" class="id">LabelDist</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs84', 160)" onmouseover="showTip(event, 'fs84', 160)" class="rt">Chart</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs85', 161)" onmouseover="showTip(event, 'fs85', 161)" class="id">Doughnut</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs76', 162)" onmouseover="showTip(event, 'fs76', 162)" class="id">counts</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs75', 163)" onmouseover="showTip(event, 'fs75', 163)" class="id">labels</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs84', 164)" onmouseover="showTip(event, 'fs84', 164)" class="rt">Chart</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs86', 165)" onmouseover="showTip(event, 'fs86', 165)" class="id">Show</span>
-    
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs87', 166)" onmouseover="showTip(event, 'fs87', 166)" class="id">probabilityHist</span> <span class="o">=</span>
-    <span onmouseout="hideTip(event, 'fs58', 167)" onmouseover="showTip(event, 'fs58', 167)" class="fn">scoredData</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs77', 168)" onmouseover="showTip(event, 'fs77', 168)" class="id">GetColumn</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs78', 169)" onmouseover="showTip(event, 'fs78', 169)" class="vt">bool</span><span class="pn">&gt;</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs12', 170)" onmouseover="showTip(event, 'fs12', 170)" class="id">mlContext</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs30', 171)" onmouseover="showTip(event, 'fs30', 171)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 172)" onmouseover="showTip(event, 'fs31', 172)" class="id">Label</span><span class="pn">)</span> 
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 173)" onmouseover="showTip(event, 'fs79', 173)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs88', 174)" onmouseover="showTip(event, 'fs88', 174)" class="id">zip</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs58', 175)" onmouseover="showTip(event, 'fs58', 175)" class="fn">scoredData</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs77', 176)" onmouseover="showTip(event, 'fs77', 176)" class="id">GetColumn</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs89', 177)" onmouseover="showTip(event, 'fs89', 177)" class="vt">float32</span><span class="pn">&gt;</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs12', 178)" onmouseover="showTip(event, 'fs12', 178)" class="id">mlContext</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs30', 179)" onmouseover="showTip(event, 'fs30', 179)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs90', 180)" onmouseover="showTip(event, 'fs90', 180)" class="id">Probability</span><span class="pn">)</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 181)" onmouseover="showTip(event, 'fs79', 181)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs91', 182)" onmouseover="showTip(event, 'fs91', 182)" class="id">groupBy</span> <span onmouseout="hideTip(event, 'fs92', 183)" onmouseover="showTip(event, 'fs92', 183)" class="fn">snd</span> 
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 184)" onmouseover="showTip(event, 'fs79', 184)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs93', 185)" onmouseover="showTip(event, 'fs93', 185)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs94', 186)" onmouseover="showTip(event, 'fs94', 186)" class="id">label</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs95', 187)" onmouseover="showTip(event, 'fs95', 187)" class="id">x</span><span class="pn">)</span> <span class="k">-&gt;</span>
-                    <span onmouseout="hideTip(event, 'fs95', 188)" onmouseover="showTip(event, 'fs95', 188)" class="id">x</span>
-                    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 189)" onmouseover="showTip(event, 'fs79', 189)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs93', 190)" onmouseover="showTip(event, 'fs93', 190)" class="id">map</span> <span onmouseout="hideTip(event, 'fs96', 191)" onmouseover="showTip(event, 'fs96', 191)" class="fn">fst</span>
-                    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs84', 192)" onmouseover="showTip(event, 'fs84', 192)" class="rt">Chart</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs97', 193)" onmouseover="showTip(event, 'fs97', 193)" class="id">Histogram</span>
-                <span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs84', 194)" onmouseover="showTip(event, 'fs84', 194)" class="rt">Chart</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs98', 195)" onmouseover="showTip(event, 'fs98', 195)" class="id">Combine</span>
-
-
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs99', 196)" onmouseover="showTip(event, 'fs99', 196)" class="id">ScoreHist</span> <span class="o">=</span>
-    <span onmouseout="hideTip(event, 'fs58', 197)" onmouseover="showTip(event, 'fs58', 197)" class="fn">scoredData</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs77', 198)" onmouseover="showTip(event, 'fs77', 198)" class="id">GetColumn</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs78', 199)" onmouseover="showTip(event, 'fs78', 199)" class="vt">bool</span><span class="pn">&gt;</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs12', 200)" onmouseover="showTip(event, 'fs12', 200)" class="id">mlContext</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs30', 201)" onmouseover="showTip(event, 'fs30', 201)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 202)" onmouseover="showTip(event, 'fs31', 202)" class="id">Label</span><span class="pn">)</span> 
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 203)" onmouseover="showTip(event, 'fs79', 203)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs88', 204)" onmouseover="showTip(event, 'fs88', 204)" class="id">zip</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs58', 205)" onmouseover="showTip(event, 'fs58', 205)" class="fn">scoredData</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs77', 206)" onmouseover="showTip(event, 'fs77', 206)" class="id">GetColumn</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs89', 207)" onmouseover="showTip(event, 'fs89', 207)" class="vt">float32</span><span class="pn">&gt;</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs12', 208)" onmouseover="showTip(event, 'fs12', 208)" class="id">mlContext</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs30', 209)" onmouseover="showTip(event, 'fs30', 209)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs100', 210)" onmouseover="showTip(event, 'fs100', 210)" class="id">Score</span><span class="pn">)</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 211)" onmouseover="showTip(event, 'fs79', 211)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs91', 212)" onmouseover="showTip(event, 'fs91', 212)" class="id">groupBy</span> <span onmouseout="hideTip(event, 'fs92', 213)" onmouseover="showTip(event, 'fs92', 213)" class="fn">snd</span> 
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 214)" onmouseover="showTip(event, 'fs79', 214)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs93', 215)" onmouseover="showTip(event, 'fs93', 215)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs94', 216)" onmouseover="showTip(event, 'fs94', 216)" class="id">label</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs95', 217)" onmouseover="showTip(event, 'fs95', 217)" class="id">x</span><span class="pn">)</span> <span class="k">-&gt;</span>
-                    <span onmouseout="hideTip(event, 'fs95', 218)" onmouseover="showTip(event, 'fs95', 218)" class="id">x</span>
-                    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 219)" onmouseover="showTip(event, 'fs79', 219)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs93', 220)" onmouseover="showTip(event, 'fs93', 220)" class="id">map</span> <span onmouseout="hideTip(event, 'fs96', 221)" onmouseover="showTip(event, 'fs96', 221)" class="fn">fst</span>
-                    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs84', 222)" onmouseover="showTip(event, 'fs84', 222)" class="rt">Chart</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs97', 223)" onmouseover="showTip(event, 'fs97', 223)" class="id">Histogram</span>
-                <span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs84', 224)" onmouseover="showTip(event, 'fs84', 224)" class="rt">Chart</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs98', 225)" onmouseover="showTip(event, 'fs98', 225)" class="id">Combine</span>
-
-
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs101', 226)" onmouseover="showTip(event, 'fs101', 226)" class="id">stackedChart</span> <span class="o">=</span> 
-    <span class="pn">[</span><span onmouseout="hideTip(event, 'fs87', 227)" onmouseover="showTip(event, 'fs87', 227)" class="id">probabilityHist</span><span class="pn">;</span><span onmouseout="hideTip(event, 'fs99', 228)" onmouseover="showTip(event, 'fs99', 228)" class="id">ScoreHist</span><span class="pn">]</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs84', 229)" onmouseover="showTip(event, 'fs84', 229)" class="rt">Chart</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs102', 230)" onmouseover="showTip(event, 'fs102', 230)" class="id">Stack</span><span class="pn">(</span><span class="n">2</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs84', 231)" onmouseover="showTip(event, 'fs84', 231)" class="rt">Chart</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs103', 232)" onmouseover="showTip(event, 'fs103', 232)" class="id">withSize</span><span class="pn">(</span><span class="n">900.</span><span class="pn">,</span><span class="n">600.</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs84', 233)" onmouseover="showTip(event, 'fs84', 233)" class="rt">Chart</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs86', 234)" onmouseover="showTip(event, 'fs86', 234)" class="id">Show</span>
+<span class="c">// STEP4: Evaluate the accuracy of the model</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs37', 77)" onmouseover="showTip(event, 'fs37', 77)" class="id">metrics</span> <span class="o">=</span> 
+    <span onmouseout="hideTip(event, 'fs22', 78)" onmouseover="showTip(event, 'fs22', 78)" class="id">model</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs38', 79)" onmouseover="showTip(event, 'fs38', 79)" class="m">Evaluation</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs39', 80)" onmouseover="showTip(event, 'fs39', 80)" class="rt">Clustering</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs40', 81)" onmouseover="showTip(event, 'fs40', 81)" class="id">InitEvaluate</span><span class="pn">(</span><span class="id">Score</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs29', 82)" onmouseover="showTip(event, 'fs29', 82)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs41', 83)" onmouseover="showTip(event, 'fs41', 83)" class="id">Score</span><span class="pn">,</span> <span class="id">Features</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs29', 84)" onmouseover="showTip(event, 'fs29', 84)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs30', 85)" onmouseover="showTip(event, 'fs30', 85)" class="id">Features</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs19', 86)" onmouseover="showTip(event, 'fs19', 86)" class="id">testingDataView</span>
     
 </code></pre></td>
 </tr>
 </table>
-<p>The chart clearly shows that the data we learned uppon is highly inhomogenous. We have a lot more ham than spam, which is generally preferable but
-but our models labeling threshold is clearly to high. Lets have a look at the precision recall curves of our model. For this we will evaluate the model
-with different thresholds and plot both</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
-<span class="l"> 2: </span>
-<span class="l"> 3: </span>
-<span class="l"> 4: </span>
-<span class="l"> 5: </span>
-<span class="l"> 6: </span>
-<span class="l"> 7: </span>
-<span class="l"> 8: </span>
-<span class="l"> 9: </span>
-<span class="l">10: </span>
-<span class="l">11: </span>
-<span class="l">12: </span>
-<span class="l">13: </span>
-<span class="l">14: </span>
-<span class="l">15: </span>
-<span class="l">16: </span>
-<span class="l">17: </span>
-<span class="l">18: </span>
-<span class="l">19: </span>
-<span class="l">20: </span>
-<span class="l">21: </span>
-<span class="l">22: </span>
-<span class="l">23: </span>
-<span class="l">24: </span>
-<span class="l">25: </span>
-<span class="l">26: </span>
-<span class="l">27: </span>
-<span class="l">28: </span>
-<span class="l">29: </span>
-<span class="l">30: </span>
-<span class="l">31: </span>
-<span class="l">32: </span>
-<span class="l">33: </span>
-<span class="l">34: </span>
-<span class="l">35: </span>
-<span class="l">36: </span>
-<span class="l">37: </span>
-<span class="l">38: </span>
-<span class="l">39: </span>
-<span class="l">40: </span>
-<span class="l">41: </span>
-<span class="l">42: </span>
-<span class="l">43: </span>
-<span class="l">44: </span>
-<span class="l">45: </span>
-<span class="l">46: </span>
-<span class="l">47: </span>
-<span class="l">48: </span>
-<span class="l">49: </span>
-<span class="l">50: </span>
-<span class="l">51: </span>
-<span class="l">52: </span>
-<span class="l">53: </span>
-<span class="l">54: </span>
-<span class="l">55: </span>
-<span class="l">56: </span>
-<span class="l">57: </span>
-<span class="l">58: </span>
-<span class="l">59: </span>
-<span class="l">60: </span>
-<span class="l">61: </span>
-<span class="l">62: </span>
-<span class="l">63: </span>
-<span class="l">64: </span>
-<span class="l">65: </span>
-<span class="l">66: </span>
-<span class="l">67: </span>
-<span class="l">68: </span>
-<span class="l">69: </span>
-<span class="l">70: </span>
-<span class="l">71: </span>
-<span class="l">72: </span>
-<span class="l">73: </span>
-<span class="l">74: </span>
-<span class="l">75: </span>
-<span class="l">76: </span>
-<span class="l">77: </span>
-<span class="l">78: </span>
-<span class="l">79: </span>
-<span class="l">80: </span>
-<span class="l">81: </span>
-</pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs104', 235)" onmouseover="showTip(event, 'fs104', 235)" class="id">idea</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs50', 236)" onmouseover="showTip(event, 'fs50', 236)" class="id">trainedModel</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs59', 237)" onmouseover="showTip(event, 'fs59', 237)" class="m">TransformerModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs60', 238)" onmouseover="showTip(event, 'fs60', 238)" class="id">transform</span> <span onmouseout="hideTip(event, 'fs16', 239)" onmouseover="showTip(event, 'fs16', 239)" class="id">data</span>
-
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs105', 240)" onmouseover="showTip(event, 'fs105', 240)" class="id">thresholdVSPrecicionAndRecall</span> <span class="o">=</span> 
-    <span class="pn">[</span><span class="o">-</span><span class="n">0.05</span> <span class="o">..</span> <span class="n">0.05</span> <span class="o">..</span> <span class="n">0.95</span><span class="pn">]</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs67', 241)" onmouseover="showTip(event, 'fs67', 241)" class="m">List</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs68', 242)" onmouseover="showTip(event, 'fs68', 242)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs106', 243)" onmouseover="showTip(event, 'fs106', 243)" class="id">threshold</span> <span class="k">-&gt;</span>
-                    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs107', 244)" onmouseover="showTip(event, 'fs107', 244)" class="id">newModel</span> <span class="o">=</span> 
-                        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs108', 245)" onmouseover="showTip(event, 'fs108', 245)" class="id">lastTransformer</span> <span class="o">=</span> 
-                            <span onmouseout="hideTip(event, 'fs109', 246)" onmouseover="showTip(event, 'fs109', 246)" class="rt">BinaryPredictionTransformer</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs110', 247)" onmouseover="showTip(event, 'fs110', 247)" class="if">IPredictorProducing</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs89', 248)" onmouseover="showTip(event, 'fs89', 248)" class="vt">float32</span><span class="pn">&gt;</span><span class="pn">&gt;</span><span class="pn">(</span>
-                                <span onmouseout="hideTip(event, 'fs50', 249)" onmouseover="showTip(event, 'fs50', 249)" class="id">trainedModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs111', 250)" onmouseover="showTip(event, 'fs111', 250)" class="id">Context</span><span class="pn">,</span> 
-                                <span onmouseout="hideTip(event, 'fs50', 251)" onmouseover="showTip(event, 'fs50', 251)" class="id">trainedModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs112', 252)" onmouseover="showTip(event, 'fs112', 252)" class="id">TransformerChain</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs113', 253)" onmouseover="showTip(event, 'fs113', 253)" class="id">LastTransformer</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs114', 254)" onmouseover="showTip(event, 'fs114', 254)" class="id">Model</span><span class="pn">,</span> 
-                                <span onmouseout="hideTip(event, 'fs50', 255)" onmouseover="showTip(event, 'fs50', 255)" class="fn">trainedModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs112', 256)" onmouseover="showTip(event, 'fs112', 256)" class="id">TransformerChain</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs115', 257)" onmouseover="showTip(event, 'fs115', 257)" class="id">GetOutputSchema</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs104', 258)" onmouseover="showTip(event, 'fs104', 258)" class="id">idea</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs116', 259)" onmouseover="showTip(event, 'fs116', 259)" class="id">Schema</span><span class="pn">)</span><span class="pn">,</span> 
-                                <span onmouseout="hideTip(event, 'fs50', 260)" onmouseover="showTip(event, 'fs50', 260)" class="id">trainedModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs112', 261)" onmouseover="showTip(event, 'fs112', 261)" class="id">TransformerChain</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs113', 262)" onmouseover="showTip(event, 'fs113', 262)" class="id">LastTransformer</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs117', 263)" onmouseover="showTip(event, 'fs117', 263)" class="id">FeatureColumn</span><span class="pn">,</span> 
-                                <span onmouseout="hideTip(event, 'fs106', 264)" onmouseover="showTip(event, 'fs106', 264)" class="id">threshold</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs89', 265)" onmouseover="showTip(event, 'fs89', 265)" class="fn">float32</span> <span onmouseout="hideTip(event, 'fs106', 266)" onmouseover="showTip(event, 'fs106', 266)" class="id">threshold</span><span class="pn">,</span> 
-                                <span class="id">thresholdColumn</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs30', 267)" onmouseover="showTip(event, 'fs30', 267)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs90', 268)" onmouseover="showTip(event, 'fs90', 268)" class="id">Probability</span><span class="pn">)</span>
-                        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs118', 269)" onmouseover="showTip(event, 'fs118', 269)" class="id">parts</span> <span class="o">=</span> 
-                            <span onmouseout="hideTip(event, 'fs50', 270)" onmouseover="showTip(event, 'fs50', 270)" class="id">trainedModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs112', 271)" onmouseover="showTip(event, 'fs112', 271)" class="id">TransformerChain</span> 
-                            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs79', 272)" onmouseover="showTip(event, 'fs79', 272)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs119', 273)" onmouseover="showTip(event, 'fs119', 273)" class="id">toArray</span>
-                            <span class="o">|&gt;</span> <span class="k">fun</span> <span onmouseout="hideTip(event, 'fs120', 274)" onmouseover="showTip(event, 'fs120', 274)" class="id">x</span> <span class="k">-&gt;</span><span onmouseout="hideTip(event, 'fs120', 275)" onmouseover="showTip(event, 'fs120', 275)" class="id">x</span><span class="m">.</span><span class="pn">[</span><span class="o">..</span><span onmouseout="hideTip(event, 'fs120', 276)" onmouseover="showTip(event, 'fs120', 276)" class="id">x</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs121', 277)" onmouseover="showTip(event, 'fs121', 277)" class="id">Length</span><span class="o">-</span><span class="n">2</span><span class="pn">]</span> 
-                        
-                        <span onmouseout="hideTip(event, 'fs122', 278)" onmouseover="showTip(event, 'fs122', 278)" class="fn">printfn</span> <span class="s">&quot;</span><span class="pf">%A</span><span class="s">, </span><span class="pf">%A</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs108', 279)" onmouseover="showTip(event, 'fs108', 279)" class="id">lastTransformer</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs123', 280)" onmouseover="showTip(event, 'fs123', 280)" class="id">Threshold</span> <span onmouseout="hideTip(event, 'fs108', 281)" onmouseover="showTip(event, 'fs108', 281)" class="id">lastTransformer</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs124', 282)" onmouseover="showTip(event, 'fs124', 282)" class="id">ThresholdColumn</span>
-                        <span onmouseout="hideTip(event, 'fs125', 283)" onmouseover="showTip(event, 'fs125', 283)" class="rt">TransformerChain</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs126', 284)" onmouseover="showTip(event, 'fs126', 284)" class="if">ITransformer</span><span class="pn">&gt;</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs118', 285)" onmouseover="showTip(event, 'fs118', 285)" class="id">parts</span><span class="pn">)</span><span class="pn">.</span><span class="id">Append</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs108', 286)" onmouseover="showTip(event, 'fs108', 286)" class="id">lastTransformer</span><span class="pn">)</span>
-                    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs127', 287)" onmouseover="showTip(event, 'fs127', 287)" class="id">newModel&#39;</span> <span class="o">=</span> 
-                        <span class="pn">{</span><span onmouseout="hideTip(event, 'fs59', 288)" onmouseover="showTip(event, 'fs59', 288)" class="m">TransformerModel</span><span class="pn">.</span><span class="id">TransformerChain</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs107', 289)" onmouseover="showTip(event, 'fs107', 289)" class="id">newModel</span><span class="pn">;</span><span class="id">Context</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs50', 290)" onmouseover="showTip(event, 'fs50', 290)" class="id">trainedModel</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs111', 291)" onmouseover="showTip(event, 'fs111', 291)" class="id">Context</span><span class="pn">}</span>
-                        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs54', 292)" onmouseover="showTip(event, 'fs54', 292)" class="m">Evaluation</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs55', 293)" onmouseover="showTip(event, 'fs55', 293)" class="rt">BinaryClassification</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs56', 294)" onmouseover="showTip(event, 'fs56', 294)" class="id">InitEvaluate</span><span class="pn">(</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs45', 295)" onmouseover="showTip(event, 'fs45', 295)" class="id">trainTestSplit</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs57', 296)" onmouseover="showTip(event, 'fs57', 296)" class="id">TestData</span>
-                    
-                    <span onmouseout="hideTip(event, 'fs106', 297)" onmouseover="showTip(event, 'fs106', 297)" class="id">threshold</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs127', 298)" onmouseover="showTip(event, 'fs127', 298)" class="id">newModel&#39;</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs61', 299)" onmouseover="showTip(event, 'fs61', 299)" class="id">Accuracy</span>
-                    <span class="c">//threshold,</span>
-                    <span class="c">//exampleData </span>
-                    <span class="c">//|&gt; (Prediction.BinaryClassification.predictDefaultCols newModel&#39;)</span>
-                    <span class="c">//|&gt; Array.ofSeq</span>
-                <span class="pn">)</span>
-
-
-
-
-<span class="c">///</span>
-<span class="c">// Evaluate the model using cross-validation.</span>
-<span class="c">// Cross-validation splits our dataset into &#39;folds&#39;, trains a model on some folds and </span>
-<span class="c">// evaluates it on the remaining fold. We are using 5 folds so we get back 5 sets of scores.</span>
-<span class="c">// Let&#39;s compute the average AUC, which should be between 0.5 and 1 (higher is better).</span>
-<span class="c">//let cvResults = mlContext.BinaryClassification.CrossValidate(data, estimatorModel.EstimatorChain |&gt; Estimator.downcastEstimator, numFolds = 5,stratificationColumn = null)</span>
-<span class="c">//let avgAuc = cvResults |&gt; Seq.map (fun struct (metrics,_,_) -&gt; metrics.Auc) |&gt; Seq.average</span>
-<span class="c">////printfn &quot;The AUC is %f&quot; avgAuc</span>
-
-
-
-
-<span class="c">//model</span>
-<span class="c">//|&gt; Evaluation.BinaryClassificationEvalute() data</span>
-
-<span class="c">///// run till here, then continue, breaks </span>
-<span class="c">//let x = out.Preview().ColumnView</span>
-<span class="c">/// run till here, works</span>
-<span class="c">//x |&gt; Seq.map (fun x -&gt; x.Column.Name)</span>
-
-<span class="c">//let downcastOtherPipeline (pipeline : ITransformer) =</span>
-<span class="c">//    match pipeline with</span>
-<span class="c">//    | :? IPredictionTransformer&lt;IPredictor&gt; as p -&gt; p</span>
-<span class="c">//    | _ -&gt; failwith &quot;The pipeline has to be an instance of IEstimator&lt;ITransformer&gt;.&quot;</span>
-
-<span class="c">//let permutationMetrics = </span>
-<span class="c">//    mlContext.BinaryClassification.PermutationFeatureImportance(model.LastTransformer |&gt; downcastOtherPipeline,out,&quot;Label&quot;,&quot;Features&quot;,false,permutationCount=1)</span>
-
-<span class="c">// The dataset we have is skewed, as there are many more non-spam messages than spam messages.</span>
-<span class="c">// While our model is relatively good at detecting the difference, this skewness leads it to always</span>
-<span class="c">// say the message is not spam. We deal with this by lowering the threshold of the predictor. In reality,</span>
-<span class="c">// it is useful to look at the precision-recall curve to identify the best possible threshold.</span>
-<span class="c">//let newModel = </span>
-<span class="c">//    let lastTransformer = </span>
-<span class="c">//        BinaryPredictionTransformer&lt;IPredictorProducing&lt;float32&gt;&gt;(</span>
-<span class="c">//            mlContext, </span>
-<span class="c">//            model.LastTransformer.Model, </span>
-<span class="c">//            model.GetOutputSchema(data.Schema), </span>
-<span class="c">//            model.LastTransformer.FeatureColumn, </span>
-<span class="c">//            threshold = 0.15f, </span>
-<span class="c">//            thresholdColumn = DefaultColumnNames.Probability);</span>
-<span class="c">//    let parts = model |&gt; Seq.toArray</span>
-<span class="c">//    parts.[parts.Length - 1] &lt;- lastTransformer :&gt; _</span>
-<span class="c">//    TransformerChain&lt;ITransformer&gt;(parts)</span>
-</code></pre></td>
-</tr>
-</table>
+<p>For more detailed examples continue to explore the FSharpML documentation.</p>
 <h2><a name="Contributing-and-copyright" class="anchor" href="#Contributing-and-copyright">Contributing and copyright</a></h2>
-<p>The project is hosted on <a href="https://github.com/fsprojects/FSharpML">GitHub</a> where you can <a href="https://github.com/fsprojects/FSharpML/issues">report issues</a>, fork
+<p>The project is hosted on [GitHub][gh] where you can [report issues][issues], fork
 the project and submit pull requests. If you're adding a new public API, please also
-consider adding <a href="https://github.com/fsprojects/FSharpML/tree/master/docs/content">samples</a> that can be turned into a documentation. You might
-also want to read the <a href="https://github.com/fsprojects/FSharpML/blob/master/README.md">library design notes</a> to understand how it works.</p>
+consider adding [samples][content] that can be turned into a documentation. You might
+also want to read the [library design notes][readme] to understand how it works.</p>
 <p>The library is available under Public Domain license, which allows modification and
 redistribution for both commercial and non-commercial purposes. For more information see the
-<a href="https://github.com/fsprojects/FSharpML/blob/master/LICENSE.txt">License file</a> in the GitHub repository.</p>
+[License file][license] in the GitHub repository.</p>
 
 <div class="tip" id="fs1">Multiple items<br />namespace FSharp<br /><br />--------------------<br />namespace Microsoft.FSharp</div>
 <div class="tip" id="fs2">namespace FSharp.Plotly</div>
@@ -497,126 +171,40 @@ redistribution for both commercial and non-commercial purposes. For more informa
 <div class="tip" id="fs5">namespace Microsoft.ML</div>
 <div class="tip" id="fs6">namespace Microsoft.ML.Data</div>
 <div class="tip" id="fs7">module FSharpML</div>
-<div class="tip" id="fs8">namespace Microsoft.ML.Core</div>
-<div class="tip" id="fs9">namespace Microsoft.ML.Core.Data</div>
-<div class="tip" id="fs10">module TransformerModel<br /><br />from FSharpML</div>
-<div class="tip" id="fs11">namespace System.Data</div>
-<div class="tip" id="fs12">val mlContext : MLContext</div>
-<div class="tip" id="fs13">Multiple items<br />type MLContext =<br />&#160;&#160;new : ?seed:Nullable&lt;int&gt; * ?conc:int -&gt; MLContext<br />&#160;&#160;member BinaryClassification : BinaryClassificationCatalog<br />&#160;&#160;member Clustering : ClusteringCatalog<br />&#160;&#160;member CompositionContainer : CompositionContainer with get, set<br />&#160;&#160;member Data : DataOperationsCatalog<br />&#160;&#160;member Model : ModelOperationsCatalog<br />&#160;&#160;member MulticlassClassification : MulticlassClassificationCatalog<br />&#160;&#160;member Ranking : RankingCatalog<br />&#160;&#160;member Regression : RegressionCatalog<br />&#160;&#160;member Transforms : TransformsCatalog<br />&#160;&#160;...<br /><br />--------------------<br />MLContext(?seed: Nullable&lt;int&gt;,?conc: int) : MLContext</div>
-<div class="tip" id="fs14">Multiple items<br />type Nullable =<br />&#160;&#160;static member Compare&lt;&#39;T&gt; : n1:Nullable&lt;&#39;T&gt; * n2:Nullable&lt;&#39;T&gt; -&gt; int<br />&#160;&#160;static member Equals&lt;&#39;T&gt; : n1:Nullable&lt;&#39;T&gt; * n2:Nullable&lt;&#39;T&gt; -&gt; bool<br />&#160;&#160;static member GetUnderlyingType : nullableType:Type -&gt; Type<br /><br />--------------------<br />type Nullable&lt;&#39;T (requires default constructor and value type and &#39;T :&gt; ValueType)&gt; =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;new : value:&#39;T -&gt; Nullable&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;member Equals : other:obj -&gt; bool<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetValueOrDefault : unit -&gt; &#39;T + 1 overload<br />&#160;&#160;&#160;&#160;member HasValue : bool<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string<br />&#160;&#160;&#160;&#160;member Value : &#39;T<br />&#160;&#160;end<br /><br />--------------------<br />Nullable ()<br />Nullable(value: &#39;T) : Nullable&lt;&#39;T&gt;</div>
-<div class="tip" id="fs15">val trainDataPath : string</div>
-<div class="tip" id="fs16">val data : Data.DataView.IDataView</div>
-<div class="tip" id="fs17">property MLContext.Data: DataOperationsCatalog</div>
-<div class="tip" id="fs18">(extension) DataOperationsCatalog.ReadFromTextFile(path: string,?args: TextLoader.Arguments) : Data.DataView.IDataView<br />(extension) DataOperationsCatalog.ReadFromTextFile(path: string, columns: TextLoader.Column [],?hasHeader: bool,?separatorChar: char) : Data.DataView.IDataView<br />(extension) DataOperationsCatalog.ReadFromTextFile&lt;&#39;TInput&gt;(path: string,?hasHeader: bool,?separatorChar: char,?allowQuotedStrings: bool,?supportSparse: bool,?trimWhitespace: bool) : Data.DataView.IDataView</div>
-<div class="tip" id="fs19">Multiple items<br />type TextLoader =<br />&#160;&#160;new : env:IHostEnvironment * ?args:Arguments * ?dataSample:IMultiStreamSource -&gt; TextLoader + 1 overload<br />&#160;&#160;member GetOutputSchema : unit -&gt; Schema<br />&#160;&#160;member Read : source:IMultiStreamSource -&gt; IDataView + 2 overloads<br />&#160;&#160;member Save : ctx:ModelSaveContext -&gt; unit<br />&#160;&#160;static val LoaderSignature : string<br />&#160;&#160;static member FileContainsValidSchema : env:IHostEnvironment * files:IMultiStreamSource * args:Arguments -&gt; bool<br />&#160;&#160;nested type Arguments<br />&#160;&#160;nested type ArgumentsCore<br />&#160;&#160;nested type Column<br />&#160;&#160;nested type Range<br /><br />--------------------<br />TextLoader(env: IHostEnvironment,?args: TextLoader.Arguments,?dataSample: IMultiStreamSource) : TextLoader<br />TextLoader(env: IHostEnvironment, columns: TextLoader.Column [],?hasHeader: bool,?separatorChar: char,?dataSample: IMultiStreamSource) : TextLoader</div>
-<div class="tip" id="fs20">type Column =<br />&#160;&#160;new : unit -&gt; Column + 3 overloads<br />&#160;&#160;val Name : string<br />&#160;&#160;val Type : Nullable&lt;DataKind&gt;<br />&#160;&#160;val Source : Range[]<br />&#160;&#160;val KeyCount : KeyCount<br />&#160;&#160;static member TryParseSourceEx : str:string * ranges:Range[] -&gt; bool</div>
-<div class="tip" id="fs21">type DataKind =<br />&#160;&#160;| I1 = 1uy<br />&#160;&#160;| U1 = 2uy<br />&#160;&#160;| I2 = 3uy<br />&#160;&#160;| U2 = 4uy<br />&#160;&#160;| I4 = 5uy<br />&#160;&#160;| U4 = 6uy<br />&#160;&#160;| I8 = 7uy<br />&#160;&#160;| U8 = 8uy<br />&#160;&#160;| R4 = 9uy<br />&#160;&#160;| R8 = 10uy<br />&#160;&#160;...</div>
-<div class="tip" id="fs22">field DataKind.Text: DataKind = 11uy</div>
-<div class="tip" id="fs23">val estimatorChain : EstimatorChain&lt;BinaryPredictionTransformer&lt;Internal.Internallearn.IPredictorWithFeatureWeights&lt;float32&gt;&gt;&gt;</div>
-<div class="tip" id="fs24">Multiple items<br />type EstimatorChain&lt;&#39;TLastTransformer (requires reference type and &#39;TLastTransformer :&gt; ITransformer)&gt; =<br />&#160;&#160;new : unit -&gt; EstimatorChain&lt;&#39;TLastTransformer&gt;<br />&#160;&#160;val LastEstimator : IEstimator&lt;&#39;TLastTransformer&gt;<br />&#160;&#160;member Append&lt;&#39;TNewTrans&gt; : estimator:IEstimator&lt;&#39;TNewTrans&gt; * ?scope:TransformerScope -&gt; EstimatorChain&lt;&#39;TNewTrans&gt;<br />&#160;&#160;member AppendCacheCheckpoint : env:IHostEnvironment -&gt; EstimatorChain&lt;&#39;TLastTransformer&gt;<br />&#160;&#160;member Fit : input:IDataView -&gt; TransformerChain&lt;&#39;TLastTransformer&gt;<br />&#160;&#160;member GetOutputSchema : inputSchema:SchemaShape -&gt; SchemaShape<br /><br />--------------------<br />EstimatorChain() : EstimatorChain&lt;&#39;TLastTransformer&gt;</div>
-<div class="tip" id="fs25">module Estimator<br /><br />from FSharpML</div>
-<div class="tip" id="fs26">val append : source1:IEstimator&lt;&#39;a&gt; -&gt; source2:IEstimator&lt;#ITransformer&gt; -&gt; EstimatorChain&lt;&#39;a&gt; (requires &#39;a :&gt; ITransformer and reference type)</div>
+<div class="tip" id="fs8">val mlContext : MLContext</div>
+<div class="tip" id="fs9">Multiple items<br />type MLContext =<br />&#160;&#160;new : ?seed:Nullable&lt;int&gt; * ?conc:int -&gt; MLContext<br />&#160;&#160;member BinaryClassification : BinaryClassificationCatalog<br />&#160;&#160;member Clustering : ClusteringCatalog<br />&#160;&#160;member CompositionContainer : CompositionContainer with get, set<br />&#160;&#160;member Data : DataOperationsCatalog<br />&#160;&#160;member Model : ModelOperationsCatalog<br />&#160;&#160;member MulticlassClassification : MulticlassClassificationCatalog<br />&#160;&#160;member Ranking : RankingCatalog<br />&#160;&#160;member Regression : RegressionCatalog<br />&#160;&#160;member Transforms : TransformsCatalog<br />&#160;&#160;...<br /><br />--------------------<br />MLContext(?seed: Nullable&lt;int&gt;,?conc: int) : MLContext</div>
+<div class="tip" id="fs10">Multiple items<br />type Nullable =<br />&#160;&#160;static member Compare&lt;&#39;T&gt; : n1:Nullable&lt;&#39;T&gt; * n2:Nullable&lt;&#39;T&gt; -&gt; int<br />&#160;&#160;static member Equals&lt;&#39;T&gt; : n1:Nullable&lt;&#39;T&gt; * n2:Nullable&lt;&#39;T&gt; -&gt; bool<br />&#160;&#160;static member GetUnderlyingType : nullableType:Type -&gt; Type<br /><br />--------------------<br />type Nullable&lt;&#39;T (requires default constructor and value type and &#39;T :&gt; ValueType)&gt; =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;new : value:&#39;T -&gt; Nullable&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;member Equals : other:obj -&gt; bool<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetValueOrDefault : unit -&gt; &#39;T + 1 overload<br />&#160;&#160;&#160;&#160;member HasValue : bool<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string<br />&#160;&#160;&#160;&#160;member Value : &#39;T<br />&#160;&#160;end<br /><br />--------------------<br />Nullable ()<br />Nullable(value: &#39;T) : Nullable&lt;&#39;T&gt;</div>
+<div class="tip" id="fs11">val fullData : Data.DataView.IDataView</div>
+<div class="tip" id="fs12">property MLContext.Data: DataOperationsCatalog</div>
+<div class="tip" id="fs13">(extension) DataOperationsCatalog.ReadFromTextFile(path: string,?args: TextLoader.Arguments) : Data.DataView.IDataView<br />(extension) DataOperationsCatalog.ReadFromTextFile(path: string, columns: TextLoader.Column [],?hasHeader: bool,?separatorChar: char) : Data.DataView.IDataView<br />(extension) DataOperationsCatalog.ReadFromTextFile&lt;&#39;TInput&gt;(path: string,?hasHeader: bool,?separatorChar: char,?allowQuotedStrings: bool,?supportSparse: bool,?trimWhitespace: bool) : Data.DataView.IDataView</div>
+<div class="tip" id="fs14">Multiple items<br />type TextLoader =<br />&#160;&#160;new : env:IHostEnvironment * ?args:Arguments * ?dataSample:IMultiStreamSource -&gt; TextLoader + 1 overload<br />&#160;&#160;member GetOutputSchema : unit -&gt; Schema<br />&#160;&#160;member Read : source:IMultiStreamSource -&gt; IDataView + 2 overloads<br />&#160;&#160;member Save : ctx:ModelSaveContext -&gt; unit<br />&#160;&#160;static val LoaderSignature : string<br />&#160;&#160;static member FileContainsValidSchema : env:IHostEnvironment * files:IMultiStreamSource * args:Arguments -&gt; bool<br />&#160;&#160;nested type Arguments<br />&#160;&#160;nested type ArgumentsCore<br />&#160;&#160;nested type Column<br />&#160;&#160;nested type Range<br /><br />--------------------<br />TextLoader(env: IHostEnvironment,?args: TextLoader.Arguments,?dataSample: IMultiStreamSource) : TextLoader<br />TextLoader(env: IHostEnvironment, columns: TextLoader.Column [],?hasHeader: bool,?separatorChar: char,?dataSample: IMultiStreamSource) : TextLoader</div>
+<div class="tip" id="fs15">type Column =<br />&#160;&#160;new : unit -&gt; Column + 3 overloads<br />&#160;&#160;val Name : string<br />&#160;&#160;val Type : Nullable&lt;DataKind&gt;<br />&#160;&#160;val Source : Range[]<br />&#160;&#160;val KeyCount : KeyCount<br />&#160;&#160;static member TryParseSourceEx : str:string * ranges:Range[] -&gt; bool</div>
+<div class="tip" id="fs16">type DataKind =<br />&#160;&#160;| I1 = 1uy<br />&#160;&#160;| U1 = 2uy<br />&#160;&#160;| I2 = 3uy<br />&#160;&#160;| U2 = 4uy<br />&#160;&#160;| I4 = 5uy<br />&#160;&#160;| U4 = 6uy<br />&#160;&#160;| I8 = 7uy<br />&#160;&#160;| U8 = 8uy<br />&#160;&#160;| R4 = 9uy<br />&#160;&#160;| R8 = 10uy<br />&#160;&#160;...</div>
+<div class="tip" id="fs17">field DataKind.R4: DataKind = 9uy</div>
+<div class="tip" id="fs18">val trainingDataView : Data.DataView.IDataView</div>
+<div class="tip" id="fs19">val testingDataView : Data.DataView.IDataView</div>
+<div class="tip" id="fs20">property MLContext.Clustering: ClusteringCatalog</div>
+<div class="tip" id="fs21"></div>
+<div class="tip" id="fs22">val model : TransformerModel.TransformerModel&lt;ClusteringPredictionTransformer&lt;Trainers.KMeans.KMeansModelParameters&gt;&gt;</div>
+<div class="tip" id="fs23">module EstimatorModel<br /><br />from FSharpML</div>
+<div class="tip" id="fs24">val create : mlContext:MLContext -&gt; EstimatorModel.EstimatorModel&lt;&#39;a&gt; (requires reference type and &#39;a :&gt; Core.Data.ITransformer)</div>
+<div class="tip" id="fs25">val appendBy : transforming:(MLContext -&gt; #Core.Data.IEstimator&lt;&#39;b&gt;) -&gt; estimatorModel:EstimatorModel.EstimatorModel&lt;&#39;c&gt; -&gt; EstimatorModel.EstimatorModel&lt;&#39;b&gt; (requires &#39;b :&gt; Core.Data.ITransformer and reference type and &#39;c :&gt; Core.Data.ITransformer and reference type)</div>
+<div class="tip" id="fs26">val mlc : MLContext</div>
 <div class="tip" id="fs27">property MLContext.Transforms: TransformsCatalog</div>
-<div class="tip" id="fs28">property TransformsCatalog.Conversion: TransformsCatalog.ConversionTransforms</div>
-<div class="tip" id="fs29"></div>
-<div class="tip" id="fs30">type DefaultColumnNames =<br />&#160;&#160;static val Features : string<br />&#160;&#160;static val Label : string<br />&#160;&#160;static val GroupId : string<br />&#160;&#160;static val Name : string<br />&#160;&#160;static val Weight : string<br />&#160;&#160;static val Score : string<br />&#160;&#160;static val Probability : string<br />&#160;&#160;static val PredictedLabel : string<br />&#160;&#160;static val RecommendedItems : string<br />&#160;&#160;static val User : string<br />&#160;&#160;...</div>
-<div class="tip" id="fs31">field DefaultColumnNames.Label: string = &quot;Label&quot;</div>
-<div class="tip" id="fs32">property TransformsCatalog.Text: TransformsCatalog.TextTransforms</div>
-<div class="tip" id="fs33">(extension) TransformsCatalog.TextTransforms.FeaturizeText(outputColumnName: string,?inputColumnName: string,?advancedSettings: Action&lt;Transforms.Text.TextFeaturizingEstimator.Settings&gt;) : Transforms.Text.TextFeaturizingEstimator<br />(extension) TransformsCatalog.TextTransforms.FeaturizeText(outputColumnName: string, inputColumnNames: Collections.Generic.IEnumerable&lt;string&gt;,?advancedSettings: Action&lt;Transforms.Text.TextFeaturizingEstimator.Settings&gt;) : Transforms.Text.TextFeaturizingEstimator</div>
-<div class="tip" id="fs34">field DefaultColumnNames.Features: string = &quot;Features&quot;</div>
-<div class="tip" id="fs35">val appendCacheCheckpoint : mlContext:MLContext -&gt; pipeline:IEstimator&lt;&#39;a&gt; -&gt; IEstimator&lt;ITransformer&gt; (requires &#39;a :&gt; ITransformer and reference type)</div>
-<div class="tip" id="fs36">property MLContext.BinaryClassification: BinaryClassificationCatalog</div>
-<div class="tip" id="fs37">property BinaryClassificationCatalog.Trainers: BinaryClassificationCatalog.BinaryClassificationTrainers</div>
-<div class="tip" id="fs38">(extension) BinaryClassificationCatalog.BinaryClassificationTrainers.StochasticDualCoordinateAscent(options: Trainers.SdcaBinaryTrainer.Options) : Trainers.SdcaBinaryTrainer<br />(extension) BinaryClassificationCatalog.BinaryClassificationTrainers.StochasticDualCoordinateAscent(?labelColumn: string,?featureColumn: string,?weights: string,?loss: ISupportSdcaClassificationLoss,?l2Const: Nullable&lt;float32&gt;,?l1Threshold: Nullable&lt;float32&gt;,?maxIterations: Nullable&lt;int&gt;) : Trainers.SdcaBinaryTrainer</div>
-<div class="tip" id="fs39">val estimatorModel : EstimatorModel.EstimatorModel&lt;BinaryPredictionTransformer&lt;Internal.Internallearn.IPredictorWithFeatureWeights&lt;float32&gt;&gt;&gt;</div>
-<div class="tip" id="fs40">module EstimatorModel<br /><br />from FSharpML</div>
-<div class="tip" id="fs41">val create : mlContext:MLContext -&gt; EstimatorModel.EstimatorModel&lt;&#39;a&gt; (requires reference type and &#39;a :&gt; ITransformer)</div>
-<div class="tip" id="fs42">val appendBy : transforming:(MLContext -&gt; #IEstimator&lt;&#39;b&gt;) -&gt; estimatorModel:EstimatorModel.EstimatorModel&lt;&#39;c&gt; -&gt; EstimatorModel.EstimatorModel&lt;&#39;b&gt; (requires &#39;b :&gt; ITransformer and reference type and &#39;c :&gt; ITransformer and reference type)</div>
-<div class="tip" id="fs43">val mlc : MLContext</div>
-<div class="tip" id="fs44">val appendCacheCheckpoint : estimatorModel:EstimatorModel.EstimatorModel&lt;&#39;a&gt; -&gt; EstimatorModel.EstimatorModel&lt;&#39;a&gt; (requires &#39;a :&gt; ITransformer and reference type)</div>
-<div class="tip" id="fs45">val trainTestSplit : Data.TrainTestSplit</div>
-<div class="tip" id="fs46">Multiple items<br />module Data<br /><br />from FSharpML<br /><br />--------------------<br />namespace Microsoft.ML.Data<br /><br />--------------------<br />namespace System.Data<br /><br />--------------------<br />namespace Microsoft.FSharp.Data</div>
-<div class="tip" id="fs47">type BinaryClassification =<br />&#160;&#160;static member initTrainTestSplit : context:MLContext * ?Testfraction:float * ?Stratification:string * ?Seed:uint32 -&gt; (IDataView -&gt; TrainTestSplit)</div>
-<div class="tip" id="fs48">static member Data.BinaryClassification.initTrainTestSplit : context:MLContext * ?Testfraction:float * ?Stratification:string * ?Seed:uint32 -&gt; (Data.DataView.IDataView -&gt; Data.TrainTestSplit)</div>
-<div class="tip" id="fs49">EstimatorModel.EstimatorModel.Context: MLContext</div>
-<div class="tip" id="fs50">val trainedModel : TransformerModel&lt;BinaryPredictionTransformer&lt;Internal.Internallearn.IPredictorWithFeatureWeights&lt;float32&gt;&gt;&gt;</div>
-<div class="tip" id="fs51">val fit : data:Data.DataView.IDataView -&gt; estimatorModel:EstimatorModel.EstimatorModel&lt;&#39;a&gt; -&gt; TransformerModel&lt;&#39;a&gt; (requires &#39;a :&gt; ITransformer and reference type)</div>
-<div class="tip" id="fs52">Data.TrainTestSplit.TrainingData: Data.DataView.IDataView</div>
-<div class="tip" id="fs53">val evaluationMetrics : CalibratedBinaryClassificationMetrics</div>
-<div class="tip" id="fs54">module Evaluation<br /><br />from FSharpML</div>
-<div class="tip" id="fs55">type BinaryClassification =<br />&#160;&#160;static member InitCrossValidation : ?NumFolds:int * ?Label:string * ?Stratification:string * ?Seed:uint32 -&gt; (IDataView -&gt; EstimatorModel&lt;&#39;a0&gt; -&gt; struct (CalibratedBinaryClassificationMetrics * ITransformer * IDataView) []) (requires &#39;a0 :&gt; ITransformer and reference type)<br />&#160;&#160;static member InitCrossValidationCalibrated : ?NumFolds:int * ?Label:string * ?Stratification:string * ?Seed:uint32 -&gt; (IDataView -&gt; EstimatorModel&lt;&#39;a0&gt; -&gt; struct (BinaryClassificationMetrics * ITransformer * IDataView) []) (requires &#39;a0 :&gt; ITransformer and reference type)<br />&#160;&#160;static member InitEvaluate : ?Label:string * ?Score:string * ?Probability:string * ?PredictedLabel:string -&gt; (IDataView -&gt; TransformerModel&lt;&#39;a0&gt; -&gt; CalibratedBinaryClassificationMetrics) (requires &#39;a0 :&gt; ITransformer and reference type)<br />&#160;&#160;static member InitEvaluateUncalibrated : ?Label:string * ?Score:string * ?PredictedLabel:string -&gt; (IDataView -&gt; TransformerModel&lt;&#39;a0&gt; -&gt; BinaryClassificationMetrics) (requires &#39;a0 :&gt; ITransformer and reference type)</div>
-<div class="tip" id="fs56">static member Evaluation.BinaryClassification.InitEvaluate : ?Label:string * ?Score:string * ?Probability:string * ?PredictedLabel:string -&gt; (Data.DataView.IDataView -&gt; TransformerModel&lt;&#39;a0&gt; -&gt; CalibratedBinaryClassificationMetrics) (requires &#39;a0 :&gt; ITransformer and reference type)</div>
-<div class="tip" id="fs57">Data.TrainTestSplit.TestData: Data.DataView.IDataView</div>
-<div class="tip" id="fs58">val scoredData : Data.DataView.IDataView</div>
-<div class="tip" id="fs59">Multiple items<br />module TransformerModel<br /><br />from FSharpML<br /><br />--------------------<br />type TransformerModel&lt;&#39;a (requires &#39;a :&gt; ITransformer and reference type)&gt; =<br />&#160;&#160;{TransformerChain: TransformerChain&lt;&#39;a&gt;;<br />&#160;&#160;&#160;Context: MLContext;}</div>
-<div class="tip" id="fs60">val transform : data:Data.DataView.IDataView -&gt; transformerModel:TransformerModel&lt;&#39;b&gt; -&gt; Data.DataView.IDataView (requires &#39;b :&gt; ITransformer and reference type)</div>
-<div class="tip" id="fs61">property BinaryClassificationMetrics.Accuracy: float</div>
-<div class="tip" id="fs62">type SpamInput =<br />&#160;&#160;{LabelText: string;<br />&#160;&#160;&#160;Message: string;}</div>
-<div class="tip" id="fs63">SpamInput.LabelText: string</div>
-<div class="tip" id="fs64">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />--------------------<br />type string = String</div>
-<div class="tip" id="fs65">SpamInput.Message: string</div>
-<div class="tip" id="fs66">val exampleData : SpamInput list</div>
-<div class="tip" id="fs67">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;&#160;&#160;interface IReadOnlyList&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;interface IReadOnlyCollection&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;interface IEnumerable<br />&#160;&#160;&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;&#160;&#160;member Head : &#39;T<br />&#160;&#160;&#160;&#160;member IsEmpty : bool<br />&#160;&#160;&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;&#160;&#160;member Length : int<br />&#160;&#160;&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;&#160;&#160;...</div>
-<div class="tip" id="fs68">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; list:&#39;T list -&gt; &#39;U list</div>
-<div class="tip" id="fs69">val message : string</div>
-<div class="tip" id="fs70">module Prediction<br /><br />from FSharpML</div>
-<div class="tip" id="fs71">module BinaryClassification<br /><br />from FSharpML.Prediction</div>
-<div class="tip" id="fs72">val predictDefaultCols : transformerModel:TransformerModel&lt;&#39;a&gt; -&gt; items:seq&lt;&#39;b&gt; -&gt; seq&lt;&#39;b * Prediction.BinaryClassification.BinaryClassificationPrediction&gt; (requires &#39;a :&gt; ITransformer and reference type and reference type)</div>
-<div class="tip" id="fs73">type Array =<br />&#160;&#160;member Clone : unit -&gt; obj<br />&#160;&#160;member CopyTo : array:Array * index:int -&gt; unit + 1 overload<br />&#160;&#160;member GetEnumerator : unit -&gt; IEnumerator<br />&#160;&#160;member GetLength : dimension:int -&gt; int<br />&#160;&#160;member GetLongLength : dimension:int -&gt; int64<br />&#160;&#160;member GetLowerBound : dimension:int -&gt; int<br />&#160;&#160;member GetUpperBound : dimension:int -&gt; int<br />&#160;&#160;member GetValue : [&lt;ParamArray&gt;] indices:int[] -&gt; obj + 7 overloads<br />&#160;&#160;member Initialize : unit -&gt; unit<br />&#160;&#160;member IsFixedSize : bool<br />&#160;&#160;...</div>
-<div class="tip" id="fs74">val ofSeq : source:seq&lt;&#39;T&gt; -&gt; &#39;T []</div>
-<div class="tip" id="fs75">val labels : seq&lt;bool&gt;</div>
-<div class="tip" id="fs76">val counts : seq&lt;int&gt;</div>
-<div class="tip" id="fs77">(extension) Data.DataView.IDataView.GetColumn&lt;&#39;T&gt;(env: IHostEnvironment, columnName: string) : Collections.Generic.IEnumerable&lt;&#39;T&gt;</div>
-<div class="tip" id="fs78">type bool = Boolean</div>
-<div class="tip" id="fs79">Multiple items<br />module Seq<br /><br />from FSharp.Plotly<br /><br />--------------------<br />module Seq<br /><br />from Microsoft.FSharp.Collections</div>
-<div class="tip" id="fs80">val countBy : projection:(&#39;T -&gt; &#39;Key) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;Key * int&gt; (requires equality)</div>
-<div class="tip" id="fs81">val id : x:&#39;T -&gt; &#39;T</div>
-<div class="tip" id="fs82">val unzip : input:seq&lt;&#39;a * &#39;b&gt; -&gt; seq&lt;&#39;a&gt; * seq&lt;&#39;b&gt;</div>
-<div class="tip" id="fs83">val LabelDist : unit</div>
-<div class="tip" id="fs84">type Chart =<br />&#160;&#160;static member Area : xy:seq&lt;#IConvertible * #IConvertible&gt; * ?Name:string * ?ShowMarkers:bool * ?Showlegend:bool * ?MarkerSymbol:Symbol * ?Color:&#39;a2 * ?Opacity:float * ?Labels:seq&lt;#IConvertible&gt; * ?TextPosition:TextPosition * ?TextFont:Font * ?Dash:DrawingStyle * ?Width:&#39;a4 -&gt; GenericChart<br />&#160;&#160;static member Area : x:seq&lt;#IConvertible&gt; * y:seq&lt;#IConvertible&gt; * ?Name:string * ?ShowMarkers:bool * ?Showlegend:bool * ?MarkerSymbol:Symbol * ?Color:&#39;a2 * ?Opacity:float * ?Labels:seq&lt;#IConvertible&gt; * ?TextPosition:TextPosition * ?TextFont:Font * ?Dash:DrawingStyle * ?Width:&#39;a4 -&gt; GenericChart<br />&#160;&#160;static member Bar : keysvalues:seq&lt;#IConvertible * #IConvertible&gt; * ?Name:string * ?Showlegend:bool * ?Color:&#39;a2 * ?Opacity:float * ?Labels:seq&lt;#IConvertible&gt; * ?TextPosition:TextPosition * ?TextFont:Font * ?Marker:Marker -&gt; GenericChart<br />&#160;&#160;static member Bar : keys:seq&lt;#IConvertible&gt; * values:seq&lt;#IConvertible&gt; * ?Name:string * ?Showlegend:bool * ?Color:&#39;a2 * ?Opacity:float * ?Labels:seq&lt;#IConvertible&gt; * ?TextPosition:TextPosition * ?TextFont:Font * ?Marker:Marker -&gt; GenericChart<br />&#160;&#160;static member BoxPlot : xy:seq&lt;&#39;a0 * &#39;a1&gt; * ?Name:string * ?Showlegend:bool * ?Color:&#39;a2 * ?Fillcolor:&#39;a3 * ?Opacity:float * ?Whiskerwidth:&#39;a4 * ?Boxpoints:Boxpoints * ?Boxmean:BoxMean * ?Jitter:&#39;a5 * ?Pointpos:&#39;a6 * ?Orientation:Orientation -&gt; GenericChart<br />&#160;&#160;static member BoxPlot : ?x:&#39;a0 * ?y:&#39;a1 * ?Name:string * ?Showlegend:bool * ?Color:&#39;a2 * ?Fillcolor:&#39;a3 * ?Opacity:float * ?Whiskerwidth:&#39;a4 * ?Boxpoints:Boxpoints * ?Boxmean:BoxMean * ?Jitter:&#39;a5 * ?Pointpos:&#39;a6 * ?Orientation:Orientation -&gt; GenericChart<br />&#160;&#160;static member Bubble : xysizes:seq&lt;#IConvertible * #IConvertible * #IConvertible&gt; * ?Name:string * ?Showlegend:bool * ?MarkerSymbol:Symbol * ?Color:&#39;a3 * ?Opacity:float * ?Labels:seq&lt;#IConvertible&gt; * ?TextPosition:TextPosition * ?TextFont:Font -&gt; GenericChart<br />&#160;&#160;static member Bubble : x:seq&lt;#IConvertible&gt; * y:seq&lt;#IConvertible&gt; * sizes:seq&lt;#IConvertible&gt; * ?Name:string * ?Showlegend:bool * ?MarkerSymbol:Symbol * ?Color:&#39;a3 * ?Opacity:float * ?Labels:seq&lt;#IConvertible&gt; * ?TextPosition:TextPosition * ?TextFont:Font -&gt; GenericChart<br />&#160;&#160;static member ChoroplethMap : locations:seq&lt;string&gt; * z:seq&lt;#IConvertible&gt; * ?Text:seq&lt;#IConvertible&gt; * ?Locationmode:LocationFormat * ?Autocolorscale:bool * ?Colorscale:Colorscale * ?Colorbar:&#39;a2 * ?Marker:Marker * ?Zmin:&#39;a3 * ?Zmax:&#39;a4 -&gt; GenericChart<br />&#160;&#160;static member Column : keysvalues:seq&lt;#IConvertible * #IConvertible&gt; * ?Name:string * ?Showlegend:bool * ?Color:&#39;a2 * ?Opacity:float * ?Labels:seq&lt;#IConvertible&gt; * ?TextPosition:TextPosition * ?TextFont:Font * ?Marker:Marker -&gt; GenericChart<br />&#160;&#160;...</div>
-<div class="tip" id="fs85">static member Chart.Doughnut : data:seq&lt;#IConvertible * #IConvertible&gt; * ?Name:string * ?Showlegend:bool * ?Color:&#39;a2 * ?Hole:float * ?TextPosition:StyleParam.TextPosition * ?TextFont:Font * ?Hoverinfo:string * ?Textinfo:&#39;a3 * ?Opacity:float -&gt; GenericChart.GenericChart<br />static member Chart.Doughnut : values:&#39;a0 * ?Labels:seq&lt;#IConvertible&gt; * ?Name:string * ?Showlegend:bool * ?Color:&#39;a2 * ?Hole:float * ?TextPosition:StyleParam.TextPosition * ?TextFont:Font * ?Hoverinfo:string * ?Textinfo:&#39;a3 * ?Opacity:float -&gt; GenericChart.GenericChart</div>
-<div class="tip" id="fs86">static member Chart.Show : ch:GenericChart.GenericChart -&gt; unit</div>
-<div class="tip" id="fs87">val probabilityHist : GenericChart.GenericChart</div>
-<div class="tip" id="fs88">val zip : source1:seq&lt;&#39;T1&gt; -&gt; source2:seq&lt;&#39;T2&gt; -&gt; seq&lt;&#39;T1 * &#39;T2&gt;</div>
-<div class="tip" id="fs89">Multiple items<br />val float32 : value:&#39;T -&gt; float32 (requires member op_Explicit)<br /><br />--------------------<br />type float32 = Single<br /><br />--------------------<br />type float32&lt;&#39;Measure&gt; = float32</div>
-<div class="tip" id="fs90">field DefaultColumnNames.Probability: string = &quot;Probability&quot;</div>
-<div class="tip" id="fs91">val groupBy : projection:(&#39;T -&gt; &#39;Key) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;Key * seq&lt;&#39;T&gt;&gt; (requires equality)</div>
-<div class="tip" id="fs92">val snd : tuple:(&#39;T1 * &#39;T2) -&gt; &#39;T2</div>
-<div class="tip" id="fs93">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;U&gt;</div>
-<div class="tip" id="fs94">val label : bool</div>
-<div class="tip" id="fs95">val x : seq&lt;float32 * bool&gt;</div>
-<div class="tip" id="fs96">val fst : tuple:(&#39;T1 * &#39;T2) -&gt; &#39;T1</div>
-<div class="tip" id="fs97">static member Chart.Histogram : data:seq&lt;#IConvertible&gt; * ?Orientation:StyleParam.Orientation * ?Name:string * ?Showlegend:bool * ?Opacity:float * ?Color:&#39;a1 * ?HistNorm:StyleParam.HistNorm * ?HistFunc:StyleParam.HistNorm * ?nBinsx:int * ?nBinsy:int * ?Xbins:Bins * ?Ybins:Bins * ?xError:&#39;a2 * ?yError:&#39;a3 -&gt; GenericChart.GenericChart</div>
-<div class="tip" id="fs98">static member Chart.Combine : gCharts:seq&lt;GenericChart.GenericChart&gt; -&gt; GenericChart.GenericChart</div>
-<div class="tip" id="fs99">val ScoreHist : GenericChart.GenericChart</div>
-<div class="tip" id="fs100">field DefaultColumnNames.Score: string = &quot;Score&quot;</div>
-<div class="tip" id="fs101">val stackedChart : unit</div>
-<div class="tip" id="fs102">static member Chart.Stack : ?Columns:int * ?Space:float -&gt; (#seq&lt;GenericChart.GenericChart&gt; -&gt; GenericChart.GenericChart)</div>
-<div class="tip" id="fs103">static member Chart.withSize : width:float * heigth:float -&gt; (GenericChart.GenericChart -&gt; GenericChart.GenericChart)</div>
-<div class="tip" id="fs104">val idea : Data.DataView.IDataView</div>
-<div class="tip" id="fs105">val thresholdVSPrecicionAndRecall : (float * float) list</div>
-<div class="tip" id="fs106">val threshold : float</div>
-<div class="tip" id="fs107">val newModel : TransformerChain&lt;BinaryPredictionTransformer&lt;IPredictorProducing&lt;float32&gt;&gt;&gt;</div>
-<div class="tip" id="fs108">val lastTransformer : BinaryPredictionTransformer&lt;IPredictorProducing&lt;float32&gt;&gt;</div>
-<div class="tip" id="fs109">Multiple items<br />type BinaryPredictionTransformer&lt;&#39;TModel (requires reference type and &#39;TModel :&gt; IPredictorProducing&lt;float32&gt;)&gt; =<br />&#160;&#160;inherit SingleFeaturePredictionTransformerBase&lt;&#39;TModel, BinaryClassifierScorer&gt;<br />&#160;&#160;new : env:IHostEnvironment * ctx:ModelLoadContext -&gt; BinaryPredictionTransformer&lt;&#39;TModel&gt; + 1 overload<br />&#160;&#160;val ThresholdColumn : string<br />&#160;&#160;val Threshold : float32<br /><br />--------------------<br />BinaryPredictionTransformer(env: IHostEnvironment, ctx: Model.ModelLoadContext) : BinaryPredictionTransformer&lt;&#39;TModel&gt;<br />BinaryPredictionTransformer(env: IHostEnvironment, model: &#39;TModel, inputSchema: Data.DataView.Schema, featureColumn: string,?threshold: float32,?thresholdColumn: string) : BinaryPredictionTransformer&lt;&#39;TModel&gt;</div>
-<div class="tip" id="fs110">type IPredictorProducing&lt;&#39;TResult&gt; =<br />&#160;&#160;inherit IPredictor</div>
-<div class="tip" id="fs111">TransformerModel.Context: MLContext</div>
-<div class="tip" id="fs112">TransformerModel.TransformerChain: TransformerChain&lt;BinaryPredictionTransformer&lt;Internal.Internallearn.IPredictorWithFeatureWeights&lt;float32&gt;&gt;&gt;</div>
-<div class="tip" id="fs113">field TransformerChain.LastTransformer: BinaryPredictionTransformer&lt;Internal.Internallearn.IPredictorWithFeatureWeights&lt;float32&gt;&gt;</div>
-<div class="tip" id="fs114">property PredictionTransformerBase.Model: Internal.Internallearn.IPredictorWithFeatureWeights&lt;float32&gt;</div>
-<div class="tip" id="fs115">TransformerChain.GetOutputSchema(inputSchema: Data.DataView.Schema) : Data.DataView.Schema</div>
-<div class="tip" id="fs116">property Data.DataView.IDataView.Schema: Data.DataView.Schema</div>
-<div class="tip" id="fs117">property SingleFeaturePredictionTransformerBase.FeatureColumn: string</div>
-<div class="tip" id="fs118">val parts : ITransformer []</div>
-<div class="tip" id="fs119">val toArray : source:seq&lt;&#39;T&gt; -&gt; &#39;T []</div>
-<div class="tip" id="fs120">val x : ITransformer []</div>
-<div class="tip" id="fs121">property Array.Length: int</div>
-<div class="tip" id="fs122">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T</div>
-<div class="tip" id="fs123">field BinaryPredictionTransformer.Threshold: float32</div>
-<div class="tip" id="fs124">field BinaryPredictionTransformer.ThresholdColumn: string</div>
-<div class="tip" id="fs125">Multiple items<br />type TransformerChain =<br />&#160;&#160;static val LoaderSignature : string<br />&#160;&#160;static member Create : env:IHostEnvironment * ctx:ModelLoadContext -&gt; TransformerChain&lt;ITransformer&gt;<br />&#160;&#160;static member LoadFrom : env:IHostEnvironment * stream:Stream -&gt; TransformerChain&lt;ITransformer&gt;<br />&#160;&#160;static member SaveTo : transformer:ITransformer * env:IHostEnvironment * outputStream:Stream -&gt; unit<br /><br />--------------------<br />type TransformerChain&lt;&#39;TLastTransformer (requires reference type and &#39;TLastTransformer :&gt; ITransformer)&gt; =<br />&#160;&#160;new : [&lt;ParamArray&gt;] transformers:ITransformer[] -&gt; TransformerChain&lt;&#39;TLastTransformer&gt; + 1 overload<br />&#160;&#160;val LastTransformer : &#39;TLastTransformer<br />&#160;&#160;member Append&lt;&#39;TNewLast&gt; : transformer:&#39;TNewLast * ?scope:TransformerScope -&gt; TransformerChain&lt;&#39;TNewLast&gt;<br />&#160;&#160;member GetEnumerator : unit -&gt; IEnumerator&lt;ITransformer&gt;<br />&#160;&#160;member GetModelFor : scopeFilter:TransformerScope -&gt; TransformerChain&lt;ITransformer&gt;<br />&#160;&#160;member GetOutputSchema : inputSchema:Schema -&gt; Schema<br />&#160;&#160;member GetRowToRowMapper : inputSchema:Schema -&gt; IRowToRowMapper<br />&#160;&#160;member IsRowToRowMapper : bool<br />&#160;&#160;member Save : ctx:ModelSaveContext -&gt; unit<br />&#160;&#160;member SaveTo : env:IHostEnvironment * outputStream:Stream -&gt; unit<br />&#160;&#160;...<br /><br />--------------------<br />TransformerChain([&lt;ParamArray&gt;] transformers: ITransformer []) : TransformerChain&lt;&#39;TLastTransformer&gt;<br />TransformerChain(transformers: Collections.Generic.IEnumerable&lt;ITransformer&gt;, scopes: Collections.Generic.IEnumerable&lt;TransformerScope&gt;) : TransformerChain&lt;&#39;TLastTransformer&gt;</div>
-<div class="tip" id="fs126">type ITransformer =<br />&#160;&#160;member GetOutputSchema : inputSchema:Schema -&gt; Schema<br />&#160;&#160;member GetRowToRowMapper : inputSchema:Schema -&gt; IRowToRowMapper<br />&#160;&#160;member IsRowToRowMapper : bool<br />&#160;&#160;member Transform : input:IDataView -&gt; IDataView</div>
-<div class="tip" id="fs127">val newModel&#39; : CalibratedBinaryClassificationMetrics</div>
+<div class="tip" id="fs28">(extension) TransformsCatalog.Concatenate(outputColumnName: string, [&lt;ParamArray&gt;] inputColumnNames: string []) : Transforms.ColumnConcatenatingEstimator</div>
+<div class="tip" id="fs29">type DefaultColumnNames =<br />&#160;&#160;static val Features : string<br />&#160;&#160;static val Label : string<br />&#160;&#160;static val GroupId : string<br />&#160;&#160;static val Name : string<br />&#160;&#160;static val Weight : string<br />&#160;&#160;static val Score : string<br />&#160;&#160;static val Probability : string<br />&#160;&#160;static val PredictedLabel : string<br />&#160;&#160;static val RecommendedItems : string<br />&#160;&#160;static val User : string<br />&#160;&#160;...</div>
+<div class="tip" id="fs30">field DefaultColumnNames.Features: string = &quot;Features&quot;</div>
+<div class="tip" id="fs31">property ClusteringCatalog.Trainers: ClusteringCatalog.ClusteringTrainers</div>
+<div class="tip" id="fs32">(extension) ClusteringCatalog.ClusteringTrainers.KMeans(options: Trainers.KMeans.KMeansPlusPlusTrainer.Options) : Trainers.KMeans.KMeansPlusPlusTrainer<br />(extension) ClusteringCatalog.ClusteringTrainers.KMeans(?featureColumn: string,?weights: string,?clustersCount: int) : Trainers.KMeans.KMeansPlusPlusTrainer</div>
+<div class="tip" id="fs33">val fit : data:Data.DataView.IDataView -&gt; estimatorModel:EstimatorModel.EstimatorModel&lt;&#39;a&gt; -&gt; TransformerModel.TransformerModel&lt;&#39;a&gt; (requires &#39;a :&gt; Core.Data.ITransformer and reference type)</div>
+<div class="tip" id="fs34">val predictions : Data.DataView.IDataView</div>
+<div class="tip" id="fs35">module TransformerModel<br /><br />from FSharpML</div>
+<div class="tip" id="fs36">val transform : data:Data.DataView.IDataView -&gt; transformerModel:TransformerModel.TransformerModel&lt;&#39;b&gt; -&gt; Data.DataView.IDataView (requires &#39;b :&gt; Core.Data.ITransformer and reference type)</div>
+<div class="tip" id="fs37">val metrics : ClusteringMetrics</div>
+<div class="tip" id="fs38">module Evaluation<br /><br />from FSharpML</div>
+<div class="tip" id="fs39">type Clustering =<br />&#160;&#160;static member InitCrossValidation : ?NumFolds:int * ?Label:string * ?Features:string * ?Stratification:string * ?Seed:uint32 -&gt; (IDataView -&gt; EstimatorModel&lt;&#39;a0&gt; -&gt; struct (ClusteringMetrics * ITransformer * IDataView) []) (requires &#39;a0 :&gt; ITransformer and reference type)<br />&#160;&#160;static member InitEvaluate : ?Label:string * ?Score:string * ?Features:string -&gt; (IDataView -&gt; TransformerModel&lt;&#39;a0&gt; -&gt; ClusteringMetrics) (requires &#39;a0 :&gt; ITransformer and reference type)</div>
+<div class="tip" id="fs40">static member Evaluation.Clustering.InitEvaluate : ?Label:string * ?Score:string * ?Features:string -&gt; (Data.DataView.IDataView -&gt; TransformerModel.TransformerModel&lt;&#39;a0&gt; -&gt; ClusteringMetrics) (requires &#39;a0 :&gt; Core.Data.ITransformer and reference type)</div>
+<div class="tip" id="fs41">field DefaultColumnNames.Score: string = &quot;Score&quot;</div>
 
         </div>
         <div class="span3">

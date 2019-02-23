@@ -53,7 +53,7 @@ manner, while maintaining the functional style of F#.</p>
 <span class="l">10: </span>
 <span class="l">11: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="pp">#load</span> <span class="s">&quot;../../bin/FSharpML/netstandard2.0/FSharpML.fsx&quot;</span>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="pp">#load</span> <span class="s">&quot;../../FSharpML.fsx&quot;</span>
 
 
 
@@ -67,12 +67,10 @@ manner, while maintaining the functional style of F#.</p>
 </code></pre></td>
 </tr>
 </table>
-<p>To get a feel how this library handles ML.Net operations we rebuild the Spam Detection tutorial (<a href="https://github.com/dotnet/machinelearning-samples/tree/master/samples/fsharp/getting-started/BinaryClassification_SpamDetection)
-given">https://github.com/dotnet/machinelearning-samples/tree/master/samples/fsharp/getting-started/BinaryClassification_SpamDetection)
-given</a> by ML.Net.
+<p>To get a feel how this library handles ML.Net operations we rebuild the <a href="https://github.com/dotnet/machinelearning-samples/tree/master/samples/fsharp/getting-started/BinaryClassification_SpamDetection">Spam Detection tutorial</a> given by ML.Net.
 We will start by instantiating a MLContext, the heart of the ML.Net API and intended to serve as a method catalog. We will
 now use it to set a scope on data stored in a text file. The method name might be misleading, but ML.Net readers are lazy and
-the reading process will start when the data is processed. (<a href="https://github.com/dotnet/machinelearning/blob/master/docs/code/IDataViewTypeSystem.md#standard-column-types)">https://github.com/dotnet/machinelearning/blob/master/docs/code/IDataViewTypeSystem.md#standard-column-types)</a></p>
+the reading process will start when the data is processed <a href="https://github.com/dotnet/machinelearning/blob/master/docs/code/IDataViewTypeSystem.md#standard-column-types">(see).</a></p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
