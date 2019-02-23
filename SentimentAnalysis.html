@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>Sample: Iris classification
+    <title>Sample: Sentiment analysis
 </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="FSharp functions for streaming graph data to gephi a graph visualization tool"/>
@@ -35,7 +35,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<h1><a name="Sample-Iris-classification" class="anchor" href="#Sample-Iris-classification">Sample: Iris classification</a></h1>
+<h1><a name="Sample-Sentiment-analysis" class="anchor" href="#Sample-Sentiment-analysis">Sample: Sentiment analysis</a></h1>
 <p>*</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">  1: </span>
 <span class="l">  2: </span>
@@ -186,24 +186,8 @@
 <span class="l">147: </span>
 <span class="l">148: </span>
 <span class="l">149: </span>
-<span class="l">150: </span>
-<span class="l">151: </span>
-<span class="l">152: </span>
-<span class="l">153: </span>
-<span class="l">154: </span>
-<span class="l">155: </span>
-<span class="l">156: </span>
-<span class="l">157: </span>
-<span class="l">158: </span>
-<span class="l">159: </span>
-<span class="l">160: </span>
-<span class="l">161: </span>
-<span class="l">162: </span>
-<span class="l">163: </span>
-<span class="l">164: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="pp">#load</span> <span class="s">&quot;../../bin/FSharpML/netstandard2.0/FSharpML.fsx&quot;</span>
-
 
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="id">System</span><span class="pn">;</span>
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="id">Microsoft</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="id">ML</span>
@@ -227,145 +211,131 @@
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs3', 53)" onmouseover="showTip(event, 'fs3', 53)" class="id">System</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs19', 54)" onmouseover="showTip(event, 'fs19', 54)" class="id">Numerics</span>
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs20', 55)" onmouseover="showTip(event, 'fs20', 55)" class="id">FSharpML</span>
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs20', 56)" onmouseover="showTip(event, 'fs20', 56)" class="id">FSharpML</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs21', 57)" onmouseover="showTip(event, 'fs21', 57)" class="id">EstimatorModel</span>
-<span class="k">module</span> <span class="m">DataStructures</span> <span class="o">=</span>
-    <span class="k">open</span> <span onmouseout="hideTip(event, 'fs4', 58)" onmouseover="showTip(event, 'fs4', 58)" class="id">Microsoft</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 59)" onmouseover="showTip(event, 'fs5', 59)" class="id">ML</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs6', 60)" onmouseover="showTip(event, 'fs6', 60)" class="id">Data</span>
 
-<span class="c">/// Holds information about Iris flower to be classified.</span>
-<span class="pn">[&lt;</span><span onmouseout="hideTip(event, 'fs22', 61)" onmouseover="showTip(event, 'fs22', 61)" class="rt">CLIMutable</span><span class="pn">&gt;]</span>
-<span class="k">type</span> <span onmouseout="hideTip(event, 'fs23', 62)" onmouseover="showTip(event, 'fs23', 62)" class="rt">IrisData</span> <span class="o">=</span> <span class="pn">{</span>
-    <span class="pn">[&lt;</span><span onmouseout="hideTip(event, 'fs24', 63)" onmouseover="showTip(event, 'fs24', 63)" class="rt">LoadColumn</span><span class="pn">(</span><span class="n">0</span><span class="pn">)</span><span class="pn">&gt;]</span>
-    <span onmouseout="hideTip(event, 'fs25', 64)" onmouseover="showTip(event, 'fs25', 64)" class="id">Label</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs26', 65)" onmouseover="showTip(event, 'fs26', 65)" class="vt">float32</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs3', 58)" onmouseover="showTip(event, 'fs3', 58)" class="id">System</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs3', 59)" onmouseover="showTip(event, 'fs3', 59)" class="id">System</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs15', 60)" onmouseover="showTip(event, 'fs15', 60)" class="id">IO</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs4', 61)" onmouseover="showTip(event, 'fs4', 61)" class="id">Microsoft</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 62)" onmouseover="showTip(event, 'fs5', 62)" class="id">ML</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs4', 63)" onmouseover="showTip(event, 'fs4', 63)" class="id">Microsoft</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 64)" onmouseover="showTip(event, 'fs5', 64)" class="id">ML</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs6', 65)" onmouseover="showTip(event, 'fs6', 65)" class="id">Data</span>
 
-    <span class="pn">[&lt;</span><span onmouseout="hideTip(event, 'fs24', 66)" onmouseover="showTip(event, 'fs24', 66)" class="rt">LoadColumn</span><span class="pn">(</span><span class="n">1</span><span class="pn">)</span><span class="pn">&gt;]</span>
-    <span onmouseout="hideTip(event, 'fs27', 67)" onmouseover="showTip(event, 'fs27', 67)" class="id">SepalLength</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs26', 68)" onmouseover="showTip(event, 'fs26', 68)" class="vt">float32</span>
-        
-    <span class="pn">[&lt;</span><span onmouseout="hideTip(event, 'fs24', 69)" onmouseover="showTip(event, 'fs24', 69)" class="rt">LoadColumn</span><span class="pn">(</span><span class="n">2</span><span class="pn">)</span><span class="pn">&gt;]</span>
-    <span onmouseout="hideTip(event, 'fs28', 70)" onmouseover="showTip(event, 'fs28', 70)" class="id">SepalWidth</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs26', 71)" onmouseover="showTip(event, 'fs26', 71)" class="vt">float32</span>
-        
-    <span class="pn">[&lt;</span><span onmouseout="hideTip(event, 'fs24', 72)" onmouseover="showTip(event, 'fs24', 72)" class="rt">LoadColumn</span><span class="pn">(</span><span class="n">3</span><span class="pn">)</span><span class="pn">&gt;]</span>
-    <span onmouseout="hideTip(event, 'fs29', 73)" onmouseover="showTip(event, 'fs29', 73)" class="id">PetalLength</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs26', 74)" onmouseover="showTip(event, 'fs26', 74)" class="vt">float32</span>
-        
-    <span class="pn">[&lt;</span><span onmouseout="hideTip(event, 'fs24', 75)" onmouseover="showTip(event, 'fs24', 75)" class="rt">LoadColumn</span><span class="pn">(</span><span class="n">4</span><span class="pn">)</span><span class="pn">&gt;]</span>
-    <span onmouseout="hideTip(event, 'fs30', 76)" onmouseover="showTip(event, 'fs30', 76)" class="id">PetalWidth</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs26', 77)" onmouseover="showTip(event, 'fs26', 77)" class="vt">float32</span>
-<span class="pn">}</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs22', 66)" onmouseover="showTip(event, 'fs22', 66)" class="id">x</span> <span class="o">=</span> <span class="n">1</span>
+<span class="c">///// Type representing the text to run sentiment analysis on.</span>
+<span class="c">//[&lt;CLIMutable&gt;] </span>
+<span class="c">//type SentimentIssue = </span>
+<span class="c">//    { </span>
+<span class="c">//        [&lt;LoadColumn(0)&gt;]</span>
+<span class="c">//        Label : bool</span>
 
-<span class="c">/// Result of Iris classification. The array holds probability of the flower to be one of setosa, virginica or versicolor.</span>
-<span class="pn">[&lt;</span><span onmouseout="hideTip(event, 'fs22', 78)" onmouseover="showTip(event, 'fs22', 78)" class="rt">CLIMutable</span><span class="pn">&gt;]</span>
-<span class="k">type</span> <span onmouseout="hideTip(event, 'fs31', 79)" onmouseover="showTip(event, 'fs31', 79)" class="rt">IrisPrediction</span> <span class="o">=</span> <span class="pn">{</span>
-        <span onmouseout="hideTip(event, 'fs32', 80)" onmouseover="showTip(event, 'fs32', 80)" class="id">Score</span> <span class="pn">:</span> <span onmouseout="hideTip(event, 'fs26', 81)" onmouseover="showTip(event, 'fs26', 81)" class="vt">float32</span> <span class="pn">[</span><span class="pn">]</span>
-    <span class="pn">}</span>    
+<span class="c">//        [&lt;LoadColumn(1)&gt;]</span>
+<span class="c">//        Text : string </span>
+<span class="c">//    }</span>
 
+<span class="c">///// Result of sentiment prediction.</span>
+<span class="c">//[&lt;CLIMutable&gt;]</span>
+<span class="c">//type  SentimentPrediction = </span>
+<span class="c">//    { </span>
+<span class="c">//        // ColumnName attribute is used to change the column name from</span>
+<span class="c">//        // its default value, which is the name of the field.</span>
+<span class="c">//        [&lt;ColumnName(&quot;PredictedLabel&quot;)&gt;]</span>
+<span class="c">//        Prediction : bool; </span>
 
-<span class="k">module</span> <span onmouseout="hideTip(event, 'fs33', 82)" onmouseover="showTip(event, 'fs33', 82)" class="m">SampleIrisData</span> <span class="o">=</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs34', 83)" onmouseover="showTip(event, 'fs34', 83)" class="id">Iris1</span> <span class="o">=</span> <span class="pn">{</span> <span class="id">Label</span> <span class="o">=</span> <span class="n">0.f</span><span class="pn">;</span> <span class="id">SepalLength</span> <span class="o">=</span> <span class="n">5.1f</span><span class="pn">;</span> <span class="id">SepalWidth</span> <span class="o">=</span> <span class="n">3.3f</span><span class="pn">;</span> <span class="id">PetalLength</span> <span class="o">=</span> <span class="n">1.6f</span><span class="pn">;</span> <span class="id">PetalWidth</span><span class="o">=</span> <span class="n">0.2f</span> <span class="pn">}</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs35', 84)" onmouseover="showTip(event, 'fs35', 84)" class="id">Iris2</span> <span class="o">=</span> <span class="pn">{</span> <span class="id">Label</span> <span class="o">=</span> <span class="n">0.f</span><span class="pn">;</span> <span class="id">SepalLength</span> <span class="o">=</span> <span class="n">6.4f</span><span class="pn">;</span> <span class="id">SepalWidth</span> <span class="o">=</span> <span class="n">3.1f</span><span class="pn">;</span> <span class="id">PetalLength</span> <span class="o">=</span> <span class="n">5.5f</span><span class="pn">;</span> <span class="id">PetalWidth</span> <span class="o">=</span> <span class="n">2.2f</span> <span class="pn">}</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs36', 85)" onmouseover="showTip(event, 'fs36', 85)" class="id">Iris3</span> <span class="o">=</span> <span class="pn">{</span> <span class="id">Label</span> <span class="o">=</span> <span class="n">0.f</span><span class="pn">;</span> <span class="id">SepalLength</span> <span class="o">=</span> <span class="n">4.4f</span><span class="pn">;</span> <span class="id">SepalWidth</span> <span class="o">=</span> <span class="n">3.1f</span><span class="pn">;</span> <span class="id">PetalLength</span> <span class="o">=</span> <span class="n">2.5f</span><span class="pn">;</span> <span class="id">PetalWidth</span> <span class="o">=</span> <span class="n">1.2f</span> <span class="pn">}</span>
+<span class="c">//        // No need to specify ColumnName attribute, because the field</span>
+<span class="c">//        // name &quot;Probability&quot; is the column name we want.</span>
+<span class="c">//        Probability : float32; </span>
+
+<span class="c">//        Score : float32 </span>
+<span class="c">//    }</span>
 
 <span class="c">//let appPath = Path.GetDirectoryName(Environment.GetCommandLineArgs().[0])</span>
 
-<span class="c">//let baseDatasetsLocation = @&quot;../../../../Data&quot;;</span>
-<span class="c">//let trainDataPath = sprintf @&quot;%s/iris-train.txt&quot; baseDatasetsLocation</span>
-<span class="c">//let testDataPath = sprintf @&quot;%s/iris-test.txt&quot; baseDatasetsLocation</span>
+<span class="c">//let baseDatasetsLocation = @&quot;../../../../Data&quot;</span>
+<span class="c">//let trainDataPath = sprintf @&quot;%s/wikipedia-detox-250-line-data.tsv&quot; baseDatasetsLocation</span>
+<span class="c">//let testDataPath = sprintf @&quot;%s/wikipedia-detox-250-line-test.tsv&quot; baseDatasetsLocation</span>
 
-<span class="c">//let baseModelsPath = @&quot;../../../../MLModels&quot;</span>
-<span class="c">//let modelPath = sprintf @&quot;%s/IrisClassificationModel.zip&quot; baseModelsPath</span>
+<span class="c">//let baseModelsPath = @&quot;../../../../MLModels&quot;;</span>
+<span class="c">//let modelPath = sprintf @&quot;%s/SentimentModel.zip&quot; baseModelsPath</span>
 
+
+
+<span class="c">//let read (dataPath : string) (dataLoader : TextLoader) =</span>
+<span class="c">//    dataLoader.Read dataPath</span>
 
 <span class="c">//let buildTrainEvaluateAndSaveModel (mlContext : MLContext) =</span>
-    
 <span class="c">//    // STEP 1: Common data loading configuration</span>
-<span class="c">//    let trainingDataView = mlContext.Data.ReadFromTextFile&lt;IrisData&gt;(trainDataPath, hasHeader = true)</span>
-<span class="c">//    let testDataView = mlContext.Data.ReadFromTextFile&lt;IrisData&gt;(testDataPath, hasHeader = true)</span>
+<span class="c">//    let trainingDataView = mlContext.Data.ReadFromTextFile&lt;SentimentIssue&gt;(trainDataPath, hasHeader = true)</span>
+<span class="c">//    let testDataView = mlContext.Data.ReadFromTextFile&lt;SentimentIssue&gt;(testDataPath, hasHeader = true)</span>
 
-<span class="c">//    // STEP 2: Common data process configuration with pipeline data transformations</span>
-<span class="c">//    let dataProcessPipeline = </span>
-<span class="c">//        mlContext.Transforms.Concatenate(&quot;Features&quot;, &quot;SepalLength&quot;,</span>
-<span class="c">//                                                     &quot;SepalWidth&quot;,</span>
-<span class="c">//                                                     &quot;PetalLength&quot;,</span>
-<span class="c">//                                                     &quot;PetalWidth&quot;)</span>
-<span class="c">//                            .AppendCacheCheckpoint(mlContext)</span>
+<span class="c">//    // STEP 2: Common data process configuration with pipeline data transformations          </span>
+<span class="c">//    let dataProcessPipeline = mlContext.Transforms.Text.FeaturizeText(&quot;Features&quot;, &quot;Text&quot;)</span>
 
-<span class="c">//    // STEP 3: Set the training algorithm, then append the trainer to the pipeline  </span>
-<span class="c">//    let trainer = mlContext.MulticlassClassification.Trainers.StochasticDualCoordinateAscent(labelColumn = &quot;Label&quot;, featureColumn = &quot;Features&quot;)</span>
+<span class="c">//    // (OPTIONAL) Peek data (such as 2 records) in training DataView after applying the ProcessPipeline&#39;s transformations into &quot;Features&quot; </span>
+<span class="c">//    Common.ConsoleHelper.peekDataViewInConsole&lt;SentimentIssue&gt; mlContext trainingDataView dataProcessPipeline 2 |&gt; ignore</span>
+<span class="c">//    Common.ConsoleHelper.peekVectorColumnDataInConsole mlContext &quot;Features&quot; trainingDataView dataProcessPipeline 1 |&gt; ignore</span>
+
+<span class="c">//    // STEP 3: Set the training algorithm, then create and config the modelBuilder                            </span>
+<span class="c">//    let trainer = mlContext.BinaryClassification.Trainers.FastTree(labelColumn = &quot;Label&quot;, featureColumn = &quot;Features&quot;)</span>
 <span class="c">//    let trainingPipeline = dataProcessPipeline.Append(trainer)</span>
 
-
-
-
 <span class="c">//    // STEP 4: Train the model fitting to the DataSet</span>
-
-<span class="c">//    //Measure training time</span>
-<span class="c">//    let watch = System.Diagnostics.Stopwatch.StartNew()</span>
-
 <span class="c">//    printfn &quot;=============== Training the model ===============&quot;</span>
 <span class="c">//    let trainedModel = trainingPipeline.Fit(trainingDataView)</span>
 
-<span class="c">//    //Stop measuring time</span>
-<span class="c">//    watch.Stop()</span>
-<span class="c">//    let elapsedMs = float watch.ElapsedMilliseconds</span>
-<span class="c">//    printfn &quot;***** Training time: %f seconds *****&quot; (elapsedMs/1000.)</span>
-
-
 <span class="c">//    // STEP 5: Evaluate the model and show accuracy stats</span>
 <span class="c">//    printfn &quot;===== Evaluating Model&#39;s accuracy with Test data =====&quot;</span>
-<span class="c">//    let predictions = trainedModel.Transform(testDataView)</span>
-<span class="c">//    let metrics = mlContext.MulticlassClassification.Evaluate(predictions, &quot;Label&quot;, &quot;Score&quot;)</span>
+<span class="c">//    let predictions = trainedModel.Transform testDataView</span>
+<span class="c">//    let metrics = mlContext.BinaryClassification.Evaluate(predictions, &quot;Label&quot;, &quot;Score&quot;)</span>
 
-<span class="c">//    Common.ConsoleHelper.printMultiClassClassificationMetrics (trainer.ToString()) metrics</span>
+<span class="c">//    Common.ConsoleHelper.printBinaryClassificationMetrics (trainer.ToString()) metrics</span>
 
 <span class="c">//    // STEP 6: Save/persist the trained model to a .ZIP file</span>
 <span class="c">//    use fs = new FileStream(modelPath, FileMode.Create, FileAccess.Write, FileShare.Write)</span>
-<span class="c">//    mlContext.Model.Save(trainedModel, fs);</span>
+<span class="c">//    mlContext.Model.Save(trainedModel, fs)</span>
 
 <span class="c">//    printfn &quot;The model is saved to %s&quot; modelPath</span>
 
 
-<span class="c">//let testSomePredictions (mlContext : MLContext) =</span>
-<span class="c">//    //Test Classification Predictions with some hard-coded samples </span>
-<span class="c">//    use stream = new FileStream(modelPath, FileMode.Open, FileAccess.Read, FileShare.Read)</span>
-<span class="c">//    let trainedModel = mlContext.Model.Load(stream);</span>
-
+<span class="c">//// (OPTIONAL) Try/test a single prediction by loding the model from the file, first.</span>
+<span class="c">//let testSinglePrediction (mlContext : MLContext) =</span>
+<span class="c">//    let sampleStatement = { Label = false; Text = &quot;This is a very rude movie&quot; }</span>
+    
+<span class="c">//    let stream = new FileStream(modelPath, FileMode.Open, FileAccess.Read, FileShare.Read)</span>
+<span class="c">//    let trainedModel = mlContext.Model.Load(stream)</span>
+    
 <span class="c">//    // Create prediction engine related to the loaded trained model</span>
-<span class="c">//    let predEngine = trainedModel.CreatePredictionEngine&lt;IrisData, IrisPrediction&gt;(mlContext)</span>
+<span class="c">//    let predEngine= trainedModel.CreatePredictionEngine&lt;SentimentIssue, SentimentPrediction&gt;(mlContext)</span>
 
-<span class="c">//    //Score sample 1</span>
-<span class="c">//    let resultprediction1 = predEngine.Predict(DataStructures.SampleIrisData.Iris1)</span>
+<span class="c">//    //Score</span>
+<span class="c">//    let resultprediction = predEngine.Predict(sampleStatement)</span>
 
-<span class="c">//    printfn &quot;Actual: setosa.     Predicted probability: setosa:      %.4f&quot; resultprediction1.Score.[0]</span>
-<span class="c">//    printfn &quot;                                           versicolor:  %.4f&quot; resultprediction1.Score.[1]</span>
-<span class="c">//    printfn &quot;                                           virginica:   %.4f&quot; resultprediction1.Score.[2]</span>
-<span class="c">//    printfn &quot;&quot;</span>
 
-<span class="c">//    //Score sample 2</span>
-<span class="c">//    let resultprediction2 = predEngine.Predict(DataStructures.SampleIrisData.Iris2);</span>
-<span class="c">//    printfn &quot;Actual: virginica.  Predicted probability: setosa:      %.4f&quot; resultprediction2.Score.[0]</span>
-<span class="c">//    printfn &quot;                                           versicolor:  %.4f&quot; resultprediction2.Score.[1]</span>
-<span class="c">//    printfn &quot;                                           virginica:   %.4f&quot; resultprediction2.Score.[2]</span>
-<span class="c">//    printfn &quot;&quot;</span>
+<span class="c">//    printfn &quot;=============== Single Prediction  ===============&quot;</span>
+<span class="c">//    printfn </span>
+<span class="c">//        &quot;Text: %s | Prediction: %s sentiment | Probability: %f&quot;</span>
+<span class="c">//        sampleStatement.Text</span>
+<span class="c">//        (if Convert.ToBoolean(resultprediction.Prediction) then &quot;Toxic&quot; else &quot;Nice&quot;)</span>
+<span class="c">//        resultprediction.Probability</span>
+<span class="c">//    printfn &quot;==================================================&quot;</span>
 
-<span class="c">//    //Score sample 3</span>
-<span class="c">//    let resultprediction2 = predEngine.Predict(DataStructures.SampleIrisData.Iris3);</span>
-<span class="c">//    printfn &quot;Actual: versicolor. Predicted probability: setosa:      %.4f&quot; resultprediction2.Score.[0]</span>
-<span class="c">//    printfn &quot;                                           versicolor:  %.4f&quot; resultprediction2.Score.[1]</span>
-<span class="c">//    printfn &quot;                                           virginica:   %.4f&quot; resultprediction2.Score.[2]</span>
-<span class="c">//    printfn &quot;&quot;</span>
 
+    
 
 <span class="c">//[&lt;EntryPoint&gt;]</span>
 <span class="c">//let main argv =</span>
     
-<span class="c">//    // Create MLContext to be shared across the model creation workflow objects </span>
-<span class="c">//    // Set a random seed for repeatable/deterministic results across multiple trainings.</span>
-<span class="c">//    let mlContext = MLContext(seed = Nullable 0)</span>
+<span class="c">//    //Create MLContext to be shared across the model creation workflow objects </span>
+<span class="c">//    //Set a random seed for repeatable/deterministic results across multiple trainings.</span>
+<span class="c">//    let mlContext = MLContext(seed = Nullable 1)</span>
 
-<span class="c">//    //1.</span>
+<span class="c">//    // Create, Train, Evaluate and Save a model</span>
 <span class="c">//    buildTrainEvaluateAndSaveModel mlContext</span>
+<span class="c">//    Common.ConsoleHelper.consoleWriteHeader &quot;=============== End of training processh ===============&quot;</span>
 
-<span class="c">//    //2.</span>
-<span class="c">//    testSomePredictions mlContext</span>
+<span class="c">//    // Make a single test prediction loding the model from .ZIP file</span>
+<span class="c">//    testSinglePrediction mlContext</span>
 
-<span class="c">//    printfn &quot;=============== End of process, hit any key to finish ===============&quot;</span>
-<span class="c">//    Console.ReadKey() |&gt; ignore</span>
+<span class="c">//    Common.ConsoleHelper.consoleWriteHeader &quot;=============== End of process, hit any key to finish ===============&quot;</span>
+<span class="c">//    Common.ConsoleHelper.consolePressAnyKey()</span>
+
+<span class="c">//    0 // return an integer exit code</span>
 </code></pre></td>
 </tr>
 </table>
@@ -391,21 +361,7 @@
 <div class="tip" id="fs19">namespace System.Numerics</div>
 <div class="tip" id="fs20">module FSharpML</div>
 <div class="tip" id="fs21">module EstimatorModel<br /><br />from FSharpML</div>
-<div class="tip" id="fs22">Multiple items<br />type CLIMutableAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; CLIMutableAttribute<br /><br />--------------------<br />new : unit -&gt; CLIMutableAttribute</div>
-<div class="tip" id="fs23">type IrisData =<br />&#160;&#160;{Label: float32;<br />&#160;&#160;&#160;SepalLength: float32;<br />&#160;&#160;&#160;SepalWidth: float32;<br />&#160;&#160;&#160;PetalLength: float32;<br />&#160;&#160;&#160;PetalWidth: float32;}<br /><em><br /><br />&#160;Holds information about Iris flower to be classified.</em></div>
-<div class="tip" id="fs24">Multiple items<br />type LoadColumnAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : columnIndex:int -&gt; LoadColumnAttribute + 2 overloads<br /><br />--------------------<br />LoadColumnAttribute(columnIndex: int) : LoadColumnAttribute<br />LoadColumnAttribute(columnIndexes: int []) : LoadColumnAttribute<br />LoadColumnAttribute(start: int, end: int) : LoadColumnAttribute</div>
-<div class="tip" id="fs25">IrisData.Label: float32</div>
-<div class="tip" id="fs26">Multiple items<br />val float32 : value:&#39;T -&gt; float32 (requires member op_Explicit)<br /><br />--------------------<br />type float32 = Single<br /><br />--------------------<br />type float32&lt;&#39;Measure&gt; = float32</div>
-<div class="tip" id="fs27">IrisData.SepalLength: float32</div>
-<div class="tip" id="fs28">IrisData.SepalWidth: float32</div>
-<div class="tip" id="fs29">IrisData.PetalLength: float32</div>
-<div class="tip" id="fs30">IrisData.PetalWidth: float32</div>
-<div class="tip" id="fs31">type IrisPrediction =<br />&#160;&#160;{Score: float32 [];}<br /><em><br /><br />&#160;Result of Iris classification. The array holds probability of the flower to be one of setosa, virginica or versicolor.</em></div>
-<div class="tip" id="fs32">IrisPrediction.Score: float32 []</div>
-<div class="tip" id="fs33">module SampleIrisData<br /><br />from IrisClassification</div>
-<div class="tip" id="fs34">val Iris1 : IrisData</div>
-<div class="tip" id="fs35">val Iris2 : IrisData</div>
-<div class="tip" id="fs36">val Iris3 : IrisData</div>
+<div class="tip" id="fs22">val x : int</div>
 
         </div>
         <div class="span3">
