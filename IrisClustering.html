@@ -147,11 +147,11 @@
 </code></pre></td>
 </tr>
 </table>
-<div id="8b38a985-dc84-404e-a074-02cf499e9738" style="width: 700px; height: 500px;"><!-- Plotly chart will be drawn inside this DIV --></div>        
+<div id="8cb065c4-e7d9-429b-a149-6b941105aaa4" style="width: 700px; height: 500px;"><!-- Plotly chart will be drawn inside this DIV --></div>        
   <script>
     var data = [{"type":"scatter","x":[4.9,4.7,4.6,5.0,5.4,4.6,5.0,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5.0,5.0,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5.0,5.5,4.9,4.4,5.1,5.0,4.5,4.4,5.0,5.1,4.8,5.1,4.6,5.3,5.0],"y":[3.0,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3.0,3.0,4.0,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3.0,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.1,3.0,3.4,3.5,2.3,3.2,3.5,3.8,3.0,3.8,3.2,3.7,3.3],"mode":"markers","name":"Label: 0","marker":{}},{"type":"scatter","x":[7.0,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5.0,5.9,6.0,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6.0,5.7,5.5,5.5,5.8,6.0,5.4,6.0,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5.0,5.6,5.7,5.7,6.2,5.1,5.7],"y":[3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2.0,3.0,2.2,2.9,2.9,3.1,3.0,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3.0,2.8,3.0,2.9,2.6,2.4,2.4,2.7,2.7,3.0,3.4,3.1,2.3,3.0,2.5,2.6,3.0,2.6,2.3,2.7,3.0,2.9,2.9,2.5,2.8],"mode":"markers","name":"Label: 1","marker":{}},{"type":"scatter","x":[6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6.0,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6.0,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],"y":[3.3,2.7,3.0,2.9,3.0,3.0,2.5,2.9,2.5,3.6,3.2,2.7,3.0,2.5,2.8,3.2,3.0,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3.0,2.8,3.0,2.8,3.8,2.8,2.8,2.6,3.0,3.4,3.1,3.0,3.1,3.1,3.1,2.7,3.2,3.3,3.0,2.5,3.0,3.4,3.0],"mode":"markers","name":"Label: 2","marker":{}}];
     var layout = {};
-    Plotly.newPlot('8b38a985-dc84-404e-a074-02cf499e9738', data, layout);
+    Plotly.newPlot('8cb065c4-e7d9-429b-a149-6b941105aaa4', data, layout);
   </script>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
@@ -177,7 +177,6 @@
 <span class="l">22: </span>
 <span class="l">23: </span>
 <span class="l">24: </span>
-<span class="l">25: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="c">//Split dataset in two parts: TrainingDataset (80%) and TestDataset (20%)</span>
 <span class="k">let</span> <span class="k">struct</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs40', 91)" onmouseover="showTip(event, 'fs40', 91)" class="id">trainingDataView</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs41', 92)" onmouseover="showTip(event, 'fs41', 92)" class="id">testingDataView</span><span class="pn">)</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs17', 93)" onmouseover="showTip(event, 'fs17', 93)" class="fn">mlContext</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs42', 94)" onmouseover="showTip(event, 'fs42', 94)" class="id">Clustering</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs43', 95)" onmouseover="showTip(event, 'fs43', 95)" class="id">TrainTestSplit</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs20', 96)" onmouseover="showTip(event, 'fs20', 96)" class="id">fullData</span><span class="pn">,</span> <span class="id">testFraction</span> <span class="o">=</span> <span class="n">0.2</span><span class="pn">)</span>
@@ -203,11 +202,9 @@
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs59', 126)" onmouseover="showTip(event, 'fs59', 126)" class="id">metrics</span> <span class="o">=</span> 
     <span onmouseout="hideTip(event, 'fs44', 127)" onmouseover="showTip(event, 'fs44', 127)" class="id">model</span>
     <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs60', 128)" onmouseover="showTip(event, 'fs60', 128)" class="m">Evaluation</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs61', 129)" onmouseover="showTip(event, 'fs61', 129)" class="rt">Clustering</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs62', 130)" onmouseover="showTip(event, 'fs62', 130)" class="id">InitEvaluate</span><span class="pn">(</span><span class="id">Score</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs51', 131)" onmouseover="showTip(event, 'fs51', 131)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs63', 132)" onmouseover="showTip(event, 'fs63', 132)" class="id">Score</span><span class="pn">,</span> <span class="id">Features</span><span class="o">=</span><span onmouseout="hideTip(event, 'fs51', 133)" onmouseover="showTip(event, 'fs51', 133)" class="rt">DefaultColumnNames</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs52', 134)" onmouseover="showTip(event, 'fs52', 134)" class="id">Features</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs41', 135)" onmouseover="showTip(event, 'fs41', 135)" class="id">testingDataView</span>
- 
 </code></pre></td>
 </tr>
 </table>
-<table class="pre"><tr><td><pre><code>Microsoft.ML.Data.ClusteringMetrics</code></pre></td></tr></table>
 
 <div class="tip" id="fs1">Multiple items<br />namespace FSharp<br /><br />--------------------<br />namespace Microsoft.FSharp</div>
 <div class="tip" id="fs2">namespace FSharp.Plotly</div>
