@@ -11,8 +11,9 @@ Environment.SetEnvironmentVariable("Path",
   
 let dependencies = 
     [
+    "./packages/Newtonsoft.Json/lib/netstandard2.0/"
     "./packages/System.Memory/lib/netstandard2.0/"
-    "./packages/System.Collections.Immutable/lib/netstandard2.0"
+    "./packages/System.Collections.Immutable/lib/netstandard2.0/"
     "./packages/System.Numerics.Vectors/lib/netstandard2.0/"
     "./packages/Microsoft.Data.DataView/lib/netstandard2.0/"
     "./packages/Microsoft.ML/lib/netstandard2.0/"
@@ -43,6 +44,9 @@ dependencies
 
 // Reference .dlls
 // Note: referencing by path is needed also when referencing the directory.
+#I "../../../packages"
+#I "../../../packages/Newtonsoft.Json/lib/netstandard2.0"
+#r "../../../packages/Newtonsoft.Json/lib/netstandard2.0/Newtonsoft.Json.dll"
 #r "../../../packages/System.Threading.Tasks.Dataflow/lib/netstandard2.0/System.Threading.Tasks.Dataflow.dll"
 #r "../../../packages/Microsoft.Data.DataView/lib/netstandard2.0/Microsoft.Data.DataView.dll"
 #r "../../../packages/System.Collections.Immutable/lib/netstandard2.0/System.Collections.Immutable.dll"

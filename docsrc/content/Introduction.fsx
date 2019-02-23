@@ -1,8 +1,9 @@
 (*** hide ***)
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
-//#r "../../packages/formatting/FSharp.Plotly/lib/netstandard2.0/Fsharp.Plotly.dll"
-//#r "netstandard"
+#r "netstandard"
+#r "../../lib/Formatting/FSharp.Plotly.dll"
+open FSharp.Plotly
 //open FSharp.Plotly
 (**
 Sample Spam detection
@@ -21,9 +22,11 @@ manner, while maintaining the functional style of F#.
 After installing the package via Nuget we can load the delivered reference script and start using ML.Net in conjunction with FSharpML.
 *)
 
+
 #load "../../bin/FSharpML/netstandard2.0/FSharpML.fsx"
-#r @"../../lib/Formatting/FSharp.Plotly.dll"
-open FSharp.Plotly
+
+
+
 open System;
 open Microsoft.ML
 open Microsoft.ML.Data;

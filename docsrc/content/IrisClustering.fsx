@@ -3,7 +3,7 @@
 // it to define helpers that you do not want to show in the documentation.
 //#r "../../packages/formatting/FSharp.Plotly/lib/netstandard2.0/Fsharp.Plotly.dll"
 #r "netstandard"
-#r @"../../lib/Formatting/FSharp.Plotly.dll"
+#r "../../lib/Formatting/FSharp.Plotly.dll"
 open FSharp.Plotly
 (**
 Sample: Clustering iris data set
@@ -90,6 +90,6 @@ let predictions =
 // STEP4: Evaluate accuracy of the model
 let metrics = 
     model
-    |> Evaluation.Clustering.InitEvaluate(ScoreCol=DefaultColumnNames.Score, FeaturesCol=DefaultColumnNames.Features) testingDataView
+    |> Evaluation.Clustering.InitEvaluate(Score=DefaultColumnNames.Score, Features=DefaultColumnNames.Features) testingDataView
     
 
