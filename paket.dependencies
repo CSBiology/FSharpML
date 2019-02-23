@@ -23,6 +23,7 @@ nuget FSharp.Formatting.CommandTool prerelease
 nuget FSharp.Plotly
 
 group FakeBuild
+source https://nuget.org/api/v2
 source https://api.nuget.org/v3/index.json
 
 storage: none
