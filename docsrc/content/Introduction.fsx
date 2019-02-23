@@ -23,7 +23,7 @@ After installing the package via Nuget we can load the delivered reference scrip
 *)
 
 
-#load "../../bin/FSharpML/netstandard2.0/FSharpML.fsx"
+#load "../../FSharpML.fsx"
 
 
 

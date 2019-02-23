@@ -10,7 +10,7 @@ Sample: Sentiment analysis
 
 **)
 
-#load "../../bin/FSharpML/netstandard2.0/FSharpML.fsx"
+#load "../../FSharpML.fsx"
 
 open System;
 open Microsoft.ML

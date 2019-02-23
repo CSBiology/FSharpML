@@ -11,7 +11,7 @@ Sample: Clustering iris data set
 
 **)
 
-#load "../../bin/FSharpML/netstandard2.0/FSharpML.fsx"
+#load "../../FSharpML.fsx"
 
 
 open System;

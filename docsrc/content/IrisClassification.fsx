@@ -10,7 +10,7 @@ Sample: Iris classification
 
 **)
 
-#load "../../bin/FSharpML/netstandard2.0/FSharpML.fsx"
+#load "../../FSharpML.fsx"
 
 
 open System;

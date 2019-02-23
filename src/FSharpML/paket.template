@@ -25,6 +25,7 @@ summary
 description
     Library for the FSharp friendly usage of the ML.NET project
 dependencies
-    Microsoft.ML = 0.10.0
+    Newtonsoft.Json 11.0.2
+	Microsoft.ML 0.10.0
 files
 	../../bin/FSharpML ==> lib
