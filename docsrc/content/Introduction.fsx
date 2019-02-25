@@ -98,7 +98,7 @@ let trainedModel =
 
 let evaluationMetrics = 
     trainedModel
-    |> Evaluation.BinaryClassification.InitEvaluate() trainTestSplit.TestData
+    |> Evaluation.BinaryClassification.evaluate trainTestSplit.TestData
 
 let scoredData = 
     trainedModel

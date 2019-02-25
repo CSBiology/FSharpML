@@ -7,12 +7,14 @@ open Microsoft.Data.DataView
 open Microsoft.ML.Data
 open System.Runtime.InteropServices
 
+/// Function to evaluate models
 module Evaluation =
 
- 
+    /// Function to evaluate binary classification models
     type BinaryClassification =
         
-        static member InitEvaluate
+        /// Evalutes model with given column names defined by the user
+        static member evaluateWith
             (
                 ?Label : string,
                 ?Score : string,
@@ -28,7 +30,8 @@ module Evaluation =
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.BinaryClassification.Evaluate(prediction,label,score,probability,predictedLabel)
 
-        static member InitEvaluateUncalibrated
+        /// Evalutes model with given column names defined by the user (non calibrated)
+        static member evaluateNonCalibratedWith
             (
                 ?Label : string,
                 ?Score : string,
@@ -41,8 +44,9 @@ module Evaluation =
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.BinaryClassification.EvaluateNonCalibrated(prediction,label,score,predictedLabel)
-
-        static member InitCrossValidation
+        
+        /// Performs model cross-validation with additional parameters defined by the user
+        static member crossValidateWith
             (
                 ?NumFolds : int,
                 ?Label : string,
@@ -58,7 +62,8 @@ module Evaluation =
                     let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
                     estimatorModel.Context.BinaryClassification.CrossValidate(data,estimator,numFolds,label,stratification,seed)
 
-        static member InitCrossValidationCalibrated
+        /// Performs non calibrated model cross-validation with additional parameters defined by the user
+        static member crossValidateNonCalibratedWith
             (
                 ?NumFolds : int,
                 ?Label : string,
@@ -74,6 +79,25 @@ module Evaluation =
                     let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
                     estimatorModel.Context.BinaryClassification.CrossValidateNonCalibrated(data,estimator,numFolds,label,stratification,seed)
         
+        /// Function to evaluate binary classification models
+        module BinaryClassification =
+            
+            /// Evalutes model using default column names
+            let evaluate (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) =                                       
+                    BinaryClassification.evaluateWith() data transformerModel
+
+            /// Evalutes model using default column names (non calibrated)
+            let evaluateUncalibrated (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) =                                       
+                    BinaryClassification.evaluateNonCalibratedWith() data transformerModel
+
+            /// Performs model cross-validation using default parameters
+            let crossValidate (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>)  =                                       
+                    BinaryClassification.crossValidateWith() data estimatorModel
+
+            /// Performs non calibrated model cross-validation using default parameters
+            let crossValidateCalibrated (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>)  =                                       
+                    BinaryClassification.crossValidateNonCalibratedWith() data estimatorModel
+
         //TODO: add direct training on test and evaluation on train
         //static member initTrainTestSplit
         //    (
@@ -87,10 +111,12 @@ module Evaluation =
                 
         //        fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
         //            (estimatorModel.Context.BinaryClassification.TrainTestSplit(data,testFraction,stratification,seed)) 
-                    
+    
+    /// Function to evaluate multiclass classification models
     type MulticlassClassification =
         
-        static member InitEvaluate
+        /// Evalutes model with given column names defined by the user
+        static member evaluateWith
             (
                 ?Label : string,
                 ?Score : string,
@@ -105,8 +131,9 @@ module Evaluation =
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.MulticlassClassification.Evaluate(prediction,label,score,predictedLabel,topK)
-
-        static member InitCrossValidation
+        
+        /// Performs model cross-validation with additional parameters defined by the user
+        static member crossValidateWith
             (
                 ?NumFolds : int,
                 ?Label : string,
@@ -121,6 +148,19 @@ module Evaluation =
                 fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
                     let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
                     estimatorModel.Context.MulticlassClassification.CrossValidate(data,estimator,numFolds,label,stratification,seed)
+        
+
+        /// Function to evaluate multiclass classification models
+        module MulticlassClassification =
+
+            /// Evalutes model using default default parameters
+            let evaluate (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>)  =
+                MulticlassClassification.evaluateWith() data transformerModel
+            
+            /// Performs model cross-validation using default parameters
+            let crossValidate (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) =
+                MulticlassClassification.crossValidateWith() data estimatorModel
+
 
         //static member initTrainTestSplit
         //    (
@@ -137,7 +177,8 @@ module Evaluation =
           
     type Regression =
         
-        static member InitEvaluate
+        /// Evalutes model with given column names defined by the user
+        static member evaluateWith
             (
                 ?Label : string,
                 ?Score : string
@@ -149,7 +190,8 @@ module Evaluation =
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.Regression.Evaluate(prediction,label,score)
 
-        static member InitCrossValidation
+        /// Performs model cross-validation with additional parameters defined by the user
+        static member crossValidateWith
             (
                 ?NumFolds : int,
                 ?Label : string,
@@ -163,6 +205,16 @@ module Evaluation =
                 fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
                     let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
                     estimatorModel.Context.Regression.CrossValidate(data,estimator,numFolds,label,stratification,seed)
+
+        module Regression =
+
+            /// Evalutes model using default default parameters
+            let evaluate (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>)  =
+                Regression.evaluateWith() data transformerModel
+            
+            /// Performs model cross-validation using default parameters
+            let crossValidate (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) =
+                Regression.crossValidateWith() data estimatorModel            
 
         //static member initTrainTestSplit
         //    (
@@ -179,7 +231,8 @@ module Evaluation =
                            
     type Clustering =
         
-        static member InitEvaluate
+        /// Evalutes model with given column names defined by the user
+        static member evaluateWith
             (
                 ?Label : string,
                 ?Score : string,
@@ -192,8 +245,9 @@ module Evaluation =
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.Clustering.Evaluate(prediction, label, score, features)
-
-        static member InitCrossValidation
+        
+        /// Performs model cross-validation with additional parameters defined by the user
+        static member crossValidateWith
             (
                 ?NumFolds : int,
                 ?Label : string,
@@ -209,6 +263,17 @@ module Evaluation =
                 fun (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) ->                                       
                     let estimator = estimatorModel |> EstimatorModel.getEstimatorChain |> Estimator.downcastEstimator
                     estimatorModel.Context.Clustering.CrossValidate(data,estimator,numFolds,features,label,stratification,seed)
+
+        module Clustering =
+
+            /// Evalutes model using default default parameters
+            let evaluate (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>)  =
+                Clustering.evaluateWith() data transformerModel
+            
+            /// Performs model cross-validation using default parameters
+            let crossValidate (data:IDataView) (estimatorModel:EstimatorModel.EstimatorModel<_>) =
+                Clustering.crossValidateWith() data estimatorModel   
+
 
         //TODO: add direct training on test and evaluation on train
         //static member initTrainTestSplit
@@ -227,7 +292,7 @@ module Evaluation =
                        
     type Ranking =
         
-        static member InitEvaluate
+        static member evaluateWith
             (
                 ?Label : string,
                 ?groupID : string,
@@ -240,6 +305,12 @@ module Evaluation =
                 fun (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>) ->                                       
                     let prediction = transformerModel |> TransformerModel.transform data
                     transformerModel.Context.Ranking.Evaluate(prediction,label,groupID,score)
+
+        module Ranking =
+
+            /// Evalutes model using default default parameters
+            let evaluate (data:IDataView) (transformerModel:TransformerModel.TransformerModel<_>)  =
+                Ranking.evaluateWith() data transformerModel
 
         //TODO: add direct training on test and evaluation on train
         //static member initTrainTestSplit

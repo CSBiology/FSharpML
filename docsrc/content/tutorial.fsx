@@ -90,7 +90,7 @@ let trainedModel =
 
 let evaluationMetrics = 
     trainedModel
-    |> Evaluation.BinaryClassification.InitEvaluate() trainTestSplit.TestData
+    |> Evaluation.BinaryClassification.evaluate trainTestSplit.TestData
 
 let scoredData = 
     trainedModel
@@ -191,7 +191,7 @@ let thresholdVSPrecicionAndRecall =
                         TransformerChain<Microsoft.ML.Core.Data.ITransformer>(parts).Append(lastTransformer)
                     let newModel' = 
                         {TransformerModel.TransformerChain = newModel;Context=trainedModel.Context}
-                        |> Evaluation.BinaryClassification.InitEvaluate() trainTestSplit.TestData
+                        |> Evaluation.BinaryClassification.evaluate trainTestSplit.TestData
                     
                     threshold,newModel'.Accuracy
                     //threshold,

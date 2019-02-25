@@ -115,8 +115,7 @@ let predictions =
 // STEP4: Evaluate the accuracy of the model
 let metrics = 
     model
-    |> Evaluation.Clustering.InitEvaluate(Score=DefaultColumnNames.Score, Features=DefaultColumnNames.Features) testingDataView
-    
+    |> Evaluation.Clustering.evaluate testingDataView
 
 (**
 For more detailed examples continue to explore the FSharpML documentation.

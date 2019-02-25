@@ -5,6 +5,11 @@ open Microsoft.ML.Data
 open Microsoft.ML.Core.Data
 open Microsoft.Data.DataView
 
+
+//type Transformer =
+//    static member Concatenate(mlc:MLContext) =
+//        mlc.Clustering.Trainers.KMeans()
+
 /// Module to handel transformer
 module Transformer =
 
@@ -25,5 +30,10 @@ module Transformer =
         |> Seq.fold (fun acc e -> append e acc) (TransformerChain())
 
 
+
+    let concatenate outputColumnName inputColumnNames (mlc:MLContext) =
+        mlc.Transforms.Concatenate(outputColumnName,inputColumnNames)
+    
+        
 
         
