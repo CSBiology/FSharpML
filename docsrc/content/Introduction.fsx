@@ -202,7 +202,7 @@ let thresholdVSPrecicionAndRecall =
                         TransformerChain<ITransformer>(parts).Append(lastTransformer)
                     let newModel' = 
                         {TransformerModel.TransformerChain = newModel;Context=trainedModel.Context}
-                        |> Evaluation.BinaryClassification.InitEvaluate() trainTestSplit.TestData
+                        |> Evaluation.BinaryClassification.evaluate trainTestSplit.TestData
                     
                     threshold,newModel'.Accuracy
                     //threshold,

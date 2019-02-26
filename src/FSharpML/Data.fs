@@ -8,102 +8,65 @@ open Microsoft.ML.Data
 open System.Runtime.InteropServices
 
 
-
+// Maybe name Data according to Microsoft.ML.Data
 module Data =
     
-    type TrainTestSplit = {
-        TrainingData        : IDataView
-        TestData            : IDataView
-        SplitFraction       : float
-        StratificationColumn: string option
-        }
- 
-    type BinaryClassification =
+    module DataView =
+    
+    /// Returns column names
+        let getColumnNames (data:IDataView) =
+            data.Schema |> Seq.map (fun c -> c.Name) |> Seq.toArray
+    
+        /// Try get the number of rows
+        let tryGetRowCount (data:IDataView) =
+            data.GetRowCount() |> Option.ofNullable
         
-        static member initTrainTestSplit
-            (
-                context:MLContext, 
-                ?Testfraction:float,
-                ?Stratification : string,
-                ?Seed : uint32 
-            ) =
-                let testFraction    = defaultArg Testfraction 0.
-                let stratification  = defaultArg Stratification null
-                let seed            = Option.toNullable Seed
-                
-                fun (data:IDataView)  ->                                                           
-                    let train,test = (context.BinaryClassification.TrainTestSplit(data,testFraction,stratification,seed)).ToTuple() 
-                    {TrainingData = train; TestData = test; SplitFraction = testFraction; StratificationColumn= Stratification}
-
-    type MulticlassClassification =
-
-        static member initTrainTestSplit
-            (
-                context:MLContext, 
-                ?Testfraction:float,
-                ?Stratification : string,
-                ?Seed : uint32 
-            ) =
-                let testFraction    = defaultArg Testfraction 0.
-                let stratification  = defaultArg Stratification null
-                let seed            = Option.toNullable Seed
-                
-                fun (data:IDataView)  ->                                                           
-                    let train,test = (context.MulticlassClassification.TrainTestSplit(data,testFraction,stratification,seed)).ToTuple() 
-                    {TrainingData = train; TestData = test; SplitFraction = testFraction; StratificationColumn= Stratification}
-                    
-    type Regression =
+        /// Peek max of row 
+        let preview maxRow (data:IDataView) =
+            data.Preview(maxRow)
+            
+    module TextLoader =
         
-        static member initTrainTestSplit
-            (
-                context:MLContext, 
-                ?Testfraction:float,
-                ?Stratification : string,
-                ?Seed : uint32 
-            ) =
-                let testFraction    = defaultArg Testfraction 0.
-                let stratification  = defaultArg Stratification null
-                let seed            = Option.toNullable Seed
-                
-                fun (data:IDataView)  ->                                                           
-                    let train,test = (context.Regression.TrainTestSplit(data,testFraction,stratification,seed)).ToTuple() 
-                    {TrainingData = train; TestData = test; SplitFraction = testFraction; StratificationColumn= Stratification}
-                    
-    type Clustering =
- 
-        static member initTrainTestSplit
-            (
-                context:MLContext, 
-                ?Testfraction:float,
-                ?Stratification : string,
-                ?Seed : uint32 
-            ) =
-                let testFraction    = defaultArg Testfraction 0.
-                let stratification  = defaultArg Stratification null
-                let seed            = Option.toNullable Seed
-                
-                fun (data:IDataView)  ->                                                           
-                    let train,test = (context.Clustering.TrainTestSplit(data,testFraction,stratification,seed)).ToTuple() 
-                    {TrainingData = train; TestData = test; SplitFraction = testFraction; StratificationColumn= Stratification}
-                    
-                       
-    type Ranking =
-  
-        static member initTrainTestSplit
-            (
-                context:MLContext, 
-                ?Testfraction:float,
-                ?Stratification : string,
-                ?Seed : uint32 
-            ) =
-                let testFraction    = defaultArg Testfraction 0.
-                let stratification  = defaultArg Stratification null
-                let seed            = Option.toNullable Seed
-                
-                fun (data:IDataView)  ->                                                           
-                    let train,test = (context.Ranking.TrainTestSplit(data,testFraction,stratification,seed)).ToTuple() 
-                    {TrainingData = train; TestData = test; SplitFraction = testFraction; StratificationColumn= Stratification}
-          
-
+        let createColumn name datakind index =
+            TextLoader.Column(name,Nullable datakind,index)
+    
+    
+    /// Returns all values of a column
+    let getColumn<'a> (mlc:MLContext) columnName (data:IDataView) = 
+        data.GetColumn<'a>(mlc,columnName)
+    
+    /// Keeps only those rows that are between lower and upper range condition
+    let filterByColumn (mlc:MLContext) columnName lower upper (data:IDataView) = 
+        mlc.Data.FilterByColumn(data,columnName,lower,upper)
         
-        //Not implemented in ML.net: AnomalyDetection
+    /// Creates seq<'Trow> from data view
+    let createEnumerable<'Trow when 'Trow:(new : unit -> 'Trow) and 'Trow :not struct> (mlc:MLContext) (data:IDataView) = 
+        mlc.CreateEnumerable<'Trow>(data,false)
+
+    /// Reads a data view from seq<'Trow> 
+    let readFromEnumerable<'Trow when 'Trow:(new : unit -> 'Trow) and 'Trow :not struct> (mlc:MLContext) (data) = 
+        mlc.Data.ReadFromEnumerable<'Trow>(data)
+    
+    /// Reads a data view from text file
+    let readFromTextFile (mlc:MLContext) separatorChar hasHeader columns path = 
+        mlc.Data.ReadFromTextFile( 
+            path = path,
+            columns = columns,
+            hasHeader = hasHeader,
+            separatorChar = separatorChar)
+    
+    /// Reads a data view from binary file
+    let readFromBinary (mlc:MLContext) (multiStream: IMultiStreamSource) = 
+        mlc.Data. ReadFromBinary(multiStream)
+    
+    /// Saves data view to text file
+    let saveAsText (mlc:MLContext) separatorChar hasHeader  (stream:System.IO.Stream) (data:IDataView) = 
+        mlc.Data.SaveAsText(data, stream, separatorChar, hasHeader)
+
+    /// Saves data view to binary file
+    let saveAsBinary (mlc:MLContext) (stream:System.IO.Stream) (data:IDataView) = 
+        mlc.Data.SaveAsBinary(data, stream)
+
+
+
+    
