@@ -9,7 +9,7 @@ open System.Runtime.InteropServices
 
 
 
-module Data =
+module DataModel =
     
     type TrainTestSplit = {
         TrainingData        : IDataView
