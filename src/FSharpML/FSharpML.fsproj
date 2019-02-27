@@ -17,14 +17,14 @@
     <Compile Include="Data.fs" />
     <Compile Include="DataModel.fs" />
     <Compile Include="Transformer.fs" />
-    <Compile Include="Estimator.fs" />
     <Compile Include="TransformerModel.fs" />
+    <Compile Include="Estimator.fs" />
     <Compile Include="EstimatorModel.fs" />
     <Compile Include="Evaluation.fs" />
+    <Compile Include="Prediction.fs" />
+    <Compile Include="PredictionModel.fs" />
     <Compile Include="FeatureImportance.fs" />
     <Compile Include="Extensions.fs" />
-    <Compile Include="PredictionModel.fs" />
-    <Compile Include="Prediction.fs" />
     <None Include="FSharpML.fsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

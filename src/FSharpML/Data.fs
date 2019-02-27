@@ -23,7 +23,7 @@ module Data =
         
         /// Peek max of row 
         let preview maxRow (data:IDataView) =
-            data.Preview(maxRow)
+            data.Preview(maxRow)        
             
     module TextLoader =
         
@@ -67,6 +67,7 @@ module Data =
     let saveAsBinary (mlc:MLContext) (stream:System.IO.Stream) (data:IDataView) = 
         mlc.Data.SaveAsBinary(data, stream)
 
-
+    
+    let appendColumn () = ()
 
     
