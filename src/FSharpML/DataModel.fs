@@ -8,6 +8,7 @@ open Microsoft.Data.DataView
 
 
 module DataModel =
+    open System.Data
 
     type DataModel<'info> = {
         Context  : MLContext
@@ -15,9 +16,15 @@ module DataModel =
         Metadata : 'info option
         }
     
-    /// Creates a data model record (use createDataModelWith to include metadata information)
-    let createDataModel context dataview =
-        {Context=context;Dataview=dataview;Metadata=None}
+    ///// Creates a data model from MLContext
+    //let create context =        
+    //    let emptySchema = Microsoft.ML.Data.SimpleSchemaUtils.Create(context,
+    //    let emptyDataView = Microsoft.ML.Data.EmptyDataView(context,emptySchema)
+    //    {Context=context;Dataview=emptyDataView;Metadata=None}
+
+    ///// Creates a data model record (use createDataModelWith to include metadata information)
+    //let createDataModel context dataview =
+    //    {Context=context;Dataview=dataview;Metadata=None}
 
     /// Creates a data model record with metadata information
     let createDataModelWith context metaData dataview =

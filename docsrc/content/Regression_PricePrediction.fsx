@@ -79,7 +79,7 @@ let trainingData =
     mlContext.Data.ReadFromTextFile((__SOURCE_DIRECTORY__  + "./data/taxi-fare-train.csv") ,
         hasHeader = true,
         separatorChar = ',',
-        columns = Data.TextLoader.columnsFrom typeof<TaxiTrip>
+        columns = Data.TextLoader.columnsFrom typeof<TaxiTrip>        
     )
 
 let testingData = 
