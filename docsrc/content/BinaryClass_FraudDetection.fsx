@@ -91,5 +91,5 @@ let predictions =
 // STEP4: Evaluate accuracy of the model
 let metrics = 
     model
-    |> Evaluation.Clustering.InitEvaluate(Score=DefaultColumnNames.Score, Features=DefaultColumnNames.Features) testingDataView
+    |> Evaluation.Clustering.evaluateWith(Score=DefaultColumnNames.Score, Features=DefaultColumnNames.Features) testingDataView
 

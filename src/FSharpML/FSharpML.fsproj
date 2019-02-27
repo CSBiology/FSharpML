@@ -18,6 +18,7 @@
     <Compile Include="DataModel.fs" />
     <Compile Include="Transformer.fs" />
     <Compile Include="TransformerModel.fs" />
+    <Compile Include="Transforms.fs" />
     <Compile Include="Estimator.fs" />
     <Compile Include="EstimatorModel.fs" />
     <Compile Include="Evaluation.fs" />
