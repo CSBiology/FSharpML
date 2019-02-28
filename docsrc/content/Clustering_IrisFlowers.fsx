@@ -19,6 +19,7 @@ open Microsoft.ML
 open Microsoft.ML.Data;
 open FSharpML
 open FSharpML.EstimatorModel
+open FSharpML.TransformerModel
 
 
 /// Describes Iris flower. Used as an input to prediction function.

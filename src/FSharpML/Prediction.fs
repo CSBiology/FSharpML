@@ -4,7 +4,7 @@ open Microsoft.ML
 open Microsoft.ML.Data
 open Microsoft.ML.Core.Data
 open Microsoft.Data.DataView
-open TransformerModel
+open FSharpML.TransformerModel
 
 /// Module to build an estimator model that represents the estimator procedure  
 module Prediction =

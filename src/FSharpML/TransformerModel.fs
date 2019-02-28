@@ -1,9 +1,9 @@
-namespace FSharpML
+namespace FSharpML.TransformerModel
 
 open Microsoft.ML
 open Microsoft.ML.Core.Data
 
-
+[<AutoOpen>]
 module TransformerModel =
     open Microsoft.ML.Data
 

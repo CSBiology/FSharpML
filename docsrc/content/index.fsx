@@ -24,6 +24,8 @@ open System
 open Microsoft.ML
 open Microsoft.ML.Data;
 open FSharpML
+open FSharpML.EstimatorModel
+open FSharpML.TransformerModel
 
 
 (**

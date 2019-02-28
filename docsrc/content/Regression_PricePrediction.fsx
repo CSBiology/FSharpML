@@ -57,6 +57,9 @@ open System
 open Microsoft.ML
 open Microsoft.ML.Data
 open FSharpML
+open FSharpML.EstimatorModel
+open FSharpML.TransformerModel
+open Microsoft.ML.Transforms.Normalizers
 
 
 type TaxiTrip = {
@@ -76,16 +79,42 @@ let mlContext = MLContext(seed = Nullable 1) // Seed set to any number so you
 
 // STEP 1: Common data loading configuration
 let trainingData =     
-    mlContext.Data.ReadFromTextFile((__SOURCE_DIRECTORY__  + "./data/taxi-fare-train.csv") ,
-        hasHeader = true,
-        separatorChar = ',',
-        columns = Data.TextLoader.columnsFrom typeof<TaxiTrip>        
-    )
+    __SOURCE_DIRECTORY__  + "./data/taxi-fare-train.csv"
+    |> DataModel.fromTextFileWith<TaxiTrip> mlContext ',' true
+    //Sample code of removing extreme data like "outliers" for FareAmounts higher than $150 and lower than $1 which can be error-data
+    |> DataModel.appendFilterByColumn "FareAmount"  1. 150.
+    |> DataModel.toDataview
 
 let testingData = 
-    mlContext.Data.ReadFromTextFile((__SOURCE_DIRECTORY__  + "./data/taxi-fare-test.csv") ,
-        hasHeader = true,
-        separatorChar = ',',
-        columns = Data.TextLoader.columnsFrom typeof<TaxiTrip>
-    )
+    __SOURCE_DIRECTORY__  + "./data/taxi-fare-test.csv"
+    |> DataModel.fromTextFileWith<TaxiTrip> mlContext ',' true
+    |> DataModel.toDataview
+
+
+// STEP 2: Common data process configuration with pipeline data transformations
+let modelbuilding = 
+    EstimatorModel.create mlContext
+    |> EstimatorModel.Transforms.copyColumn "Label" "FareAmount"
+    |> EstimatorModel.Transforms.Categorical.oneHotEncoding "VendorIdEncoded" "VendorId"
+    |> EstimatorModel.Transforms.Categorical.oneHotEncoding "RateCodeEncoded" "RateCode"
+    |> EstimatorModel.Transforms.Categorical.oneHotEncoding "PaymentTypeEncoded" "PaymentType"
+    |> EstimatorModel.Transforms.normalizeLogMeanVariancee "PassengerCount" "PassengerCount"
+    |> EstimatorModel.Transforms.normalizeLogMeanVariancee "TripTime" "TripTime"
+    |> EstimatorModel.Transforms.normalizeLogMeanVariancee "TripDistance" "TripDistance"
+    |> EstimatorModel.Transforms.concatenate "Features" [| "VendorIdEncoded"; "RateCodeEncoded";  "PaymentTypeEncoded";  "PassengerCount";  "TripTime";  "TripDistance"|]
+    |> EstimatorModel.appendCacheCheckpoint
+    
+    // Set the training algorithm (SDCA Regression algorithm)  
+    |> EstimatorModel.appendBy (fun mlc -> 
+                                    mlc.Regression.Trainers.StochasticDualCoordinateAscent
+                                        (
+                                            labelColumn = DefaultColumnNames.Label,
+                                            featureColumn = DefaultColumnNames.Features
+                                         ) )                                 
+let model =
+    modelbuilding
+    |> EstimatorModel.fit trainingData                             
+
+  
+
 
