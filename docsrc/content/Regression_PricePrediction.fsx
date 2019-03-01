@@ -101,7 +101,8 @@ let modelbuilding =
     |> EstimatorModel.Transforms.normalizeLogMeanVariancee "PassengerCount" "PassengerCount"
     |> EstimatorModel.Transforms.normalizeLogMeanVariancee "TripTime" "TripTime"
     |> EstimatorModel.Transforms.normalizeLogMeanVariancee "TripDistance" "TripDistance"
-    |> EstimatorModel.Transforms.concatenate "Features" [| "VendorIdEncoded"; "RateCodeEncoded";  "PaymentTypeEncoded";  "PassengerCount";  "TripTime";  "TripDistance"|]
+    |> EstimatorModel.Transforms.concatenate "Features"
+                [|"VendorIdEncoded"; "RateCodeEncoded";  "PaymentTypeEncoded";  "PassengerCount";  "TripTime";  "TripDistance"|]
     |> EstimatorModel.appendCacheCheckpoint
     
     // Set the training algorithm (SDCA Regression algorithm)  
@@ -111,10 +112,34 @@ let modelbuilding =
                                             labelColumn = DefaultColumnNames.Label,
                                             featureColumn = DefaultColumnNames.Features
                                          ) )                                 
+
+// STEP 3: Train the model fitting to the DataSet
 let model =
     modelbuilding
     |> EstimatorModel.fit trainingData                             
 
-  
+
+// STEP 4: Evaluate the model and show accuracy stats
+let predictions = 
+    model
+    |> TransformerModel.transform testingData
+
+let metrics = 
+   Evaluation.Regression.evaluate testingData model
+   
+
+
+//let y,yy =    
+//    predictions  
+//    |> Data.getColumn<float32> mlContext DefaultColumnNames.Score
+//    |> Seq.take 100,
+//    predictions  
+//    |> Data.getColumn<float32> mlContext DefaultColumnNames.Label
+//    |> Seq.take 100
+
+//Chart.Point(y, yy)
+//|> Chart.Show
+
+
 
 
