@@ -22,8 +22,7 @@
     <Compile Include="EstimatorModel.fs" />
     <Compile Include="Transforms.fs" />
     <Compile Include="Evaluation.fs" />
-    <Compile Include="Prediction.fs" />
-    <Compile Include="PredictionModel.fs" />
+    <Compile Include="DefaultPredictionResults.fs" />
     <Compile Include="FeatureImportance.fs" />
     <Compile Include="CrossValidation.fs" />
     <None Include="FSharpML.fsx">

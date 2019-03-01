@@ -16,7 +16,7 @@ Regression: Price prediction
 |----------------|-------------------|-------------------------------|-------------|-----------|---------------------|---------------------------|-----------------------------|
 | v0.10           | Dynamic API | Up-to-date | Console app | .csv files | Price prediction | Regression | Sdca Regression |
 
-In this introductory sample, you'll see how to use [ML.NET](https://www.microsoft.com/net/learn/apps/machine-learning-and-ai/ml-dotnet) to predict taxi fares. In the world of machine learning, this type of prediction is known as **regression**.
+In this introductory sample, you'll see how to use FSharpML on top of [ML.NET](https://www.microsoft.com/net/learn/apps/machine-learning-and-ai/ml-dotnet) to predict taxi fares. In the world of machine learning, this type of prediction is known as **regression**.
 
 Problem
 -------
@@ -47,7 +47,11 @@ To solve this problem, first we will build an ML model. Then we will train the m
 
 
 
-1. Build model's pipeline
+1. Build and train the model
+
+FSharpML containing two complementary parts named EstimatorModel and TransformerModel covering the full machine lerarning workflow. In order to build an ML model and fit it to the training data we use EstimatorModel.
+The 'fit' function in EstimatorModel applied on training data results into the TransformerModel that represents the trained model able to transform other data of the same shape and is used int the second part to evaluate and consume the model.
+
 
 Building a model includes: uploading data (`taxi-fare-train.csv` with `TextLoader`), transforming the data so it can be used effectively by an ML algorithm (`StochasticDualCoordinateAscent` in this case):
 
@@ -60,6 +64,8 @@ open FSharpML
 open FSharpML.EstimatorModel
 open FSharpML.TransformerModel
 open Microsoft.ML.Transforms.Normalizers
+open FSharpML
+open Microsoft.ML.Core.Data
 
 
 type TaxiTrip = {
@@ -119,6 +125,13 @@ let model =
     |> EstimatorModel.fit trainingData                             
 
 
+(**
+2. Evaluate and consume the model
+
+TransformerModel is used to evaluate the model and make prediction on independant data.
+
+**)
+
 // STEP 4: Evaluate the model and show accuracy stats
 let predictions = 
     model
@@ -139,6 +152,31 @@ let metrics =
 
 //Chart.Point(y, yy)
 //|> Chart.Show
+
+
+// STEP 5: Consume the model and predict a taxifare sample
+let taxiTripSample = 
+    {
+        VendorId = "VTS"
+        RateCode = "1"
+        PassengerCount = 1.0f
+        TripTime = 1140.0f
+        TripDistance = 3.75f
+        PaymentType = "CRD"
+        FareAmount = 0.0f // To predict. Actual/Observed = 15.5
+    }
+
+[<CLIMutable>]
+type RegresionResult = {    
+    Score : float32
+}
+
+// 
+let predict = 
+    TransformerModel.createPredictionEngine<_,TaxiTrip,RegresionResult> model
+
+
+predict taxiTripSample
 
 
 
