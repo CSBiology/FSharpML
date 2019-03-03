@@ -48,6 +48,7 @@ To solve this problem, first we will build an ML model. Then we will train the m
 
 
 1. Build and train the model
+----------------------------
 
 FSharpML containing two complementary parts named EstimatorModel and TransformerModel covering the full machine lerarning workflow. In order to build an ML model and fit it to the training data we use EstimatorModel.
 The 'fit' function in EstimatorModel applied on training data results into the TransformerModel that represents the trained model able to transform other data of the same shape and is used int the second part to evaluate and consume the model.
@@ -107,7 +108,7 @@ let modelbuilding =
     |> EstimatorModel.Transforms.normalizeLogMeanVariancee "PassengerCount" "PassengerCount"
     |> EstimatorModel.Transforms.normalizeLogMeanVariancee "TripTime" "TripTime"
     |> EstimatorModel.Transforms.normalizeLogMeanVariancee "TripDistance" "TripDistance"
-    |> EstimatorModel.Transforms.concatenate "Features"
+    |> EstimatorModel.Transforms.concatenate DefaultColumnNames.Features
                 [|"VendorIdEncoded"; "RateCodeEncoded";  "PaymentTypeEncoded";  "PassengerCount";  "TripTime";  "TripDistance"|]
     |> EstimatorModel.appendCacheCheckpoint
     
@@ -127,6 +128,7 @@ let model =
 
 (**
 2. Evaluate and consume the model
+---------------------------------
 
 TransformerModel is used to evaluate the model and make prediction on independant data.
 

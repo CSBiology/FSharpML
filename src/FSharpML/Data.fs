@@ -137,6 +137,18 @@ module Data =
             hasHeader = hasHeader,
             separatorChar = separatorChar)
     
+    /// Reads a data view from text file as stream input
+    let readFromTextStream (mlc:MLContext) separatorChar hasHeader columns (stream:IMultiStreamSource) = 
+        let txtld =
+            new TextLoader(
+                mlc,
+                columns = columns,
+                hasHeader = hasHeader,
+                separatorChar = separatorChar)
+        
+        txtld.Read(stream)
+            
+
     /// Reads a data view from binary file
     let readFromBinary (mlc:MLContext) (multiStream: IMultiStreamSource) = 
         mlc.Data. ReadFromBinary(multiStream)

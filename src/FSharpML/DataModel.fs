@@ -33,6 +33,9 @@ module DataModel =
     let ofSeq mlc (data:seq<'Trow>) =
         let dv = Data.readFromEnumerable mlc data
         {Context=mlc;Dataview=dv;Metadata=None}
+ 
+    let inline toSeq<'TRow when 'TRow :not struct and 'TRow : (new: unit -> 'TRow) > (dataModel:DataModel<'a :> obj>) =
+        dataModel.Context.CreateEnumerable<'TRow>(dataModel.Dataview, reuseRowObject = false)
     
     /// Reads a data model from a text file 
     let fromTextFile<'Trow> mlc path = 
@@ -45,6 +48,28 @@ module DataModel =
         let columns = TextLoader.columnsFrom typeof<'Trow>
         let dv = Data.readFromTextFile mlc separatorChar hasHeader columns path
         {Context=mlc;Dataview=dv;Metadata=None}
+    
+    /// Reads a data model from a text file
+    let fromTextStreamWith<'Trow> mlc separatorChar hasHeader  stream = 
+        let columns = TextLoader.columnsFrom typeof<'Trow>
+        let dv = Data.readFromTextStream mlc separatorChar hasHeader columns stream
+        {Context=mlc;Dataview=dv;Metadata=None}
+
+    /// Reads a data model from a text stream 
+    let fromTextStream<'Trow> mlc stream =         
+        fromTextStreamWith<'Trow> mlc '\t' true stream
+
+    /// Reads a data view from text file as stream input
+    let readFromTextStream (mlc:MLContext) separatorChar hasHeader columns (stream:#IO.Stream) = 
+        let txtld =
+            new TextLoader(
+                mlc,
+                columns = columns,
+                hasHeader = hasHeader,
+                separatorChar = separatorChar)
+        
+        txtld.Read(stream)
+
 
     /// Reads a data model from a binary file 
     let fromBinaryStream<'Trow> mlc stream = 

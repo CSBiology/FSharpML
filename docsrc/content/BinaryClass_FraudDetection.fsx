@@ -6,8 +6,73 @@
 #r "../../lib/Formatting/FSharp.Plotly.dll"
 open FSharp.Plotly
 (**
-Sample: Clustering iris data set
-===============================
+Binary classification and PCA: Fraud detection in credit cards
+==============================================================
+
+
+
+| ML.NET version | API type          | Status                        | App Type    | Data type | Scenario            | ML Task                   | Algorithms                  |
+|----------------|-------------------|-------------------------------|-------------|-----------|---------------------|---------------------------|-----------------------------|
+| v0.10           | Dynamic API | Up-to-date | Two console apps | .csv file | Fraud Detection | Two-class classification | FastTree Binary Classification |
+
+In this introductory sample, you'll see how to use FSharpML on top of [ML.NET](https://www.microsoft.com/net/learn/apps/machine-learning-and-ai/ml-dotnet) to predict a credit card fraud. In the world of machine learning, this type of prediction is known as binary classification.
+
+//## API version: Dynamic and Estimators-based API
+//It is important to note that this sample uses the dynamic API with Estimators.
+
+Problem
+-------
+
+This problem is centered around predicting if credit card transaction (with its related info/variables) is a fraud or no. 
+
+The input information of the transactions contain only numerical input variables which are the result of PCA transformations. Unfortunately, due to confidentiality issues, the original features and additional background information are not available, but the way you build the model doesn't change.  
+
+Features V1, V2, ... V28 are the principal components obtained with PCA, the only features which have not been transformed with PCA are 'Time' and 'Amount'. 
+
+The feature 'Time' contains the seconds elapsed between each transaction and the first transaction in the dataset. The feature 'Amount' is the transaction Amount, this feature can be used for example-dependant cost-sensitive learning. Feature 'Class' is the response variable and it takes value 1 in case of fraud and 0 otherwise.
+
+The dataset is highly unbalanced, the positive class (frauds) account for 0.172% of all transactions.
+
+Using those datasets you build a model that when predicting it will analyze a transaction's input variables and predict a fraud value of false or true.
+
+DataSet
+-------
+
+The training and testing data is based on a public [dataset available at Kaggle](https://www.kaggle.com/mlg-ulb/creditcardfraud) originally from Worldline and the Machine Learning Group (http://mlg.ulb.ac.be) of ULB (Université Libre de Bruxelles), collected and analysed during a research collaboration. 
+
+The datasets contains transactions made by credit cards in September 2013 by european cardholders. This dataset presents transactions that occurred in two days, where we have 492 frauds out of 284,807 transactions.
+
+By: Andrea Dal Pozzolo, Olivier Caelen, Reid A. Johnson and Gianluca Bontempi. Calibrating Probability with Undersampling for Unbalanced Classification. In Symposium on Computational Intelligence and Data Mining (CIDM), IEEE, 2015
+
+More details on current and past projects on related topics are available on http://mlg.ulb.ac.be/BruFence and http://mlg.ulb.ac.be/ARTML
+
+## ML Task - [Binary Classification](https://en.wikipedia.org/wiki/Binary_classification)
+
+Binary or binomial classification is the task of classifying the elements of a given set into two groups (predicting which group each one belongs to) on the basis of a classification rule. Contexts requiring a decision as to whether or not an item has some qualitative property, some specified characteristic
+  
+Solution
+--------
+
+To solve this problem, first you need to build a machine learning model. Then you train the model on existing training data, evaluate how good its accuracy is, and lastly you consume the model (deploying the built model in a different app) to predict a fraud for a sample credit card transaction.
+
+![Build -> Train -> Evaluate -> Consume](../shared_content/modelpipeline.png)
+
+
+1. Build and train the model
+----------------------------
+
+FSharpML containing two complementary parts named EstimatorModel and TransformerModel covering the full machine lerarning workflow. In order to build an ML model and fit it to the training data we use EstimatorModel.
+The 'fit' function in EstimatorModel applied on training data results into the TransformerModel that represents the trained model able to transform other data of the same shape and is used int the second part to evaluate and consume the model.
+
+Building a model includes:
+
+- Define the data's schema maped to the datasets to read with a DataReader
+
+- Split data for training and tests
+
+- Create an Estimator and transform the data with a ConcatEstimator() and Normalize by Mean Variance. 
+
+- Choosing a trainer/learning algorithm (FastTree) to train the model with.
 
 **)
 
@@ -19,77 +84,142 @@ open Microsoft.ML
 open Microsoft.ML.Data;
 open FSharpML
 open FSharpML.EstimatorModel
+open FSharpML.TransformerModel
+open System.IO
 
 
-/// Describes Iris flower. Used as an input to prediction function.
-[<CLIMutable>] 
-type IrisData = {
-    Label : float32
-    SepalLength : float32
-    SepalWidth: float32
-    PetalLength : float32
-    PetalWidth : float32    
-} 
+/// Data models used as an input to prediction function.
+[<CLIMutable>]
+type TransactionObservation = {
+    Label: bool
+    V1: float32
+    V2: float32
+    V3: float32
+    V4: float32
+    V5: float32
+    V6: float32
+    V7: float32
+    V8: float32
+    V9: float32
+    V10: float32
+    V11: float32
+    V12: float32
+    V13: float32
+    V14: float32
+    V15: float32
+    V16: float32
+    V17: float32
+    V18: float32
+    V19: float32
+    V20: float32
+    V21: float32
+    V22: float32
+    V23: float32
+    V24: float32
+    V25: float32
+    V26: float32
+    V27: float32
+    V28: float32
+    Amount: float32
+    }
+
+[<CLIMutable>]
+type TransactionFraudPrediction = {
+    Label: bool
+    PredictedLabel: bool
+    Score: float32
+    Probability: float32
+    }
 
 
-
+//let inputFile = Path.Combine (dataDirectory, "creditcard.csv")
+//let trainFile = Path.Combine (dataDirectory, "trainData.csv")
+//let testFile = Path.Combine (dataDirectory, "testData.csv")
 
 //Create the MLContext to share across components for deterministic results
 let mlContext = MLContext(seed = Nullable 1) // Seed set to any number so you
                                              // have a deterministic environment
 
 // STEP 1: Common data loading configuration
-let fullData = 
-    mlContext.Data.ReadFromTextFile((__SOURCE_DIRECTORY__  + "./data/iris-full.txt") ,
-        hasHeader = true,
-        separatorChar = '\t',
-        columns =
-            [|
-                TextLoader.Column("Label", Nullable DataKind.R4, 0)
-                TextLoader.Column("SepalLength", Nullable DataKind.R4, 1)
-                TextLoader.Column("SepalWidth", Nullable DataKind.R4, 2)
-                TextLoader.Column("PetalLength", Nullable DataKind.R4, 3)
-                TextLoader.Column("PetalWidth", Nullable DataKind.R4, 4)
-            |]
-    )
+let fullData =     
+    __SOURCE_DIRECTORY__  + "./data/creditcardfraud-dataset.zip"
+    |> DataModel.fromTextFileWith<TransactionObservation> mlContext ',' true 
+    //|> (fun path -> new FileStream(path,FileMode.Open) )
+    //|> readFromTextStream    
+    //DataModel.fromTextStreamWith<TransactionObservation> mlContext ',' true fullData
+    
 
+let trainingData, testingData = 
+    fullData
+    |> DataModel.BinaryClassification.trainTestSplit 0.2 
 
-// (Optional) Peek data 
-(*** define-output: plot1 ***)
-mlContext.CreateEnumerable<IrisData>(fullData,false)
-|> Seq.groupBy (fun items -> items.Label)
-|> Seq.map (fun (k,values) -> 
-    let x = values |> Seq.map (fun items -> items.SepalLength) 
-    let y = values |> Seq.map (fun items -> items.SepalWidth) 
-    Chart.Point(x,y,Name=sprintf "Label: %.0f" k)
-    )
-|> Chart.Combine
-(*** include-it: plot1 ***)
-
-
-
-//Split dataset in two parts: TrainingDataset (80%) and TestDataset (20%)
-let struct(trainingDataView, testingDataView) = mlContext.Clustering.TrainTestSplit(fullData, testFraction = 0.2)
-
-
+let featureColumnNames = 
+    trainingData.Dataview.Schema    
+    |> Seq.map (fun column -> column.Name)
+    |> Seq.filter (fun name -> name <> "Label")
+    |> Seq.filter (fun name -> name <> "StratificationColumn")
+    |> Seq.toArray
 
 //STEP 2: Process data, create and train the model 
 let model = 
     EstimatorModel.create mlContext
     // Process data transformations in pipeline
-    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Concatenate(DefaultColumnNames.Features , "SepalLength", "SepalWidth", "PetalLength", "PetalWidth") )
+    |> EstimatorModel.Transforms.concatenate DefaultColumnNames.Features featureColumnNames
+    |> EstimatorModel.Transforms.normalizeMeanVariance "FeaturesNormalizedByMeanVar" DefaultColumnNames.Features  
+    
     // Create the model
-    |> EstimatorModel.appendBy (fun mlc -> mlc.Clustering.Trainers.KMeans(featureColumn = DefaultColumnNames.Features, clustersCount = 3) )
+    |> EstimatorModel.appendBy (fun mlc -> 
+        mlc.BinaryClassification.Trainers.FastTree
+            (
+                DefaultColumnNames.Label, 
+                DefaultColumnNames.Features, 
+                numLeaves = 20, 
+                numTrees = 100, 
+                minDatapointsInLeaves = 10, 
+                learningRate = 0.2
+            ) )
+ 
     // Train the model
-    |> EstimatorModel.fit trainingDataView
+    |> EstimatorModel.fit trainingData.Dataview
+
+(**
+2. Evaluate and consume the model
+---------------------------------
+
+TransformerModel is used to evaluate the model and make prediction on independant data.
+
+**)
 
 // STEP3: Run the prediciton on the test data
 let predictions =
     model
-    |> TransformerModel.transform testingDataView
+    |> TransformerModel.transform trainingData.Dataview
+
 
 // STEP4: Evaluate accuracy of the model
 let metrics = 
     model
-    |> Evaluation.Clustering.evaluateWith(Score=DefaultColumnNames.Score, Features=DefaultColumnNames.Features) testingDataView
+    |> Evaluation.BinaryClassification.evaluate trainingData.Dataview
+
+
+
+let predict = 
+    TransformerModel.createPredictionEngine<_,TransactionObservation,TransactionFraudPrediction> model
+
+
+////let toSeq<'TRow when 'TRow :not struct and 'TRow : (new: unit -> 'TRow) > (dataModel:DataModel.DataModel<'a :> obj>) =
+////    dataModel.Context.CreateEnumerable<'TRow>(dataModel.Dataview, reuseRowObject = false)
+
+//DataModel.toSeq<TransactionObservation> testingData
+//|> Seq.filter (fun x -> x.Label = true)
+//// use 5 observations from the test data
+//|> Seq.take 5
+//|> Seq.iter (fun testData -> 
+//    let prediction = predict testData
+//    printfn "%A" prediction
+//    printfn "------"
+//    )
+
+
+
 
