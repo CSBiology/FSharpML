@@ -59,15 +59,13 @@ open FSharpML.EstimatorModel
 open FSharpML.TransformerModel
 
 
-/// Describes Iris flower. Used as an input to prediction function.
+/// Type representing the Message to run analysis on.
 [<CLIMutable>] 
-type IrisData = {
-    Label : float32
-    SepalLength : float32
-    SepalWidth: float32
-    PetalLength : float32
-    PetalWidth : float32    
-} 
+type SpamInput = 
+    { 
+        [<LoadColumn(0)>] LabelText : string
+        [<LoadColumn(1)>] Message : string 
+    }
 
 
 
@@ -76,37 +74,31 @@ type IrisData = {
 let mlContext = MLContext(seed = Nullable 1) // Seed set to any number so you
                                              // have a deterministic environment
 
-// STEP 1: Common data loading configuration
+// STEP 1: Common data loading configuration   
 let fullData = 
-    mlContext.Data.ReadFromTextFile((__SOURCE_DIRECTORY__  + "./data/iris-full.txt") ,
-        hasHeader = true,
-        separatorChar = '\t',
-        columns =
-            [|
-                TextLoader.Column("Label", Nullable DataKind.R4, 0)
-                TextLoader.Column("SepalLength", Nullable DataKind.R4, 1)
-                TextLoader.Column("SepalWidth", Nullable DataKind.R4, 2)
-                TextLoader.Column("PetalLength", Nullable DataKind.R4, 3)
-                TextLoader.Column("PetalWidth", Nullable DataKind.R4, 4)
-            |]
-    )
+    __SOURCE_DIRECTORY__  + "./data/SMSSpamCollection.txt"
+    |> DataModel.fromTextFileWith<SpamInput> mlContext '\t' false 
 
-
+let trainingData, testingData = 
+    fullData
+    |> DataModel.BinaryClassification.trainTestSplit 0.1
 
 //STEP 2: Process data, create and train the model 
 let model = 
     EstimatorModel.create mlContext
     // Process data transformations in pipeline
-    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Concatenate(DefaultColumnNames.Features , "SepalLength", "SepalWidth", "PetalLength", "PetalWidth") )
+    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Conversion.ValueMap(["ham"; "spam"],[false; true],[| struct (DefaultColumnNames.Label, "LabelText") |]))
+    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Text.FeaturizeText(DefaultColumnNames.Features, "Message"))
+    |> EstimatorModel.appendCacheCheckpoint
     // Create the model
-    |> EstimatorModel.appendBy (fun mlc -> mlc.Clustering.Trainers.KMeans(featureColumn = DefaultColumnNames.Features, clustersCount = 3) )
+    |> EstimatorModel.appendBy (fun mlc -> mlc.BinaryClassification.Trainers.StochasticDualCoordinateAscent(DefaultColumnNames.Label, DefaultColumnNames.Features))
     // Train the model
-    |> EstimatorModel.fit trainingDataView
+    |> EstimatorModel.fit trainingData.Dataview
 
 // STEP3: Run the prediciton on the test data
 let predictions =
     model
-    |> TransformerModel.transform testingDataView
+    |> TransformerModel.transform testingData.Dataview
 
 
 (**
@@ -120,106 +112,28 @@ TransformerModel is used to evaluate the model and make prediction on independan
 // STEP4: Evaluate accuracy of the model
 let metrics = 
     model
-    |> Evaluation.Clustering.evaluateWith(Score=DefaultColumnNames.Score, Features=DefaultColumnNames.Features) testingDataView
+    |> Evaluation.BinaryClassification.evaluate testingData.Dataview
+
+metrics.Accuracy
 
 
 
 
 
-#load "../../FSharpML.fsx"
+//// STEP5: Create prediction engine function related to the loaded trained model
+//let predict = 
+//    TransformerModel.createPredictionEngine<_,SpamInput,SpamInput> model
 
-open System;
-open Microsoft.ML
-open Microsoft.ML.Data;
-open FSharpML
+//// Score
+//let prediction = predict sampleStatement
 
-open Microsoft.ML
-open Microsoft.ML.Data
-open Microsoft.ML.Core.Data
-open Microsoft.Data.DataView
-[<CLIMutable>]
-type SpamInput = 
-    {
-        LabelText : string
-        Message : string
-    }
-
-[<CLIMutable>]
-type SpamPrediction = 
-    {
-        PredictedLabel : bool
-        Score : float32
-        Probability : float32
-    }
-
-
-let classify (p : PredictionEngine<_,_>) x = 
-    let prediction = p.Predict({LabelText = ""; Message = x})
-    printfn "The message '%s' is %b" x prediction.PredictedLabel
-
-
-let mlContext = MLContext(seed = Nullable 1)
-
-let trainDataPath  = (__SOURCE_DIRECTORY__  + "./data/SMSSpamCollection.txt")
-
-
-let data = 
-    mlContext.Data.ReadFromTextFile(trainDataPath,
-        columns = 
-            [|
-                TextLoader.Column("LabelText" , Nullable DataKind.Text, 0)
-                TextLoader.Column("Message" , Nullable DataKind.Text, 1)
-            |],
-        hasHeader = false,
-        separatorChar = '\t')
-    
-// Create the estimator which converts the text label to a bool then featurizes the text, and add a linear trainer.
-let estimator = 
-    EstimatorChain()
-        .Append(mlContext.Transforms.Conversion.ValueMap(["ham"; "spam"], [false; true],[| struct ("Label", "LabelText") |]))
-        .Append(mlContext.Transforms.Text.FeaturizeText("Features", "Message"))
-        .AppendCacheCheckpoint(mlContext)
-        .Append(mlContext.BinaryClassification.Trainers.StochasticDualCoordinateAscent("Label", "Features"))
-        
-// Evaluate the model using cross-validation.
-// Cross-validation splits our dataset into 'folds', trains a model on some folds and 
-// evaluates it on the remaining fold. We are using 5 folds so we get back 5 sets of scores.
-// Let's compute the average AUC, which should be between 0.5 and 1 (higher is better).
-//let cvResults = mlContext.BinaryClassification.CrossValidate(data, Estimator.downcastEstimator estimator, numFolds = 5);
-//let avgAuc = cvResults |> Seq.map (fun struct (metrics,_,_) -> metrics.Auc) |> Seq.average
-//printfn "The AUC is %f" avgAuc
-    
-// Now let's train a model on the full dataset to help us get better results
-let model = estimator.Fit(data)
-
-// The dataset we have is skewed, as there are many more non-spam messages than spam messages.
-// While our model is relatively good at detecting the difference, this skewness leads it to always
-// say the message is not spam. We deal with this by lowering the threshold of the predictor. In reality,
-// it is useful to look at the precision-recall curve to identify the best possible threshold.
-let newModel = 
-    let lastTransformer = 
-        BinaryPredictionTransformer<IPredictorProducing<float32>>(
-            mlContext, 
-            model.LastTransformer.Model, 
-            model.GetOutputSchema(data.Schema), 
-            model.LastTransformer.FeatureColumn, 
-            threshold = 0.15f, 
-            thresholdColumn = DefaultColumnNames.Probability);
-    let parts = model |> Seq.toArray
-    parts.[parts.Length - 1] <- lastTransformer :> _
-    TransformerChain<ITransformer>(parts)
-
-
-// Create a PredictionFunction from our model 
-let predictor = model.CreatePredictionEngine<SpamInput, SpamPrediction>(mlContext);
-
-// Test a few examples
-[
-    "That's a great idea. It should work."
-    "free medicine winner! congratulations"
-    "Yes we should meet over the weekend!"
-    "you win pills and free entry vouchers"
-] 
-|> List.iter (classify predictor)
+//// Test a few examples
+//[
+//    "That's a great idea. It should work."
+//    "free medicine winner! congratulations"
+//    "Yes we should meet over the weekend!"
+//    "you win pills and free entry vouchers"
+//] 
+//|> List.iter (classify predictor)
 
 

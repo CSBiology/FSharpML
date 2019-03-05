@@ -171,7 +171,7 @@ let fullData =
     dataFile 
     |> DataModel.fromTextFileWith<TransactionObservation> mlContext ',' true 
     
-let t : seq<int> = Data.getColumn mlContext "Class" fullData.Dataview 
+let t = Data.getColumn<int> mlContext "Class" fullData.Dataview 
 
 
 //let trainingData, testingData = 
@@ -186,28 +186,28 @@ let featureColumnNames =
     |> Seq.filter (fun name -> name <> "StratificationColumn")
     |> Seq.toArray
 
-//STEP 2: Process data, create and train the model 
-let model = 
-    EstimatorModel.create mlContext
-    // Process data transformations in pipeline
-    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Conversion.ValueMap([0;1],[false;true],(struct (DefaultColumnNames.Label,"Class")))) // ConvertType(DefaultColumnNames.Label,"Class",DataKind.Bool))
-    |> EstimatorModel.Transforms.concatenate DefaultColumnNames.Features featureColumnNames
-    |> EstimatorModel.Transforms.normalizeMeanVariance "FeaturesNormalizedByMeanVar" DefaultColumnNames.Features  
+////STEP 2: Process data, create and train the model 
+//let model = 
+//    EstimatorModel.create mlContext
+//    // Process data transformations in pipeline
+//    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Conversion.ValueMap([0;1],[false;true],(struct (DefaultColumnNames.Label,"Class")))) // ConvertType(DefaultColumnNames.Label,"Class",DataKind.Bool))
+//    |> EstimatorModel.Transforms.concatenate DefaultColumnNames.Features featureColumnNames
+//    |> EstimatorModel.Transforms.normalizeMeanVariance "FeaturesNormalizedByMeanVar" DefaultColumnNames.Features  
     
-    // Create the model
-    |> EstimatorModel.appendBy (fun mlc -> 
-        mlc.BinaryClassification.Trainers.FastTree
-            (
-                DefaultColumnNames.Label, 
-                DefaultColumnNames.Features, 
-                numLeaves = 20, 
-                numTrees = 100, 
-                minDatapointsInLeaves = 10, 
-                learningRate = 0.2
-            ) )
+//    // Create the model
+//    |> EstimatorModel.appendBy (fun mlc -> 
+//        mlc.BinaryClassification.Trainers.FastTree
+//            (
+//                DefaultColumnNames.Label, 
+//                DefaultColumnNames.Features, 
+//                numLeaves = 20, 
+//                numTrees = 100, 
+//                minDatapointsInLeaves = 10, 
+//                learningRate = 0.2
+//            ) )
  
-    // Train the model
-    |> EstimatorModel.fit fullData.Dataview //trainingData.Dataview
+//    // Train the model
+//    |> EstimatorModel.fit fullData.Dataview //trainingData.Dataview
 
 (**
 2. Evaluate and consume the model
@@ -217,21 +217,21 @@ TransformerModel is used to evaluate the model and make prediction on independan
 
 **)
 
-// STEP3: Run the prediciton on the test data
-let predictions =
-    model
-    |> TransformerModel.transform trainingData.Dataview
+//// STEP3: Run the prediciton on the test data
+//let predictions =
+//    model
+//    |> TransformerModel.transform trainingData.Dataview
 
 
-// STEP4: Evaluate accuracy of the model
-let metrics = 
-    model
-    |> Evaluation.BinaryClassification.evaluate trainingData.Dataview
+//// STEP4: Evaluate accuracy of the model
+//let metrics = 
+//    model
+//    |> Evaluation.BinaryClassification.evaluate trainingData.Dataview
 
 
 
-let predict = 
-    TransformerModel.createPredictionEngine<_,TransactionObservation,TransactionFraudPrediction> model
+//let predict = 
+//    TransformerModel.createPredictionEngine<_,TransactionObservation,TransactionFraudPrediction> model
 
 
 ////let toSeq<'TRow when 'TRow :not struct and 'TRow : (new: unit -> 'TRow) > (dataModel:DataModel.DataModel<'a :> obj>) =
@@ -247,7 +247,31 @@ let predict =
 //    printfn "------"
 //    )
 
+//let addColumn =
+    //// Compute row count
+    //Microsoft.ML.Data.DataViewUtils.ComputeRowCount
+    // Get single values
+    //Microsoft.ML.Data.ColumnCursorExtensions
+    
+    //Microsoft.ML.Data.LambdaFilter
+
+    // Stacks two dataciews
+    //Microsoft.ML.Data.AppendRowsDataView
+
+    //Microsoft.ML.Data.CursoringUtils.CreateEnumerable
 
 
+    //Microsoft.ML.Data.RowCursorUtils
+    
+        
+
+
+
+
+
+//let advb = Microsoft.ML.Data.ArrayDataViewBuilder(mlContext)
+//advb.AddColumn<bool>("Label",bt,[|ls|])
+//advb.AddColumn<ReadOnlyMemory<char>>("Text",tt,[|ts|])
+//let dataView = advb.GetDataView()
 
 
