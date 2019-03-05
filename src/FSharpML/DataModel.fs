@@ -34,7 +34,7 @@ module DataModel =
         let dv = Data.readFromEnumerable mlc data
         {Context=mlc;Dataview=dv;Metadata=None}
  
-    let inline toSeq<'TRow when 'TRow :not struct and 'TRow : (new: unit -> 'TRow) > (dataModel:DataModel<'a :> obj>) =
+    let toSeq<'a,  'TRow when 'TRow :not struct and 'TRow : (new: unit -> 'TRow) > (dataModel:DataModel<'a>) =
         dataModel.Context.CreateEnumerable<'TRow>(dataModel.Dataview, reuseRowObject = false)
     
     /// Reads a data model from a text file 

@@ -40,9 +40,6 @@ Solution
 
 To solve this problem, first we will build an ML model. Then we will train the model on existing data, evaluate how good it is, and lastly we'll consume the model to predict a sentiment for new reviews.
 
-![Build -> Train -> Evaluate -> Consume](../../../../../master/samples/csharp/getting-started/shared_content/modelpipeline.png)
-
-
 
 1. Build and train the model
 ----------------------------
@@ -71,17 +68,32 @@ open FSharpML.EstimatorModel
 open FSharpML.TransformerModel
 
 
-/// Describes Iris flower. Used as an input to prediction function.
+/// Type representing the text to run sentiment analysis on.
 [<CLIMutable>] 
-type IrisData = {
-    Label : float32
-    SepalLength : float32
-    SepalWidth: float32
-    PetalLength : float32
-    PetalWidth : float32    
-} 
+type SentimentIssue = 
+    { 
+        [<LoadColumn(0)>]
+        Label : bool
 
+        [<LoadColumn(1)>]
+        Text : string 
+    }
 
+/// Result of sentiment prediction.
+[<CLIMutable>]
+type  SentimentPrediction = 
+    { 
+        // ColumnName attribute is used to change the column name from
+        // its default value, which is the name of the field.
+        [<ColumnName("PredictedLabel")>]
+        Prediction : bool; 
+
+        // No need to specify ColumnName attribute, because the field
+        // name "Probability" is the column name we want.
+        Probability : float32; 
+
+        Score : float32 
+    }
 
 
 //Create the MLContext to share across components for deterministic results
@@ -90,18 +102,13 @@ let mlContext = MLContext(seed = Nullable 1) // Seed set to any number so you
 
 // STEP 1: Common data loading configuration
 let fullData = 
-    mlContext.Data.ReadFromTextFile((__SOURCE_DIRECTORY__  + "./data/iris-full.txt") ,
-        hasHeader = true,
-        separatorChar = '\t',
-        columns =
-            [|
-                TextLoader.Column("Label", Nullable DataKind.R4, 0)
-                TextLoader.Column("SepalLength", Nullable DataKind.R4, 1)
-                TextLoader.Column("SepalWidth", Nullable DataKind.R4, 2)
-                TextLoader.Column("PetalLength", Nullable DataKind.R4, 3)
-                TextLoader.Column("PetalWidth", Nullable DataKind.R4, 4)
-            |]
-    )
+    __SOURCE_DIRECTORY__  + "./data/wikipedia-detox-250-line-all.tsv"
+    |> DataModel.fromTextFileWith<SentimentIssue> mlContext '\t' true 
+
+let trainingData, testingData = 
+    fullData
+    |> DataModel.BinaryClassification.trainTestSplit 0.2 
+    
 
 
 
@@ -109,16 +116,16 @@ let fullData =
 let model = 
     EstimatorModel.create mlContext
     // Process data transformations in pipeline
-    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Concatenate(DefaultColumnNames.Features , "SepalLength", "SepalWidth", "PetalLength", "PetalWidth") )
+    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Text.FeaturizeText(DefaultColumnNames.Features , "Text"))
     // Create the model
-    |> EstimatorModel.appendBy (fun mlc -> mlc.Clustering.Trainers.KMeans(featureColumn = DefaultColumnNames.Features, clustersCount = 3) )
+    |> EstimatorModel.appendBy (fun mlc -> mlc.BinaryClassification.Trainers.FastTree(labelColumn = DefaultColumnNames.Label, featureColumn = DefaultColumnNames.Features))
     // Train the model
-    |> EstimatorModel.fit trainingDataView
+    |> EstimatorModel.fit trainingData.Dataview
 
 // STEP3: Run the prediciton on the test data
 let predictions =
     model
-    |> TransformerModel.transform testingDataView
+    |> TransformerModel.transform testingData.Dataview
 
 
 (**
@@ -132,5 +139,16 @@ TransformerModel is used to evaluate the model and make prediction on independan
 // STEP4: Evaluate accuracy of the model
 let metrics = 
     model
-    |> Evaluation.Clustering.evaluateWith(Score=DefaultColumnNames.Score, Features=DefaultColumnNames.Features) testingDataView
+    |> Evaluation.BinaryClassification.evaluateWith(Label=DefaultColumnNames.Label,Score=DefaultColumnNames.Score) testingData.Dataview
+
+
+
+let sampleStatement = { Label = false; Text = "This is a very rude movie" }
+// STEP5: Create prediction engine function related to the loaded trained model
+let predict = 
+    TransformerModel.createPredictionEngine<_,SentimentIssue,SentimentPrediction> model
+
+// Score
+let prediction = predict sampleStatement
+
 

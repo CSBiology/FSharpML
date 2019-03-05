@@ -86,21 +86,43 @@ open FSharpML
 open FSharpML.EstimatorModel
 open FSharpML.TransformerModel
 open System.IO
+open System.IO.Compression
+
+
+(*** hide ***)
+let extractZip inPath outPath = 
+    let readFromZip path = 
+        seq { let sr = 
+                new StreamReader(
+                  new GZipStream(
+                    File.OpenRead(path), 
+                    CompressionMode.Decompress))
+              while not sr.EndOfStream do
+                yield sr.ReadLine()
+              }
+
+    let write (path:string) (data:seq<string>) =
+        let sw = new StreamWriter(path)
+        data
+        |> Seq.iter (fun line -> sw.WriteLine line)
+    write outPath (readFromZip inPath)
+
 
 
 /// Data models used as an input to prediction function.
 [<CLIMutable>]
 type TransactionObservation = {
-    Label: bool
-    V1: float32
-    V2: float32
-    V3: float32
-    V4: float32
-    V5: float32
-    V6: float32
-    V7: float32
-    V8: float32
-    V9: float32
+    [<ColumnName("Class")>]
+    Label: int
+    V1 : float32
+    V2 : float32
+    V3 : float32
+    V4 : float32
+    V5 : float32
+    V6 : float32
+    V7 : float32
+    V8 : float32
+    V9 : float32
     V10: float32
     V11: float32
     V12: float32
@@ -142,20 +164,24 @@ let mlContext = MLContext(seed = Nullable 1) // Seed set to any number so you
 
 // STEP 1: Common data loading configuration
 let fullData =     
-    __SOURCE_DIRECTORY__  + "./data/creditcardfraud-dataset.zip"
+    //let inzip    = __SOURCE_DIRECTORY__  + "./data/creditcard.csv.gz"
+    //let dataFile = System.IO.Path.GetTempPath() + "creditcard.csv"
+    //extractZip inzip dataFile 
+    let dataFile = System.IO.Path.GetTempPath() + "creditcard.csv"
+    dataFile 
     |> DataModel.fromTextFileWith<TransactionObservation> mlContext ',' true 
-    //|> (fun path -> new FileStream(path,FileMode.Open) )
-    //|> readFromTextStream    
-    //DataModel.fromTextStreamWith<TransactionObservation> mlContext ',' true fullData
     
+let t : seq<int> = Data.getColumn mlContext "Class" fullData.Dataview 
 
-let trainingData, testingData = 
-    fullData
-    |> DataModel.BinaryClassification.trainTestSplit 0.2 
+
+//let trainingData, testingData = 
+//    fullData
+//    |> DataModel.BinaryClassification.trainTestSplit 0.2 
 
 let featureColumnNames = 
-    trainingData.Dataview.Schema    
+    fullData.Dataview.Schema    
     |> Seq.map (fun column -> column.Name)
+    |> Seq.filter (fun name -> name <> "Class")
     |> Seq.filter (fun name -> name <> "Label")
     |> Seq.filter (fun name -> name <> "StratificationColumn")
     |> Seq.toArray
@@ -164,6 +190,7 @@ let featureColumnNames =
 let model = 
     EstimatorModel.create mlContext
     // Process data transformations in pipeline
+    |> EstimatorModel.appendBy (fun mlc -> mlc.Transforms.Conversion.ValueMap([0;1],[false;true],(struct (DefaultColumnNames.Label,"Class")))) // ConvertType(DefaultColumnNames.Label,"Class",DataKind.Bool))
     |> EstimatorModel.Transforms.concatenate DefaultColumnNames.Features featureColumnNames
     |> EstimatorModel.Transforms.normalizeMeanVariance "FeaturesNormalizedByMeanVar" DefaultColumnNames.Features  
     
@@ -180,7 +207,7 @@ let model =
             ) )
  
     // Train the model
-    |> EstimatorModel.fit trainingData.Dataview
+    |> EstimatorModel.fit fullData.Dataview //trainingData.Dataview
 
 (**
 2. Evaluate and consume the model
@@ -219,6 +246,7 @@ let predict =
 //    printfn "%A" prediction
 //    printfn "------"
 //    )
+
 
 
 
