@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>README</title>
+    <title>Regression: Price prediction
+</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="Library for the FSharp friendly usage of the ML.NET project"/>
     <meta name="author" content="Timo Mühlhaus"/>
@@ -34,36 +35,61 @@
       <div class="row">
         <div class="span9" id="main">
           
-<p>MICROSOFT PROVIDES THE DATASETS ON AN "AS IS" BASIS. MICROSOFT MAKES NO WARRANTIES, EXPRESS OR IMPLIED, GUARANTEES OR CONDITIONS WITH RESPECT TO YOUR USE OF THE DATASETS. TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAW, MICROSOFT DISCLAIMS ALL LIABILITY FOR ANY DAMAGES OR LOSSES, INLCUDING DIRECT, CONSEQUENTIAL, SPECIAL, INDIRECT, INCIDENTAL OR PUNITIVE, RESULTING FROM YOUR USE OF THE DATASETS.</p>
-<p>The datasets are provided under the original terms that Microsoft received such datasets. See below for more information about each dataset.</p>
-<h3><a name="NYC-Taxi-Fare" class="anchor" href="#NYC-Taxi-Fare">NYC Taxi Fare</a></h3>
-<blockquote>
-<p>Redistributing the dataset "taxi-fare-test.csv", "taxi-fare-train.csv" with attribution:
-Original source: <a href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml.
-The">http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml.
-The</a> dataset is provided under terms provided by City of New York: <a href="https://opendata.cityofnewyork.us/overview/#termsofuse.">https://opendata.cityofnewyork.us/overview/#termsofuse.</a></p>
-</blockquote>
-<h3><a name="Sentiment-Analysis" class="anchor" href="#Sentiment-Analysis">Sentiment Analysis</a></h3>
-<blockquote>
-<p>Redistributing the dataset "sentiment-imdb-train.txt", "sentiment-yelp-test.txt" with attribution:
-Original source: 'From Group to Individual Labels using Deep Features', Kotzias et. al,. KDD 2015  <a href="https://archive.ics.uci.edu/ml/datasets/Sentiment+Labelled+Sentences.">https://archive.ics.uci.edu/ml/datasets/Sentiment+Labelled+Sentences.</a></p>
-</blockquote>
-<h3><a name="Iris" class="anchor" href="#Iris">Iris</a></h3>
-<blockquote>
-<p>Redistributing the dataset "iris-test.txt", "iris-train.txt" with attribution:
-Original source: <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set#Use_of_the_data_set.">https://en.wikipedia.org/wiki/Iris_flower_data_set#Use_of_the_data_set.</a></p>
-</blockquote>
-<h3><a name="MNIST" class="anchor" href="#MNIST">MNIST</a></h3>
-<blockquote>
-<p>Redistributing the dataset "optdigits-train.csv", "optdigits-val.csv" with citation:
-Dua, D. and Karra Taniskidou, E. (2017). UCI Machine Learning Repository [<a href="http://archive.ics.uci.edu/ml">http://archive.ics.uci.edu/ml</a>]. Irvine, CA: University of California, School of Information and Computer Science.
-Original source: <a href="http://archive.ics.uci.edu/ml/datasets/Optical+Recognition+of+Handwritten+Digits">http://archive.ics.uci.edu/ml/datasets/Optical+Recognition+of+Handwritten+Digits</a></p>
-</blockquote>
-<h3><a name="Corefx-Issues" class="anchor" href="#Corefx-Issues">Corefx Issues</a></h3>
-<blockquote>
-<p>Issues downloaded from public repository <a href="https://github.com/dotnet/corefx.">https://github.com/dotnet/corefx.</a></p>
-</blockquote>
+<h1><a name="Regression-Price-prediction" class="anchor" href="#Regression-Price-prediction">Regression: Price prediction</a></h1>
+<table>
+<thead>
+<tr class="header">
+<th><p>ML.NET version</p></th>
+<th><p>API type</p></th>
+<th><p>Status</p></th>
+<th><p>App Type</p></th>
+<th><p>Data type</p></th>
+<th><p>Scenario</p></th>
+<th><p>ML Task</p></th>
+<th><p>Algorithms</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>v0.10</p></td>
+<td><p>Dynamic API</p></td>
+<td><p>Up-to-date</p></td>
+<td><p>Console app</p></td>
+<td><p>.csv files</p></td>
+<td><p>Price prediction</p></td>
+<td><p>Regression</p></td>
+<td><p>Sdca Regression</p></td>
+</tr>
+</tbody>
+</table>
 
+<p>In this introductory sample, you'll see how to use <a href="https://www.microsoft.com/net/learn/apps/machine-learning-and-ai/ml-dotnet">ML.NET</a> to predict taxi fares. In the world of machine learning, this type of prediction is known as <strong>regression</strong>.</p>
+<h2><a name="Problem" class="anchor" href="#Problem">Problem</a></h2>
+<p>This problem is centered around predicting the fare of a taxi trip in New York City. At first glance, it may seem to depend simply on the distance traveled. However, taxi vendors in New York charge varying amounts for other factors such as additional passengers, paying with a credit card instead of cash and so on. This prediction can be used in application for taxi providers to give users and drivers an estimate on ride fares.</p>
+<p>To solve this problem, we will build an ML model that takes as inputs:
+<em> vendor ID
+</em> rate code
+<em> passenger count
+</em> trip time
+<em> trip distance
+</em> payment type</p>
+<p>and predicts the fare of the ride.</p>
+<h2><a name="ML-task-Regression" class="anchor" href="#ML-task-Regression">ML task - Regression</a></h2>
+<p>The generalized problem of <strong>regression</strong> is to predict some continuous value for given parameters, for example:
+<em> predict a house prise based on number of rooms, location, year built, etc.
+</em> predict a car fuel consumption based on fuel type and car parameters.
+* predict a time estimate for fixing an issue based on issue attributes.</p>
+<p>The common feature for all those examples is that the parameter we want to predict can take any numeric value in certain range. In other words, this value is represented by <code>integer</code> or <code>float</code>/<code>double</code>, not by <code>enum</code> or <code>boolean</code> types.</p>
+<h2><a name="Solution" class="anchor" href="#Solution">Solution</a></h2>
+<p>To solve this problem, first we will build an ML model. Then we will train the model on existing data, evaluate how good it is, and lastly we'll consume the model to predict taxi fares.</p>
+<ol>
+<li>Build model's pipeline</li>
+</ol>
+<p>Building a model includes: uploading data (<code>taxi-fare-train.csv</code> with <code>TextLoader</code>), transforming the data so it can be used effectively by an ML algorithm (<code>StochasticDualCoordinateAscent</code> in this case):</p>
+<p>*</p>
+
+<div class="tip" id="fs1">Multiple items<br />namespace FSharp<br /><br />--------------------<br />namespace Microsoft.FSharp</div>
+<div class="tip" id="fs2">namespace FSharp.Plotly</div>
 
         </div>
         <div class="span3">
