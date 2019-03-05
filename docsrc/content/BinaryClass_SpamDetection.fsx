@@ -26,7 +26,7 @@ Solution
 --------
 To solve this problem, first we will build an estimator to define the ML pipeline we want to use. Then we will train this estimator on existing data, evaluate how good it is, and lastly we'll consume the model to predict whether a few examples messages are spam.
 
-![Build -> Train -> Evaluate -> Consume](../shared_content/modelpipeline.png)
+![Build -> Train -> Evaluate -> Consume](../files/img/modelpipeline.png)
 
 
 1. Build and train the model
@@ -67,7 +67,13 @@ type SpamInput =
         [<LoadColumn(1)>] Message : string 
     }
 
-
+[<CLIMutable>]
+type SpamPrediction = 
+    {
+        PredictedLabel : bool
+        Score : float32
+        Probability : float32
+    }
 
 
 //Create the MLContext to share across components for deterministic results
@@ -118,11 +124,28 @@ metrics.Accuracy
 
 
 
+// STEP5: Create prediction engine function related to the loaded trained model
+let predict = 
+    TransformerModel.createPredictionEngine<_,SpamInput,SpamPrediction> model
 
 
-//// STEP5: Create prediction engine function related to the loaded trained model
-//let predict = 
-//    TransformerModel.createPredictionEngine<_,SpamInput,SpamInput> model
+
+//let newModel = 
+//    let lastTransformer = 
+//        BinaryPredictionTransformer<IPredictorProducing<float32>>(
+//            mlContext, 
+//            model.LastTransformer.Model, 
+//            model.GetOutputSchema(data.Schema), 
+//            model.LastTransformer.FeatureColumn, 
+//            threshold = 0.15f, 
+//            thresholdColumn = DefaultColumnNames.Probability);
+//    let parts = model |> Seq.toArray
+//    parts.[parts.Length - 1] <- lastTransformer :> _
+//    TransformerChain<ITransformer>(parts)
+
+//let classify (p : PredictionEngine<_,_>) x = 
+//    let prediction = p.Predict({LabelText = ""; Message = x})
+//    printfn "The message '%s' is %b" x prediction.PredictedLabel
 
 //// Score
 //let prediction = predict sampleStatement

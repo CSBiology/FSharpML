@@ -40,6 +40,8 @@ Solution
 
 To solve this problem, first we will build an ML model. Then we will train the model on existing data, evaluate how good it is, and lastly we'll consume the model to predict a sentiment for new reviews.
 
+![Build -> Train -> Evaluate -> Consume](../files/img/modelpipeline.png)
+
 
 1. Build and train the model
 ----------------------------
