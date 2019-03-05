@@ -26,13 +26,14 @@ After installing the package via Nuget we can load the delivered reference scrip
 
 
 
-open System;
+open System
 open Microsoft.ML
-open Microsoft.ML.Data;
+open Microsoft.ML.Data
 open FSharpML
+open FSharpML.EstimatorModel
+open FSharpML.TransformerModel
 open Microsoft.ML.Core.Data
-open TransformerModel
-open System.Data
+
 (**
 To get a feel how this library handles ML.Net operations we rebuild the [Spam Detection tutorial](https://github.com/dotnet/machinelearning-samples/tree/master/samples/fsharp/getting-started/BinaryClassification_SpamDetection) given by ML.Net. 
 We will start by instantiating a MLContext, the heart of the ML.Net API and intended to serve as a method catalog. We will now use it to set a scope on data stored in a text file. The method name might be misleading, but ML.Net readers are lazy and
@@ -88,17 +89,18 @@ and can be used to transform unseen data. For this we want to split the data we 
 two fractions. One to train the model and a remainder to evaluate the model. 
 *)
 
-let trainTestSplit = 
+let trainData,testData = 
     data
-    |> Data.BinaryClassification.initTrainTestSplit(estimatorModel.Context,Testfraction=0.1) 
+    |> DataModel.ofDataview mlContext
+    |> DataModel.BinaryClassification.trainTestSplit 0.1  //initTrainTestSplit(estimatorModel.Context,Testfraction=0.1) 
 
 let trainedModel = 
     estimatorModel
-    |> EstimatorModel.fit trainTestSplit.TrainingData
+    |> EstimatorModel.fit trainData.Dataview
 
 let evaluationMetrics = 
     trainedModel
-    |> Evaluation.BinaryClassification.evaluate trainTestSplit.TestData
+    |> Evaluation.BinaryClassification.evaluate testData.Dataview
 
 let scoredData = 
     trainedModel
@@ -202,7 +204,7 @@ let thresholdVSPrecicionAndRecall =
                         TransformerChain<ITransformer>(parts).Append(lastTransformer)
                     let newModel' = 
                         {TransformerModel.TransformerChain = newModel;Context=trainedModel.Context}
-                        |> Evaluation.BinaryClassification.InitEvaluate() trainTestSplit.TestData
+                        |> Evaluation.BinaryClassification.evaluate testData.Dataview
                     
                     threshold,newModel'.Accuracy
                     //threshold,

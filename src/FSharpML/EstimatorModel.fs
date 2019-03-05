@@ -1,13 +1,16 @@
-namespace FSharpML
+namespace FSharpML.EstimatorModel
 
 open Microsoft.ML
 open Microsoft.ML.Data
 open Microsoft.ML.Core.Data
 open Microsoft.Data.DataView
-open TransformerModel
+
 
 /// Module to build an estimator model that represents the estimator procedure  
+[<AutoOpen>]
 module EstimatorModel =
+    open FSharpML
+    open FSharpML.TransformerModel
 
     /// Represents the estimator procedure
     type EstimatorModel<'a when 'a :> ITransformer and 'a :not struct> = {
@@ -43,3 +46,6 @@ module EstimatorModel =
     let fit (data:IDataView) (estimatorModel:EstimatorModel<_>) = 
         let transformer = estimatorModel.EstimatorChain.Fit data
         {TransformerChain=transformer;Context=estimatorModel.Context}
+
+
+

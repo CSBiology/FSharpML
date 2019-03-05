@@ -29,10 +29,6 @@ module Transformer =
         estimators
         |> Seq.fold (fun acc e -> append e acc) (TransformerChain())
 
-
-
-    let concatenate outputColumnName inputColumnNames (mlc:MLContext) =
-        mlc.Transforms.Concatenate(outputColumnName,inputColumnNames)
     
         
 

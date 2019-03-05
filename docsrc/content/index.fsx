@@ -24,6 +24,8 @@ open System
 open Microsoft.ML
 open Microsoft.ML.Data;
 open FSharpML
+open FSharpML.EstimatorModel
+open FSharpML.TransformerModel
 
 
 (**
@@ -36,7 +38,7 @@ let mlContext = MLContext(seed = Nullable 1) //Seed set to any number so you
 
 // STEP 1: Common data loading configuration
 let fullData = 
-    mlContext.Data.ReadFromTextFile((__SOURCE_DIRECTORY__  + "./data/iris-full.txt") ,
+    mlContext.Data. ReadFromTextFile((__SOURCE_DIRECTORY__  + "./data/iris-full.txt") ,
         hasHeader = true,
         separatorChar = '\t',
         columns =
