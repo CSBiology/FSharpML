@@ -21,7 +21,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docsrc", "docsrc", "{475C3C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "content", "content", "{CCC2EF1F-AF10-4834-8D99-C504E7020148}"
 	ProjectSection(SolutionItems) = preProject
+		docsrc\content\BinaryClass_FraudDetection.fsx = docsrc\content\BinaryClass_FraudDetection.fsx
+		docsrc\content\BinaryClass_SentimentAnalysis.fsx = docsrc\content\BinaryClass_SentimentAnalysis.fsx
+		docsrc\content\BinaryClass_SpamDetection.fsx = docsrc\content\BinaryClass_SpamDetection.fsx
+		docsrc\content\Clustering_CustomerSegmentation.fsx = docsrc\content\Clustering_CustomerSegmentation.fsx
+		docsrc\content\Clustering_IrisFlowers.fsx = docsrc\content\Clustering_IrisFlowers.fsx
 		docsrc\content\index.fsx = docsrc\content\index.fsx
+		docsrc\content\Introduction.fsx = docsrc\content\Introduction.fsx
+		docsrc\content\MultiClass_HeartDisease.fsx = docsrc\content\MultiClass_HeartDisease.fsx
+		docsrc\content\MultiClass_IrisFlowers.fsx = docsrc\content\MultiClass_IrisFlowers.fsx
+		docsrc\content\MultiClass_Issues.fsx = docsrc\content\MultiClass_Issues.fsx
+		docsrc\content\MultiClass_MNIST.fsx = docsrc\content\MultiClass_MNIST.fsx
+		docsrc\content\Recommendation_Movie.fsx = docsrc\content\Recommendation_Movie.fsx
+		docsrc\content\Recommendation_Product.fsx = docsrc\content\Recommendation_Product.fsx
+		docsrc\content\Regression_DemandPrediction.fsx = docsrc\content\Regression_DemandPrediction.fsx
+		docsrc\content\Regression_PricePrediction.fsx = docsrc\content\Regression_PricePrediction.fsx
+		docsrc\content\Regression_SalesForecast.fsx = docsrc\content\Regression_SalesForecast.fsx
+		docsrc\content\tutorial.fsx = docsrc\content\tutorial.fsx
 	EndProjectSection
 EndProject
 Global

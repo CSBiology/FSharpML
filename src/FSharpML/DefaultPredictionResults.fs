@@ -1,0 +1,35 @@
+namespace FSharpML
+
+open Microsoft.ML
+open Microsoft.ML.Data
+open FSharpML.TransformerModel
+
+/// Module to build an estimator model that represents the estimator procedure  
+module DefaultPredictionResults =
+
+    module BinaryClassification = 
+        
+        [<CLIMutable>]
+        type BinaryClassificationResult = {
+            Score: float
+            Probability : float
+            PredictedLabel : bool 
+            }
+
+        [<CLIMutable>]
+        type RegresionResult = {    
+            Score : float32
+        }
+
+
+        //let predictDefaultCols (transformerModel: TransformerModel<'a>) (items:seq<'b>) = 
+        //    let data = transformerModel.Context.Data.ReadFromEnumerable items
+        //    let pred = transformerModel |> TransformerModel.transform data 
+        //    let scores :seq<float32> = 
+        //        pred.GetColumn(transformerModel.Context,DefaultColumnNames.Score)
+        //    let probability :seq<float32> = 
+        //        pred.GetColumn(transformerModel.Context,DefaultColumnNames.Probability)
+        //    let predictedLabel :seq<bool> = 
+        //        pred.GetColumn(transformerModel.Context,DefaultColumnNames.PredictedLabel)
+        //    Seq.map3 (fun s p l -> {Score= float s; Probability = float p; PredictedLabel = l }) scores probability predictedLabel
+        //    |> Seq.zip items

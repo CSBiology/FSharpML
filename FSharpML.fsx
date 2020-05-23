@@ -1,0 +1,69 @@
+#r @"netstandard.dll"
+
+open System
+open System.IO
+
+
+Environment.SetEnvironmentVariable("Path",
+    Environment.GetEnvironmentVariable("Path") + ";" + __SOURCE_DIRECTORY__ )
+  
+let dependencies = 
+    [
+    "./packages/Newtonsoft.Json/lib/netstandard2.0"
+    "./packages/System.Memory/lib/netstandard2.0/"
+    "./packages/System.Collections.Immutable/lib/netstandard2.0"
+    "./packages/System.Numerics.Vectors/lib/netstandard2.0/"
+    "./packages/Microsoft.ML.DataView/lib/netstandard2.0/"
+    "./packages/Microsoft.ML/lib/netstandard2.0/"
+    "./packages/Microsoft.ML.CpuMath/lib/netstandard2.0/"
+    "./packages/system.runtime.compilerservices.unsafe/lib/netstandard2.0/"
+    "./packages/Microsoft.ML.CpuMath/runtimes/win-x64/nativeassets/netstandard2.0/"
+    "./packages/Microsoft.ML/runtimes/win-x64/native"
+    "./packages/Microsoft.ML.FastTree/runtimes/win-x64/native"
+    "./packages/System.Runtime.CompilerServices.Unsafe/lib/netstandard2.0/"
+    ]
+
+dependencies 
+|> Seq.iter (fun dep -> 
+    let path = Path.Combine(__SOURCE_DIRECTORY__,dep)
+    Environment.SetEnvironmentVariable("Path",
+        Environment.GetEnvironmentVariable("Path") + ";" + path)
+    )    
+
+// Reference directories to automatically resolve dependencies (e.g. on native .dlls)
+#I "./packages/Microsoft.ML/runtimes/win-x64/native/"
+#I "./packages/Microsoft.ML.FastTree/runtimes/win-x64/native/"
+#I "./packages/Microsoft.ML.CpuMath/runtimes/win-x64/nativeassets/netstandard2.0/"
+#I "./packages/System.Memory/lib/netstandard2.0/"
+#I "./packages/System.Collections.Immutable/lib/netstandard2.0/"
+#I "./packages/System.Numerics.Vectors/lib/netstandard2.0/"
+#I "./packages/Microsoft.ML.DataView/lib/netstandard2.0/"
+#I "./packages/Microsoft.ML/lib/netstandard2.0/"
+#I "./packages/system.runtime.compilerservices.unsafe/lib/netstandard2.0/"
+#I "./packages/Microsoft.ML.CpuMath/lib/netstandard2.0/"
+
+// Reference .dlls
+// Note: referencing by path is needed also when referencing the directory.
+#I "./packages/"
+#I "./packages/Newtonsoft.Json/lib/netstandard2.0"
+#r "./packages/Newtonsoft.Json/lib/netstandard2.0/Newtonsoft.Json.dll"
+#r "./packages/System.Threading.Tasks.Dataflow/lib/netstandard2.0/System.Threading.Tasks.Dataflow.dll"
+#r "./packages/Microsoft.ML.DataView/lib/netstandard2.0/Microsoft.ML.DataView.dll"
+#r "./packages/System.Collections.Immutable/lib/netstandard2.0/System.Collections.Immutable.dll"
+#r "./packages/System.Numerics.Vectors/lib/netstandard2.0/System.Numerics.Vectors.dll"
+#r "./packages/System.Memory/lib/netstandard2.0/System.Memory.dll"
+
+#r "./packages/Microsoft.ML.CpuMath/lib/netstandard2.0/Microsoft.ML.CpuMath.dll"
+
+#r "./packages/Microsoft.ML/lib/netstandard2.0/Microsoft.ML.Core.dll"
+#r "./packages/Microsoft.ML/lib/netstandard2.0/Microsoft.ML.Data.dll"
+#r "./packages/Microsoft.ML/lib/netstandard2.0/Microsoft.ML.StandardTrainers.dll"
+#r "./packages/Microsoft.ML.FastTree/lib/netstandard2.0/Microsoft.ML.FastTree.dll"
+#r "./packages/Microsoft.ML/lib/netstandard2.0/Microsoft.ML.KMeansClustering.dll"
+#r "./packages/Microsoft.ML/lib/netstandard2.0/Microsoft.ML.PCA.dll"
+#r "./packages/Microsoft.ML/lib/netstandard2.0/Microsoft.ML.Transforms.dll"
+#r "./packages/System.Runtime.CompilerServices.Unsafe/lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll"
+
+#r "./src/FSharpML/bin/Release/netstandard2.0/FSharpML.dll"
+
+//#I @"Microsoft.ML/runtimes/win-x64/native/"

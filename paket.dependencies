@@ -4,6 +4,7 @@ framework: netstandard2.0
 strategy: max
 
 nuget Microsoft.ML 1.4.0
+nuget Microsoft.ML.FastTree 1.4.0
 
 group Formatting
 	source https://www.nuget.org/api/v2
