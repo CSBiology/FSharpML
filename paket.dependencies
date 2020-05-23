@@ -1,0 +1,13 @@
+source https://api.nuget.org/v3/index.json
+
+framework: netstandard2.0
+strategy: max
+
+nuget Microsoft.ML 1.4.0
+
+group Formatting
+	source https://www.nuget.org/api/v2
+	nuget Newtonsoft.Json >= 12.0.0
+	nuget FSharp.Plotly >= 1.2.2
+	nuget FSharp.Formatting >= 4.0.1
+	nuget FSharp.Formatting.CommandTool >= 4.0.1
