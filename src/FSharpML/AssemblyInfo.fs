@@ -5,8 +5,8 @@ open System.Reflection
 [<assembly: AssemblyTitleAttribute("FSharpML")>]
 [<assembly: AssemblyProductAttribute("FSharpML")>]
 [<assembly: AssemblyDescriptionAttribute("Library for the FSharp friendly usage of the ML.NET project. For documentation visit: <https://csbiology.github.io/FSharpML/>")>]
-[<assembly: AssemblyVersionAttribute("0.0.2")>]
-[<assembly: AssemblyFileVersionAttribute("0.0.2")>]
+[<assembly: AssemblyVersionAttribute("1.0.0")>]
+[<assembly: AssemblyFileVersionAttribute("1.0.0")>]
 [<assembly: AssemblyConfigurationAttribute("Release")>]
 do ()
 
@@ -14,6 +14,6 @@ module internal AssemblyVersionInformation =
     let [<Literal>] AssemblyTitle = "FSharpML"
     let [<Literal>] AssemblyProduct = "FSharpML"
     let [<Literal>] AssemblyDescription = "Library for the FSharp friendly usage of the ML.NET project. For documentation visit: <https://csbiology.github.io/FSharpML/>"
-    let [<Literal>] AssemblyVersion = "0.0.2"
-    let [<Literal>] AssemblyFileVersion = "0.0.2"
+    let [<Literal>] AssemblyVersion = "1.0.0"
+    let [<Literal>] AssemblyFileVersion = "1.0.0"
     let [<Literal>] AssemblyConfiguration = "Release"

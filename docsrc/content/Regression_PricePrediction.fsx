@@ -104,7 +104,7 @@ let testingData =
 let modelbuilding = 
     EstimatorModel.create mlContext
     |> EstimatorModel.Transforms.copyColumn "Label" "FareAmount"
-    |> EstimatorModel.Transforms.by (fun tfc -> tfc.Categorical.OneHotEncoding( "VendorIdEncoded", "VendorId") )
+    |> EstimatorModel.Transforms.map (fun tfc -> tfc.Categorical.OneHotEncoding( "VendorIdEncoded", "VendorId") )
     |> EstimatorModel.transformBy (fun tfc -> tfc.Categorical.OneHotEncoding( "RateCodeEncoded", "RateCode") )
     |> EstimatorModel.transformBy (fun tfc -> tfc.Categorical.OneHotEncoding( "PaymentTypeEncoded", "PaymentType") )
     |> EstimatorModel.transformBy (fun tfc -> tfc.NormalizeMeanVariance( "PassengerCount", "PassengerCount") )

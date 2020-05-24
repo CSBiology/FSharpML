@@ -1,10 +1,10 @@
 source https://api.nuget.org/v3/index.json
 
-framework: netstandard2.0
+framework: netstandard2.1
 strategy: max
 
-nuget Microsoft.ML 1.4.0
-nuget Microsoft.ML.FastTree 1.4.0
+nuget Microsoft.ML 1.5.0-preview
+nuget Microsoft.ML.FastTree 1.5.0-preview
 
 group Formatting
 	source https://www.nuget.org/api/v2

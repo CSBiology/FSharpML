@@ -20,7 +20,7 @@ module Transforms =
         |> appendBy (fun mlc -> mlc.Transforms.CopyColumns(sourceColumnName,targetColumnName))  
 
     /// Transforms a columns according to the given function from TransformsCatalog
-    let by (transformsCatalog:TransformsCatalog -> #IEstimator<_>) (estimatorModel:EstimatorModel<_>) =
+    let map (transformsCatalog:TransformsCatalog -> #IEstimator<_>) (estimatorModel:EstimatorModel<_>) =
         estimatorModel
         |> appendBy (fun mlc -> transformsCatalog mlc.Transforms)  
 

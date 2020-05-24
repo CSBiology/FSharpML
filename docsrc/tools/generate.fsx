@@ -51,12 +51,12 @@ let info =
 // Binaries for which to generate XML documentation
 let referenceBinaries = 
         [ 
-        __SOURCE_DIRECTORY__ + "/../../src/FSharpML/bin/Release/netstandard2.0/FSharpML.dll"      
+        __SOURCE_DIRECTORY__ + "/../../src/FSharpML/bin/Release/netstandard2.1/FSharpML.dll"      
         ]
     
 let libDirs = 
     [ 
-        __SOURCE_DIRECTORY__ + "/../../src/FSharpML/bin/Release/netstandard2.0/"
+        __SOURCE_DIRECTORY__ + "/../../src/FSharpML/bin/Release/netstandard2.1/"
     ]
     
 // When called from 'build.fsx', use the public project URL as <root>

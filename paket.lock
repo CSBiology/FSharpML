@@ -1,22 +1,22 @@
 STRATEGY: MAX
-RESTRICTION: == netstandard2.0
+RESTRICTION: == netstandard2.1
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    Microsoft.ML (1.4)
-      Microsoft.ML.CpuMath (>= 1.4)
-      Microsoft.ML.DataView (>= 1.4)
+    Microsoft.ML (1.5.0-preview)
+      Microsoft.ML.CpuMath (>= 1.5.0-preview)
+      Microsoft.ML.DataView (>= 1.5.0-preview)
       Newtonsoft.Json (>= 10.0.3)
       System.CodeDom (>= 4.4)
       System.Collections.Immutable (>= 1.5)
       System.Memory (>= 4.5.1)
       System.Reflection.Emit.Lightweight (>= 4.3)
       System.Threading.Tasks.Dataflow (>= 4.8)
-    Microsoft.ML.CpuMath (1.4)
+    Microsoft.ML.CpuMath (1.5.0-preview2)
       System.Memory (>= 4.5.1)
-    Microsoft.ML.DataView (1.4)
+    Microsoft.ML.DataView (1.5.0-preview2)
       System.Memory (>= 4.5.1)
-    Microsoft.ML.FastTree (1.4)
-      Microsoft.ML (>= 1.4)
+    Microsoft.ML.FastTree (1.5.0-preview)
+      Microsoft.ML (>= 1.5.0-preview)
     Newtonsoft.Json (12.0.3)
     System.Buffers (4.5.1)
     System.CodeDom (4.7)
@@ -27,9 +27,7 @@ NUGET
       System.Numerics.Vectors (>= 4.4)
       System.Runtime.CompilerServices.Unsafe (>= 4.5.3)
     System.Numerics.Vectors (4.5)
-    System.Reflection.Emit.ILGeneration (4.7)
     System.Reflection.Emit.Lightweight (4.7)
-      System.Reflection.Emit.ILGeneration (>= 4.7)
     System.Runtime.CompilerServices.Unsafe (4.7.1)
     System.Threading.Tasks.Dataflow (4.11.1)
 
