@@ -31,3 +31,5 @@ repositoryType
 repositoryUrl
     https://github.com/CSBiology/FSharpML
 include-pdbs true
+files
+	./bin/Release/ ==> lib
