@@ -223,7 +223,7 @@ let releaseDocsToGhPages =
         let tempDocsDir = "temp/gh-pages"
         Shell.cleanDir tempDocsDir |> ignore
         Git.Repository.cloneSingleBranch "" (gitHome + "/" + gitName + ".git") "gh-pages" tempDocsDir
-        Shell.copyRecursive "docs" tempDocsDir true |> printfn "%A"
+        Shell.copyRecursive "docs/output" tempDocsDir true |> printfn "%A"
         Git.Staging.stageAll tempDocsDir
         Git.Commit.exec tempDocsDir (sprintf "Update generated documentation for version %s" release.NugetVersion)
         Git.Branches.push tempDocsDir
