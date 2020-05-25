@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>DataModel - BioFSharp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="Timo M�hlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, F# open source contributors" />
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet" />
+    <meta http-equiv="X-UA-Compatible" content="IE=11">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://CSBiology.github.io/FSharpML//content/style.css" /> <!--https://CSBiology.github.io/FSharpML/-->
+    <link type="text/css" rel="stylesheet" href="https://CSBiology.github.io/FSharpML//style/CSBstyle.css" /> <!--https://CSBiology.github.io/FSharpML/-->
+    <script type="text/javascript" src="https://CSBiology.github.io/FSharpML//content/tips.js"></script> <!--https://CSBiology.github.io/FSharpML/-->
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container">
+        <div class="masthead">
+            <ul class="nav nav-pills pull-right">
+                <li><a href="http://fsharp.org">fsharp.org</a></li>
+                <li><a href="https://github.com/CSBiology/FSharpML">github page</a></li>
+            </ul>
+            <h3 class="muted"><a href="https://CSBiology.github.io/FSharpML//index.html">BioFSharp</a></h3>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="span9" id="main">
+                
+
+<h1>DataModel</h1>
+<p>
+  <span>Namespace: FSharpML</span><br />
+  </p>
+<div class="xmldoc">
+</div>
+
+<!-- Render nested types and modules, if there are any -->
+  <h2>Nested types and modules</h2>
+  <div>
+      <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="fsharpml-datamodel-datamodel-1.html">DataModel<'info></a>
+          </td>
+          <td class="xmldoc">
+          
+          </td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="fsharpml-datamodel-traintestsplitinfo.html">TrainTestSplitInfo</a>
+          </td>
+          <td class="xmldoc">
+          <p>Metadata info for a traintestsplit</p>
+
+
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+  <h3>Functions and values</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Function or value</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '1', 1)" onmouseover="showTip(event, '1', 1)">
+            appendFilterByColumn(...)
+          </code>
+          <div class="tip" id="1">
+            <strong>Signature:</strong> columnName:string -&gt; lower:float -&gt; upper:float -&gt; dataModel:DataModel&lt;&#39;?20821&gt; -&gt; DataModel&lt;&#39;?20821&gt;<br />
+                          <strong>Type parameters:</strong> '?20821                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L111-111" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Keeps only those rows that are between lower and upper range condition</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '2', 2)" onmouseover="showTip(event, '2', 2)">
+            createDataModel context dataview
+          </code>
+          <div class="tip" id="2">
+            <strong>Signature:</strong> context:(type) -&gt; dataview:(type) -&gt; DataModel&lt;&#39;?20789&gt;<br />
+                          <strong>Type parameters:</strong> '?20789                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L21-21" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Creates a data model record (use createDataModelWith to include metadata information)</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '3', 3)" onmouseover="showTip(event, '3', 3)">
+            createDataModelWith(...)
+          </code>
+          <div class="tip" id="3">
+            <strong>Signature:</strong> mlc:(type) -&gt; dataview:(type) -&gt; metaData:&#39;?20791 -&gt; DataModel&lt;&#39;?20791&gt;<br />
+                          <strong>Type parameters:</strong> '?20791                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L25-25" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Creates a data model record with metadata information</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '4', 4)" onmouseover="showTip(event, '4', 4)">
+            createTrainTestSplitInfo(...)
+          </code>
+          <div class="tip" id="4">
+            <strong>Signature:</strong> splitFraction:float -&gt; stratificationColumn:string option -&gt; TrainTestSplitInfo<br />
+                                  </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L124-124" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '5', 5)" onmouseover="showTip(event, '5', 5)">
+            fromBinaryStream mlc stream
+          </code>
+          <div class="tip" id="5">
+            <strong>Signature:</strong> mlc:(type) -&gt; stream:(type) -&gt; DataModel&lt;obj&gt;<br />
+                          <strong>Type parameters:</strong> 'Trow                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L75-75" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Reads a data model from a binary file</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '6', 6)" onmouseover="showTip(event, '6', 6)">
+            fromBinaryStreamWith(...)
+          </code>
+          <div class="tip" id="6">
+            <strong>Signature:</strong> mlc:(type) -&gt; separatorChar:char -&gt; hasHeader:bool -&gt; stream:string -&gt; DataModel&lt;obj&gt;<br />
+                          <strong>Type parameters:</strong> 'Trow                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L81-81" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Reads a data model from a binary file</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '7', 7)" onmouseover="showTip(event, '7', 7)">
+            fromTextFile mlc path
+          </code>
+          <div class="tip" id="7">
+            <strong>Signature:</strong> mlc:(type) -&gt; path:string -&gt; DataModel&lt;obj&gt;<br />
+                          <strong>Type parameters:</strong> 'Trow                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L41-41" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Reads a data model from a text file</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '8', 8)" onmouseover="showTip(event, '8', 8)">
+            fromTextFileWith(...)
+          </code>
+          <div class="tip" id="8">
+            <strong>Signature:</strong> mlc:(type) -&gt; separatorChar:char -&gt; hasHeader:bool -&gt; path:string -&gt; DataModel&lt;obj&gt;<br />
+                          <strong>Type parameters:</strong> 'Trow                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L47-47" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Reads a data model from a text file</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '9', 9)" onmouseover="showTip(event, '9', 9)">
+            getColumn columnName dataModel
+          </code>
+          <div class="tip" id="9">
+            <strong>Signature:</strong> columnName:string -&gt; dataModel:DataModel&lt;obj&gt; -&gt; IEnumerable&lt;&#39;a&gt;<br />
+                          <strong>Type parameters:</strong> 'a                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L107-107" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Returns all values of a column</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '10', 10)" onmouseover="showTip(event, '10', 10)">
+            getContext(dataModel)
+          </code>
+          <div class="tip" id="10">
+            <strong>Signature:</strong> dataModel:DataModel&lt;&#39;?20809&gt; -&gt; (type)<br />
+                          <strong>Type parameters:</strong> '?20809                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L88-88" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Returns the MLcontext</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '11', 11)" onmouseover="showTip(event, '11', 11)">
+            ofDataview mlc dataview
+          </code>
+          <div class="tip" id="11">
+            <strong>Signature:</strong> mlc:(type) -&gt; dataview:(type) -&gt; DataModel&lt;obj&gt;<br />
+                          <strong>Type parameters:</strong> 'info                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L29-29" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Creates a data model from a given data view</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '12', 12)" onmouseover="showTip(event, '12', 12)">
+            ofSeq mlc data
+          </code>
+          <div class="tip" id="12">
+            <strong>Signature:</strong> mlc:(type) -&gt; data:seq&lt;&#39;Trow&gt; -&gt; DataModel&lt;&#39;?20796&gt;<br />
+                          <strong>Type parameters:</strong> 'Trow, '?20796                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L33-33" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Creates a data model from seq<'Trow></p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '13', 13)" onmouseover="showTip(event, '13', 13)">
+            saveAsBinary stream dataModel
+          </code>
+          <div class="tip" id="13">
+            <strong>Signature:</strong> stream:Stream -&gt; dataModel:DataModel&lt;&#39;?20817&gt; -&gt; unit<br />
+                          <strong>Type parameters:</strong> '?20817                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L103-103" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Saves data view to binary file</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '14', 14)" onmouseover="showTip(event, '14', 14)">
+            saveAsText(...)
+          </code>
+          <div class="tip" id="14">
+            <strong>Signature:</strong> separatorChar:char -&gt; hasHeader:bool -&gt; stream:Stream -&gt; dataModel:DataModel&lt;&#39;?20815&gt; -&gt; unit<br />
+                          <strong>Type parameters:</strong> '?20815                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L99-99" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Saves data view to text file</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '15', 15)" onmouseover="showTip(event, '15', 15)">
+            toDataview(dataModel)
+          </code>
+          <div class="tip" id="15">
+            <strong>Signature:</strong> dataModel:DataModel&lt;&#39;?20811&gt; -&gt; (type)<br />
+                          <strong>Type parameters:</strong> '?20811                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L91-91" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Returns the data view</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '16', 16)" onmouseover="showTip(event, '16', 16)">
+            toSeq(dataModel)
+          </code>
+          <div class="tip" id="16">
+            <strong>Signature:</strong> dataModel:DataModel&lt;&#39;a&gt; -&gt; IEnumerable&lt;&#39;TRow&gt;<br />
+                          <strong>Type parameters:</strong> 'a, 'TRow                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L37-37" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '17', 17)" onmouseover="showTip(event, '17', 17)">
+            trainTestSplit testfraction dataModel
+          </code>
+          <div class="tip" id="17">
+            <strong>Signature:</strong> testfraction:float -&gt; dataModel:DataModel&lt;&#39;?20838&gt; -&gt; DataModel&lt;TrainTestSplitInfo&gt; * DataModel&lt;TrainTestSplitInfo&gt;<br />
+                          <strong>Type parameters:</strong> '?20838                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L155-155" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Splits a dataset into the train set and the test set according to the given fraction.</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '18', 18)" onmouseover="showTip(event, '18', 18)">
+            trainTestSplitWith(...)
+          </code>
+          <div class="tip" id="18">
+            <strong>Signature:</strong> testfraction:float -&gt; stratification:string -&gt; seed:int -&gt; dataModel:DataModel&lt;&#39;?20834&gt; -&gt; DataModel&lt;TrainTestSplitInfo&gt; * DataModel&lt;TrainTestSplitInfo&gt;<br />
+                          <strong>Type parameters:</strong> '?20834                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L129-129" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Splits a dataset into the train set and the test set according to the given fraction. Respects the StratificationColumn if provided.</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '19', 19)" onmouseover="showTip(event, '19', 19)">
+            trainTestSplitWithStrat(...)
+          </code>
+          <div class="tip" id="19">
+            <strong>Signature:</strong> testfraction:float -&gt; stratification:string -&gt; dataModel:DataModel&lt;&#39;?20836&gt; -&gt; DataModel&lt;TrainTestSplitInfo&gt; * DataModel&lt;TrainTestSplitInfo&gt;<br />
+                          <strong>Type parameters:</strong> '?20836                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L142-142" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Splits a dataset into the train set and the test set according to the given fraction. Respects the StratificationColumn if provided.</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+          <code onmouseout="hideTip(event, '20', 20)" onmouseover="showTip(event, '20', 20)">
+            tryGetMetadata(dataModel)
+          </code>
+          <div class="tip" id="20">
+            <strong>Signature:</strong> dataModel:DataModel&lt;&#39;?20813&gt; -&gt; &#39;?20813 option<br />
+                          <strong>Type parameters:</strong> '?20813                      </div>
+        </td>
+        <td class="xmldoc">
+                      <a href="https://github.com/CSBiology/FSharpML/tree/master//src/FSharpML/DataModel.fs#L94-94" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Try to return meta data else None</p>
+
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+            </div>
+            <div class="span3">
+                <img src="https://CSBiology.github.io/FSharpML//img/logo.png" alt="F# Project" style="width:150px;margin:10px" />
+                <ul class="nav nav-list" id="menu" style="margin-top: 20px;">
+                    <li class="nav-header">BioFSharp</li>
+                    <li><a href="https://CSBiology.github.io/FSharpML//index.html">Home page</a></li>
+                    <li class="divider"></li>
+                    <li><a href="https://CSBiology.github.io/FSharpML//release-notes.html">Release Notes</a></li>
+
+                    <li class="nav-header">Samples</li>
+                    <li><a href="https://CSBiology.github.io/FSharpML//BinaryClass_SentimentAnalysis.html">Binary classification: sentiment analysis</a></li>
+                    <li><a href="https://CSBiology.github.io/FSharpML//BinaryClass_SpamDetection.html">Binary classification: spam detection</a></li>
+
+
+                    <li><a href="https://CSBiology.github.io/FSharpML//Regression_PricePrediction.html">Regression: price prediction</a></li>
+
+
+                    <li><a href="https://CSBiology.github.io/FSharpML//Clustering_IrisFlowers.html">Clustering: iris flowers</a></li>
+
+                    <li class="nav-header">Documentation</li>
+                    <li><a href="https://CSBiology.github.io/FSharpML//reference/index.html">API Reference</a></li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <a href="https://github.com/CSBiology/FSharpML"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a>
+</body>
+</html>
